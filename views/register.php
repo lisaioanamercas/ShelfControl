@@ -77,7 +77,7 @@
             <div class="error"><?= htmlspecialchars($error) ?></div>
         <?php endif; ?>
 
-        <input type="text" name="username" placeholder="Email" required />
+        <input type="text" name="email" placeholder="Email" required />
         <input type="text" name="username" placeholder="Ursername" required />
         <input type="password" name="password" placeholder="Password" required />
         <input type="password" name="confirm_password" placeholder="Confirm Password" required />
