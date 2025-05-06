@@ -29,12 +29,12 @@
 
         .left-title p {
             font-size: 30px;
-            margin-top: 5px; /* spațiu între titlu și text */
+            margin-top: 5px; 
         }
 
         .right-image{
 
-            width: 600px; /* sau orice valoare vrei, de ex. 250px, 200px etc. */
+            width: 600px; 
             height: 800px;
             margin-left: 40px;
             margin-right: 70px; 
@@ -43,7 +43,7 @@
         .buttons {
             display: flex;
              gap: 15px;
-            margin-top: 5px; /* redus de la 20px la 5px */
+            margin-top: 5px; 
 }
 
         button {
@@ -78,8 +78,8 @@
         <h1>Shelf Control</h1>
         <p>Cause you are one book away from a book avalanche</p>
         <div class="buttons">
-          <button onclick="window.location.href='/Shelf%20Control/login'">Login</button>
-          <a href="/register" class="register-link">Register</a>
+          <button onclick="window.location.href='/ShelfControl/login'">Login</button>
+          <a href="/ShelfControl/register" class="register-link">Register</a>
         </div>
     </div>
     <img class="right-image" src="models\landingPictures.jpg" alt="Shelf Control Image">

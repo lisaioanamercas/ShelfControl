@@ -55,10 +55,6 @@
     <h2>Login to Shelf Control</h2>
 
     <form method="POST" action="">
-        <?php if (!empty($error)): ?>
-            <div class="error"><?= htmlspecialchars($error) ?></div>
-        <?php endif; ?>
-
         <input type="text" name="username" placeholder="Utilizator" required />
         <input type="password" name="password" placeholder="Parolă" required />
         <button type="submit">Autentificare</button>

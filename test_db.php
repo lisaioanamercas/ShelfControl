@@ -1,18 +1,18 @@
 <?php
 
-if (!is_readable("C:/Users/Elisa/Desktop/Web/Wallet_ShelfControl/sqlnet.ora")) {
+if (!is_readable("C:\\Wallet_ShelfControl\\sqlnet.ora")) {
     die("❌ PHP cannot read sqlnet.ora — check permissions or path!");
 }
 
-putenv("TNS_ADMIN=C:/Users/Elisa/Desktop/Web/Wallet_ShelfControl");
+putenv("TNS_ADMIN=C:\\Wallet_ShelfControl");
 
-$walletPath = "C:/Users/Elisa/Desktop/Web/Wallet_ShelfControl";
+$walletPath = "C:\\Wallet_ShelfControl";
 
-if (!is_readable($walletPath . "/sqlnet.ora")) {
+if (!is_readable($walletPath . "\\sqlnet.ora")) {
     die("❌ PHP can't read sqlnet.ora — path or permissions wrong!");
 }
 
-if (!is_readable($walletPath . "/tnsnames.ora")) {
+if (!is_readable($walletPath . "\\tnsnames.ora")) {
     die("❌ PHP can't read tnsnames.ora!");
 }
 
