@@ -17,3 +17,6 @@ BEGIN
   :NEW.id := users_seq.NEXTVAL;
 END;
 /
+
+select * from users;
+

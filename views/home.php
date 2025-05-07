@@ -15,9 +15,9 @@
 
         .left-title {
             display: flex;
-            flex-direction: column; /* Asigură-te că sunt pe linii separate */
-            align-items: flex-start; /* Aliniere la stânga */
-            justify-content: flex-start; /* Aliniere sus */
+            flex-direction: column; 
+            align-items: flex-start; /
+            justify-content: flex-start; 
             padding-right: 90px;
             
         }

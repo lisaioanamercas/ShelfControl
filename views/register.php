@@ -71,14 +71,20 @@
 <body>
 
     <h2>Register</h2>
+    <?php if (!empty($error)): ?>
+       <div style="color: red; text-align: center;"><?= htmlspecialchars($error) ?></div>
+     <?php endif; ?>
+    <?php if(!empty($success)):?>
+        <div style="color: green; text-align: center;"><?= htmlspecialchars($success) ?></div>
+     <?php endif; ?>
 
+
+
+     
     <form method="POST" action="">
-        <?php if (!empty($error)): ?>
-            <div class="error"><?= htmlspecialchars($error) ?></div>
-        <?php endif; ?>
 
         <input type="text" name="email" placeholder="Email" required />
-        <input type="text" name="username" placeholder="Ursername" required />
+        <input type="text" name="username" placeholder="Username" required />
         <input type="password" name="password" placeholder="Password" required />
         <input type="password" name="confirm_password" placeholder="Confirm Password" required />
         <button type="submit">Submit</button>
