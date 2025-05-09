@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\UserModel;
+use App\Views\BaseView;
 
 class RegisterController {
     public function register() {
@@ -43,6 +44,16 @@ class RegisterController {
                 }
             }
         }
-       require __DIR__ . '/../views/register.php';
+
+    
+
+        $data = [
+            'heading' => 'Register',
+            'message' => !empty($error) ? "<span style='color: red;'>{$error}</span>" : (!empty($success) ? "<span style='color: green;'>{$success}</span>" : ''),
+        ];
+
+        $view = new BaseView();
+        $view->renderTemplate('register',$data);
+      
     }
 }

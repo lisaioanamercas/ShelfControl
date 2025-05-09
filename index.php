@@ -1,12 +1,9 @@
 <?php
-use App\Controllers\AuthController;
+use App\Controllers\LoginController;
 use App\Controllers\HomeController;
 use App\Controllers\RegisterController;
 
 
-//require __DIR__ . '/controllers/homePageController.php';
-//require __DIR__ . '/controllers/loginPageController.php';
-//require __DIR__ . '/controllers/registerPageController.php';
 require_once __DIR__ . '/vendor/autoload.php';
 
 use Dotenv\Dotenv;
@@ -25,7 +22,7 @@ if ($request == '/') {
 
 } elseif ($request == '/login') {
 
-    $controller = new AuthController();
+    $controller = new LoginController();
     $controller->login();
 
 } elseif ($request == '/register') {
