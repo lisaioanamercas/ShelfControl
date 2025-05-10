@@ -1,18 +1,27 @@
 <!DOCTYPE html>
-<html>
+<html lang="ro">
 <head>
-    <title>{$title}</title>
+    <meta charset="UTF-8">
+    <title>Welcome</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/ShelfControl/views/css/home.css">
 </head>
 <body>
-    <div class="left-title">
-        <h1>{$heading}</h1>
-        <p>{$subheading}</p>
-        <div class="buttons">
-            <button onclick="window.location.href='{$loginUrl}'">Login</button>
-            <a href="{$registerUrl}" class="register-link">Register</a>
-        </div>
-    </div>
-    <img class="right-image" src="{$imagePath}" alt="Shelf Control Image">
-</body>
+   <ul>
+   <li><a href="/ShelfControl/home">Home</a></li>
+   <li><a href="/ShelfControl/home">Your books</a></li>
+   <li><a href="/ShelfControl/home">About us</a></li>
+   <li><a  href="/ShelfControl/logout">Account</a></li>
+   <li>
+        <form class="search-form" action="/ShelfControl/search" method="GET">
+            <input type="search" id="site-search" name="q" placeholder="Search..." />
+            <button type="submit">Search</button>
+        </form>
+    </li>
+   </ul>
+
+   <h2>Books from Google Books API</h2>
+   <div id="book-list"></div> <!-- This will hold the list of books -->
+   <script src="/ShelfControl/views/scripts/home.js"></script>
+  </body>
 </html>

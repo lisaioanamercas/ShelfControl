@@ -11,16 +11,17 @@ class UserModel{
         $this->conn=$dbConnection;
     }
 
-    public function createUser($email,$username,$hashedPassword)
+    public function createUser($email,$username,$hashedPassword,$city)
     {   
-        $sql="INSERT INTO users(username,email,password_hash) values
-         (:username,:email,:password_hash)";
+        $sql="INSERT INTO users(username,email,password_hash,city) values
+         (:username,:email,:password_hash,:city)";
 
          $stmt=oci_parse($this->conn,$sql);
          
          oci_bind_by_name($stmt, ':username', $username);
          oci_bind_by_name($stmt, ':email', $email);
          oci_bind_by_name($stmt, ':password_hash', $hashedPassword);
+          oci_bind_by_name($stmt, ':city', $city);
  
          return oci_execute($stmt);
      }

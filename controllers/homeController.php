@@ -1,22 +1,37 @@
 <?php
-
 namespace App\Controllers;
+use App\Views\BaseView;
 
-use App\Views\BaseView; 
+class HomeController{
 
-class HomeController
-{
     public function index()
     {
+
+
+        require __DIR__ . '/../dbConnection.php';
+       
+    }
+
+    public function homeGet(){
+
+         $jwt = $_COOKIE['jwt'] ?? null;
+        if ($jwt) {
+            $baseController = new BaseController();
+            $decoded = $baseController->validateJWT($jwt);
+            if ($decoded) {
+                $username = $decoded->data->username;
+            } else {
+                header('Location: /ShelfControl/login');
+
+            }
+        } else {
+                           
+            header('Location: /ShelfControl/login');
+       }
+        $view= new BaseView();
         $data = [
-            'title' => 'Welcome to Shelf Control',
-            'heading' => 'Shelf Control',
-            'subheading' => 'Cause you are one book away from a book avalanche',
-            'loginUrl' => '/ShelfControl/login',
-            'registerUrl' => '/ShelfControl/register',
-            'imagePath' => '/ShelfControl/models/landingPictures.jpg',
+            'username' => 'daria'
         ];
-        $view = new BaseView();
         $view->renderTemplate('home',$data);
     }
 }

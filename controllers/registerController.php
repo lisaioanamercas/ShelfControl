@@ -6,54 +6,78 @@ use App\Models\UserModel;
 use App\Views\BaseView;
 
 class RegisterController {
-    public function register() {
+
+    
+    public function registerPost() {
+
         require __DIR__ . '/../dbConnection.php';
 
-        $error = ''; 
-        $success = '';
+        $username = $_POST['username'] ?? '';
+        $email = $_POST['email'] ?? '';
+        $password = $_POST['password'] ?? '';
+        $confirmPassword = $_POST['confirm_password'] ?? '';
 
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $username = $_POST['username'] ?? '';
-            $email = $_POST['email'] ?? '';
-            $password = $_POST['password'] ?? '';
-            $confirmPassword = $_POST['confirm_password'] ?? '';
-            
-            if (empty($username) || empty($email) || empty($password) || empty($confirmPassword)) {
-                $error = 'All fields are required.';
-            } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                $error = 'Invalid email format.';
-            } elseif ($password !== $confirmPassword) {
-                $error = 'Passwords do not match.';
-            } elseif (strlen($password) < 6) {
-                $error = 'Password must be at least 6 characters long.';
-            }
+        if (empty($username) || empty($email) || empty($password) || empty($confirmPassword)) {
+            $error = 'All fields are required.';
+        } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $error = 'Invalid email format.';
+        } elseif ($password !== $confirmPassword) {
+            $error = 'Passwords do not match.';
+        } elseif (strlen($password) < 6) {
+            $error = 'Password must be at least 6 characters long.';
+        }
 
-            if (empty($error)) {
-                $userModel = new UserModel($conn);
+        if (empty($error)) {
+            $userModel = new UserModel($conn);
 
-                if ($userModel->verifyUser($email, $username)) {
-                    $error = 'Email or username already exists.';
+            if ($userModel->verifyUser($username, $email)) {
+                $error = 'Email or username already exists.';
+            } else {
+                $token = "91f98b6e3ecd27";
+                $api_url = "https://ipinfo.io/json?token={$token}";
+
+                $geo_info = file_get_contents($api_url);
+                $location = json_decode($geo_info, true);
+
+                $city = $location['city'] ?? "Locație necunoscută";
+
+                $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+
+                if ($userModel->createUser($email, $username, $hashedPassword, $city)) {
+                      header('Location: /ShelfControl/home');
+
                 } else {
-                    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-
-                    if ($userModel->createUser($email, $username, $hashedPassword)) {
-                        $success = 'Registration successful! Welcome, ' . htmlspecialchars($username) . '!';
-                    } else {
-                        $error = 'Database error: Could not create user.';
-                    }
+                    $error = 'Database error: Could not create user.';
                 }
             }
         }
+         $data = [
+        'heading' => 'Register',
+        'message' => !empty($error) ? "<span style='color: red;'>{$error}</span>" : '',
+       ];
 
-    
+        $view = new BaseView();
+       $view->renderTemplate('register', $data);
+    }
+
+    public function registerGet() {
+
+        if (isset($_COOKIE['jwt'])) {
+            $baseController = new BaseController();
+            $decoded = $baseController->validateJWT($_COOKIE['jwt']);
+            if ($decoded) {
+                header('Location: /ShelfControl/home');
+                exit;
+            }
+        }
 
         $data = [
             'heading' => 'Register',
-            'message' => !empty($error) ? "<span style='color: red;'>{$error}</span>" : (!empty($success) ? "<span style='color: green;'>{$success}</span>" : ''),
+            'message' => '',
         ];
 
         $view = new BaseView();
-        $view->renderTemplate('register',$data);
-      
+        $view->renderTemplate('register', $data);
     }
 }
+

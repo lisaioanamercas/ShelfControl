@@ -1,55 +1,86 @@
-<?php 
- 
- namespace App\Controllers;
- use App\Models\UserModel;
- use App\Views\BaseView;
- use App\Controllers\BaseController;
+<?php
 
-class LoginController{
+namespace App\Controllers;
 
-    public function login()
+use App\Models\UserModel;
+use App\Views\BaseView;
+use App\Controllers\BaseController;
+
+class LoginController
+{
+    private $error;
+    private $success;
+    private $view;
+
+    public function __construct()
     {
-        require __DIR__ . '/../dbConnection.php'; 
+        $this->error = '';
+        $this->success = '';
+        $this->view = new BaseView();
+    }
 
+    public function loginPost()
+    {
+        require __DIR__ . '/../dbConnection.php';
 
-        if($_SERVER['REQUEST_METHOD']=='POST')
-        { 
-            $email=$_POST['email'];
-            $password=$_POST['password'];
+        $email = $_POST['email'] ?? '';
+        $password = $_POST['password'] ?? '';
 
-            if (empty($email) || empty($email) || empty($password)) {
-                $error = 'All fields are required.';
-            }
+        if (empty($email) || empty($password)) {
+            $this->error = 'All fields are required.';
+        }
 
-            if(empty($error))
-            {
-                $userModel = new UserModel($conn);
+        if (empty($this->error)) {
+            $userModel = new UserModel($conn);
 
-                if($userModel->loginUser($email,$password)==0)
-                {
-                    $error='Account not found or password incorrect.';
-                }
-                else
-                {
-                    $success='Login succesful!';
-                    $jwt=new BaseController;
-                    $token=$jwt->generateJWT($email);
-                    setcookie('jwt', $token, time() + 3600, '/', '', false, true);
-                    
-                }
+            if ($userModel->loginUser($email, $password) == 0) {
+                $this->error = 'Account not found or password incorrect.';
+            } else {
+                $this->success = 'Login successful!';
+                $jwt = new BaseController();
+                $token = $jwt->generateJWT($email);
+
+                setcookie('jwt', $token, time() + 3600, '/', '', false, true);
+
+                header('Location: /ShelfControl/home');
+                exit;
             }
         }
 
         $data = [
             'heading' => 'Login',
-            'message' => !empty($error) ? "<span style='color: red;'>{$error}</span>" : (!empty($success) ? "<span style='color: green;'>{$success}</span>" : ''),
+            'message' => !empty($this->error) ? "<span style='color: red;'>{$this->error}</span>" : '',
         ];
-    
-        $view = new BaseView();
-        $view->renderTemplate('login',$data);
 
+        $this->view->renderTemplate('login', $data);
     }
 
+    public function loginGet()
+    {
+        if (isset($_COOKIE['jwt'])) {
+            $baseController = new BaseController();
+            $decoded = $baseController->validateJWT($_COOKIE['jwt']);
 
-    
+            if ($decoded) {
+                header('Location: /ShelfControl/home');
+                exit;
+            }
+        }
+
+        $data = [
+            'heading' => 'Login',
+            'message' => '',
+        ];
+
+        $this->view->renderTemplate('login', $data);
+    }
+
+    public function logout()
+    {
+     
+        setcookie('jwt', '', time() - 3600, '/');
+
+        header('Location: /ShelfControl/');
+        exit;
+    }
 }
