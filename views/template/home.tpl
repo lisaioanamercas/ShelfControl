@@ -20,8 +20,10 @@
     </li>
    </ul>
 
-   <h2>Books from Google Books API</h2>
-   <div id="book-list"></div> <!-- This will hold the list of books -->
+   <div id="script-container">
+       <h2>Explore</h2>
+       <div id="book-list"></div> <!-- This will hold the list of books -->
+   </div>
    <script src="/ShelfControl/views/scripts/home.js"></script>
-  </body>
+</body>
 </html>

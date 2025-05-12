@@ -34,3 +34,36 @@ li a:hover {
     padding: 20px 16px;
 
 }
+h2{
+    text-align: center;
+    color: #000000;
+}
+script{
+    
+    text-align: center;
+
+    color: #000000;
+}
+
+#script-container {
+    display: flex; /* Activează flexbox */
+    flex-direction: column; 
+    justify-content: center;
+    align-items: center; 
+    min-height: 100vh; 
+    text-align: center;
+}
+
+#book-list {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap; 
+    gap: 20px; 
+    justify-content: center; /* Centrează cărțile pe orizontală */
+    margin-top: 20px;
+}
+
+.book-item {
+    max-width: 200px; /* Dimensiunea maximă a fiecărei cărți */
+    text-align: center;
+}

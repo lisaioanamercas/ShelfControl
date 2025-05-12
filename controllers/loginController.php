@@ -12,11 +12,15 @@ class LoginController
     private $success;
     private $view;
 
+    private $jwt;
+
     public function __construct()
     {
         $this->error = '';
         $this->success = '';
         $this->view = new BaseView();
+        $this->jwt = new BaseController();
+
     }
 
     public function loginPost()
@@ -37,8 +41,7 @@ class LoginController
                 $this->error = 'Account not found or password incorrect.';
             } else {
                 $this->success = 'Login successful!';
-                $jwt = new BaseController();
-                $token = $jwt->generateJWT($email);
+                $token = $this->jwt->generateJWT($email);
 
                 setcookie('jwt', $token, time() + 3600, '/', '', false, true);
 
@@ -57,14 +60,9 @@ class LoginController
 
     public function loginGet()
     {
-        if (isset($_COOKIE['jwt'])) {
-            $baseController = new BaseController();
-            $decoded = $baseController->validateJWT($_COOKIE['jwt']);
-
-            if ($decoded) {
-                header('Location: /ShelfControl/home');
-                exit;
-            }
+        if($this->jwt->verifyLogin()){
+            header('Location: /ShelfControl/home');
+            exit;
         }
 
         $data = [

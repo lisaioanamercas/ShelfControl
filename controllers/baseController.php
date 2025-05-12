@@ -36,4 +36,17 @@ class BaseController {
             return null; 
         }
     }
+
+    public function verifyLogin() {
+        
+        if (isset($_COOKIE['jwt'])) {
+            $decoded = $this->validateJWT($_COOKIE['jwt']);
+            if ($decoded) {
+                return true; 
+            }
+        }
+        return false; 
+        
+    }
+
 }
