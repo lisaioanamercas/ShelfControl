@@ -6,7 +6,9 @@ class BookController{
     public function bookGet(){
 
 
-        if (isset($_GET['id'])) {
+        
+
+          if (isset($_GET['id'])) {
             $bookId = $_GET['id'];
             $apiUrl = "https://www.googleapis.com/books/v1/volumes/" . $bookId;
 

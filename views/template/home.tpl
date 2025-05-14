@@ -1,29 +1,34 @@
 <!DOCTYPE html>
-<html lang="ro">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Welcome</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/ShelfControl/views/css/home.css">
+  <link rel="stylesheet" href="views/css/home.css"> <!-- Conectează home.css -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
-   <ul>
-   <li><a href="/ShelfControl/home">Home</a></li>
-   <li><a href="/ShelfControl/home">Your books</a></li>
-   <li><a href="/ShelfControl/home">About us</a></li>
-   <li><a  href="/ShelfControl/logout">Account</a></li>
-   <li>
-        <form class="search-form" action="/ShelfControl/search" method="GET">
-            <input type="search" id="site-search" name="q" placeholder="Search..." />
-            <button type="submit">Search</button>
-        </form>
-    </li>
-   </ul>
 
-   <div id="script-container">
-       <h2>Explore</h2>
-       <div id="book-list"></div> <!-- This will hold the list of books -->
-   </div>
-   <script src="/ShelfControl/views/scripts/home.js"></script>
+<div class="topnav">
+  <a href="logo.png"><img src="views/resources/logo6.svg" alt="Logo" width="40" height="40"></a></li>
+  <a href="#home">Home</a>
+  <a href="#about">About</a>
+  <a href="#news">Account</a>
+  <div class="search-container">
+    <form action="/action_page.php">
+      <input type="text" placeholder="Search.." name="search">
+      <button type="submit"><i class="fa fa-search"></i></button>
+    </form>
+  </div>
+</div>
+  <div class="dropdown">
+    <button onclick="myFunction()" class="dropbtn">Filter</button>
+    <div id="myDropdown" class="dropdown-content">
+      <a href="#">Author</a>
+      <a href="#">Publisher</a>
+      <a href="#">Genre</a>
+    </div>
+    </div>
+ <div id="book-list"></div>
+
+<!-- Conectează home.js -->
+<script src="views/scripts/home.js"></script>
 </body>
 </html>

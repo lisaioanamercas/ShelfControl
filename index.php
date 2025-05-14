@@ -70,7 +70,7 @@ elseif ($request == '/home') {
 } 
 elseif (strstr($request,'/book-details')) {
 
-    $bookController->bookGet();
+    $bookController->test();
  
 
 }
