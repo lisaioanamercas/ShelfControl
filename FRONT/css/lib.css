@@ -1,0 +1,211 @@
+/* Updated Library Styles */
+
+/* Center title and book container */
+.library-header__title {
+    font-size: var(--h1-font-size);
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.library-header__description {
+    text-align: center;
+    margin-bottom: 2rem;
+    max-width: 700px;
+    margin-inline: auto;
+}
+
+/* Center the book container */
+.book-library__container {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 2rem;
+    max-width: 90%;
+    margin: 0 auto;
+    justify-content: center;
+}
+
+.library-filter {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.library-filter__btn {
+    background-color: var(--container-color);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    font-weight: var(--font-medium);
+    cursor: pointer;
+    transition: background-color .3s, color .3s;
+}
+
+.library-filter__btn:hover,
+.library-filter__btn.active {
+    background-color: var(--first-color);
+    color: var(--white-color);
+}
+
+
+/* Make book cards smaller */
+.book-card {
+    background-color: var(--container-color);
+    border-radius: 1rem;
+    box-shadow: 0 4px 16px hsla(230, 70%, 20%, .1);
+    overflow: hidden;
+    transition: transform .3s, margin .3s, box-shadow .3s;
+    display: flex;
+    flex-direction: column;
+    max-width: 220px;
+    margin: 0 auto;
+    min-height: 100%;
+}
+
+.book-card:hover {
+    transform: translateY(-8px);
+    margin: 0 5px;
+    box-shadow: 0 8px 24px hsla(230, 70%, 20%, .15);
+}
+
+/* Adjust book cover size to see full cover */
+.book-card__cover {
+    position: relative;
+    height: 280px;
+    overflow: hidden;
+}
+
+.book-card__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform .3s;
+}
+
+.book-card:hover .book-card__img {
+    transform: scale(1.05);
+}
+
+/* Adjust data section padding */
+.book-card__data {
+    padding: 1rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+/* Make title slightly smaller */
+.book-card__title {
+    font-size: calc(var(--h3-font-size) - 0.1rem);
+    color: var(--title-color);
+    margin-bottom: 0.25rem;
+    text-align: center;
+}
+
+/* Center the author name */
+.book-card__author {
+    font-size: var(--normal-font-size);
+    color: var(--text-color);
+    font-weight: var(--font-medium);
+    text-align: center;
+}
+
+/* Center the edition text */
+.book-card__edition {
+    font-size: var(--small-font-size);
+    color: var(--text-color);
+    margin-bottom: 0.5rem;
+    text-align: center;
+}
+
+/* Center rating */
+.book-card__rating {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem;
+    margin-top: auto;
+}
+
+.book-card__rating i {
+    color: #FFD700;
+    font-size: var(--normal-font-size);
+}
+
+.book-card__rating span {
+    margin-left: 0.5rem;
+    font-weight: var(--font-medium);
+    color: var(--title-color);
+}
+
+/* Center buttons */
+.book-card__actions {
+    display: flex;
+    padding: 0 1.5rem 1.5rem;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.book-card__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    background-color: var(--white-color);
+    color: var(--title-color);
+    cursor: pointer;
+    transition: background-color .3s, color .3s;
+    border: 1px solid var(--border-color);
+}
+
+.book-card__btn:hover {
+    background-color: var(--first-color);
+    color: var(--white-color);
+}
+
+/* Footer styles for library page */
+.footer {
+    padding: 3rem 0 2rem;
+    background-color: var(--container-color);
+    margin-top: 3rem;
+}
+
+.footer__copy {
+    text-align: center;
+    font-size: var(--small-font-size);
+    color: var(--text-color);
+}
+
+
+/* Responsive adjustments */
+@media screen and (max-width: 768px) {
+    .book-library__container {
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    }
+    
+    .book-card {
+        max-width: 180px;
+    }
+    
+    .book-card__cover {
+        height: 240px;
+    }
+}
+
+@media screen and (max-width: 576px) {
+    .book-library__container {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    }
+    
+    .book-card {
+        max-width: 160px;
+    }
+    
+    .book-card__cover {
+        height: 200px;
+    }
+}
