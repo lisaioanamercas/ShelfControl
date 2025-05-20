@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <!-- ==================== LOGO ============================== -->
+        <link rel="shortcut icon" href="assets/img/favicon.png"  type="image/png">
+
+        <!-- ====================ICONITE (remixincon) =========================== -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.css">
+
+        <!-- ==================== CSS =========================== -->
+        <link rel="stylesheet" href="/ShelfControl/views/css/style.css">
+
+        <title>ShelfControl</title>
+    </head>
+    <body>
+        <!-- =========================== HEADER ============================== -->
+         <header class="header shadow-header" id="header">
+            <nav class="nav container">
+                <a href="#" class="nav__logo">
+                    <i class="ri-book-open-fill"></i> ShelfControl
+                </a>
+
+                <div class="nav__menu">
+                    <ul class="nav__list">
+                        <li class="nav__item">
+                            <a href="#home" class="nav__link">
+                                <i class="ri-home-2-line"></i> 
+                                <span> Home </span>
+                            </a>
+                        </li>
+                        <!-- ======================================================= item delimit ==================================== -->
+                        <li class="nav__item">
+                            <a href="#toRead" class="nav__link">
+                                <i class="ri-bookmark-line"></i>
+                                <span> toRead </span>
+                            </a>
+                        </li>
+
+                        <!-- ======================================================= item delimit ==================================== -->
+
+                        <li class="nav__item">
+                            <a href="#new" class="nav__link">
+                                <i class="ri-book-line"></i>
+                                <span>Library</span>
+                            </a>
+                        </li>
+
+                        <!-- ======================================================= item delimit ==================================== -->
+
+                        <li class="nav__item">
+                            <a href="#review" class="nav__link">
+                                <i class="ri-chat-smile-3-line"></i>
+                                <span>News</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="nav__actions">
+                    <!-- Search button -->
+                     <i class="ri-search-line search-button " id="search-button"></i>
+
+                    <!-- User profile -->
+                     <i class="ri-user-line profile-button" id = "profile-button"></i>
+
+                     <!-- Theme button -->
+                      <i class="ri-moon-line  change-teheme" id="theme-button"></i>
+                </div>
+            </nav>
+         </header>
+
+         <!-- ========================== SEARCH =============================== -->
+          <div class="search" id="search-content">
+            <form action="" class="search__form">
+                <i class="ri-search-line search__icon"></i>
+                <input type="search" placeholder="Ce carte doresti sa cauti?" class="search__input">
+            </form>
+
+            <i class="ri-close-line search__close" id="search-close"></i>
+          </div>
+          <!-- ========================== PROFILE  tralalero tralala ============================== -->
+           <div class="profile grid" id="profile-content">
+                <form action="" class="profile__form">
+                    <h3 class="profile__title"> Profile </h3>
+
+                    <div class="profile__group grid">
+                        <!-- <div>
+                            <label for="profile-username" class="profile__label">username</label>
+                            <input type="username" id="profile-username" class="profile__info">
+                        </div> -->
+                        <!-- pe asta de sus nu stiu de ce trebuie sa o tin aici dar altfel nu imi apare deloc username daca o sterg? -->
+
+                        <div>
+                            <label for="profile-username" class="profile__label">username</label>
+                            <input type="username" id="profile-username" class="profile__info">
+                        </div>
+
+                        <div>
+                            <label for="profile-email" class="profile__label">email</label>
+                            <input type="email" id="profile-email" class="profile__info">
+                        </div>
+                    </div>
+                </form>
+
+                <i class="ri-close-line profile__close" id="profile-close"></i>
+           </div>
+
+        <!-- ========================== MAIN ============================== -->
+         <main class="main">
+            <!-- =================== HOME ================================= -->
+             <section class="home section" id="home">
+                <div class="home__container container grid">
+                    <div class="home__data">
+                        <h1 class="home__title">
+                            Welcome to <br>
+                            ShelfControl
+                        </h1>
+
+                        <p class="home__description">
+                            Your all-in-one website for library management. Both local and nationwide.
+                        </p>
+
+                        <a href="/ShelfControl/explore" class="button">Explore</a>
+                    </div>
+                    
+                    <!-- Current reading container -->
+                    <div class="current-reads__container">
+                    <h3 class="current-reads__title">Current Reads (3)</h3>
+                    <div class="current-reads__books">
+                        <!-- Book Item 1 -->
+                        <div class="current-reads__item">
+                            <div class="current-reads__cover">
+                                <img src="/assets/img/book-11.jpg" alt="First Love and Other Stories" class="current-reads__img">
+                            </div>
+                            <div class="current-reads__info">
+                                <h4 class="current-reads__book-title">First Love and Other Stories</h4>
+                                <p class="current-reads__author">Ivan Turgenev</p>
+                                <div class="current-reads__progress">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 28%"></div>
+                                    </div>
+                                    <span class="progress-text">28%</span>
+                                    <button class="edit-progress-btn" aria-label="Edit reading progress">
+                                        <i class="ri-pencil-line"></i>
+                                    </button>
+                                    <div class="progress-editor" id="editor-0">
+                                        <div class="page-input-container">
+                                            <input type="number" class="page-input" value="84" min="0" max="300">
+                                            <span class="page-separator">of</span>
+                                            <span class="total-pages">300</span>
+                                        </div>
+                                        <div class="editor-actions">
+                                            <button class="save-btn">Save</button>
+                                            <button class="finish-btn">Mark as finished</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Book Item 2 -->
+                        <div class="current-reads__item">
+                            <div class="current-reads__cover">
+                                <img src="/assets/img/book-12.jpg" alt="The Remains of the Day" class="current-reads__img">
+                            </div>
+                            <div class="current-reads__info">
+                                <h4 class="current-reads__book-title">The Remains of the Day</h4>
+                                <p class="current-reads__author">Kazuo Ishiguro</p>
+                                <div class="current-reads__progress">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 94%"></div>
+                                    </div>
+                                    <span class="progress-text">94%</span>
+                                    <button class="edit-progress-btn" aria-label="Edit reading progress">
+                                        <i class="ri-pencil-line"></i>
+                                    </button>
+                                    <div class="progress-editor" id="editor-1">
+                                        <div class="page-input-container">
+                                            <input type="number" class="page-input" value="240" min="0" max="256">
+                                            <span class="page-separator">of</span>
+                                            <span class="total-pages">256</span>
+                                        </div>
+                                        <div class="editor-actions">
+                                            <button class="save-btn">Save</button>
+                                            <button class="finish-btn">Mark as finished</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Book Item 3 -->
+                        <div class="current-reads__item">
+                            <div class="current-reads__cover">
+                                <img src="/assets/img/book-13.jpg" alt="Religion: Vintage Minis" class="current-reads__img">
+                            </div>
+                            <div class="current-reads__info">
+                                <h4 class="current-reads__book-title">Religion: Vintage Minis</h4>
+                                <p class="current-reads__author">Karen Armstrong</p>
+                                <div class="current-reads__progress">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 23%"></div>
+                                    </div>
+                                    <span class="progress-text">23%</span>
+                                    <button class="edit-progress-btn" aria-label="Edit reading progress">
+                                        <i class="ri-pencil-line"></i>
+                                    </button>
+                                    <div class="progress-editor" id="editor-2">
+                                        <div class="page-input-container">
+                                            <input type="number" class="page-input" value="29" min="0" max="128">
+                                            <span class="page-separator">of</span>
+                                            <span class="total-pages">128</span>
+                                        </div>
+                                        <div class="editor-actions">
+                                            <button class="save-btn">Save</button>
+                                            <button class="finish-btn">Mark as finished</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+             </section>
+
+             <!-- ==================SERVICII =============================== -->
+        <!-- To Read Pile section -->
+        <section class="book-section section" id="toRead">
+            <div class="container">
+                <div class="book-section__header">
+                    <h2 class="book-section__title">To-Read Pile</h2>
+                    <a href="#" class="book-section__link">
+                        <i class="ri-arrow-right-line"></i>
+                    </a>
+                </div>
+                
+                <div class="book-section__content">
+                    <div class="book-grid">
+                        <!-- Book 1 -->
+                        <div class="book-item">
+                            <img src="assets/img/book-8.png" alt="Book cover" class="book-item__img">
+                        </div>
+                        
+                        <!-- Book 2 -->
+                        <div class="book-item">
+                            <img src="assets/img/book-9.png" alt="Book cover" class="book-item__img">
+                        </div>
+                        
+                        <!-- Book 3 -->
+                        <div class="book-item">
+                            <img src="assets/img/book-10.png" alt="Book cover" class="book-item__img">
+                        </div>
+                        
+                        <!-- Book 4 -->
+                        <div class="book-item">
+                            <img src="assets/img/book-11.jpg" alt="Book cover" class="book-item__img">
+                        </div>
+                        
+                        <!-- Book 5 -->
+                        <div class="book-item">
+                            <img src="assets/img/book-12.jpg" alt="Book cover" class="book-item__img">
+                        </div>
+                        
+                        <!-- Book 6 -->
+                        <div class="book-item">
+                            <img src="assets/img/book-13.jpg" alt="Book cover" class="book-item__img">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Owned Books section -->
+        <section class="book-section section" id="owned">
+            <div class="container">
+                <div class="book-section__header">
+                    <h2 class="book-section__title">Owned Books</h2>
+                    <a href="#" class="book-section__link">
+                        <i class="ri-arrow-right-line"></i>
+                    </a>
+                </div>
+                
+                <div class="book-section__content">
+                    <div class="book-grid">
+                        <!-- Book 1 -->
+                        <div class="book-item">
+                            <img src="assets/img/book-1.png" alt="Book cover" class="book-item__img">
+                        </div>
+                        
+                        <!-- Book 2 -->
+                        <div class="book-item">
+                            <img src="assets/img/book-2.png" alt="Book cover" class="book-item__img">
+                        </div>
+                        
+                        <!-- Book 3 -->
+                        <div class="book-item">
+                            <img src="assets/img/book-3.png" alt="Book cover" class="book-item__img">
+                        </div>
+                        
+                        <!-- Book 4 -->
+                        <div class="book-item">
+                            <img src="assets/img/book-5.png" alt="Book cover" class="book-item__img">
+                        </div>
+                        
+                        <!-- Book 5 -->
+                        <div class="book-item">
+                            <img src="assets/img/book-6.png" alt="Book cover" class="book-item__img">
+                        </div>
+                        
+                        <!-- Book 6 -->
+                        <div class="book-item">
+                            <img src="assets/img/book-7.png" alt="Book cover" class="book-item__img">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+         </main>         
+         <!-- ==================== JAVASCRIPT =========================== -->
+            <script src="/ShelfControl/views/scripts/home.js"></script>
+    </body>
+</html>

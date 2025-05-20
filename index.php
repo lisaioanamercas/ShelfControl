@@ -4,6 +4,7 @@ use App\Controllers\LandingController;
 use App\Controllers\RegisterController;
 use App\Controllers\ExploreController;
 use App\Controllers\BookController;
+use App\Controllers\HomeController;
 use App\Controllers\SaveBookController;
 
 
@@ -20,6 +21,7 @@ $loginController = new LoginController();
 $exploreController = new ExploreController();
 $landingController = new LandingController();
 $bookController = new BookController();
+$homeController = new HomeController();
 //$saveBookController = new SaveBookController();
 $request = $_SERVER['REQUEST_URI'];
 $request = str_replace('/ShelfControl', '', $_SERVER['REQUEST_URI']);
@@ -53,6 +55,18 @@ if ($request == '/') {
     }
 
 } 
+elseif ($request == '/home') {
+
+    if($_SERVER['REQUEST_METHOD']=='POST')
+    {
+       $homeController->homePost();
+    }
+    else
+    {
+      $homeController->homeGet();
+    }
+
+}
 elseif($request=='/logout')
 {
     $loginController->logout();
