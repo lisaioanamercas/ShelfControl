@@ -127,55 +127,96 @@
                     
                     <!-- Current reading container -->
                     <div class="current-reads__container">
-                        <h3 class="current-reads__title">Current Reads (3)</h3>
-                        <div class="current-reads__books">
-                            <!-- Book Item 1 -->
-                            <div class="current-reads__item">
-                                <div class="current-reads__cover">
-                                    <img src="assets/img/home-book-1.jpg" alt="Book cover" class="current-reads__img">
-                                </div>
-                                <div class="current-reads__info">
-                                    <h4 class="current-reads__book-title">First Love and Other Stories</h4>
-                                    <p class="current-reads__author">Ivan Turgenev</p>
-                                    <div class="current-reads__progress">
-                                        <div class="progress-bar">
-                                            <div class="progress-fill" style="width: 28%"></div>
+                    <h3 class="current-reads__title">Current Reads (3)</h3>
+                    <div class="current-reads__books">
+                        <!-- Book Item 1 -->
+                        <div class="current-reads__item">
+                            <div class="current-reads__cover">
+                                <img src="/assets/img/book-11.jpg" alt="First Love and Other Stories" class="current-reads__img">
+                            </div>
+                            <div class="current-reads__info">
+                                <h4 class="current-reads__book-title">First Love and Other Stories</h4>
+                                <p class="current-reads__author">Ivan Turgenev</p>
+                                <div class="current-reads__progress">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 28%"></div>
+                                    </div>
+                                    <span class="progress-text">28%</span>
+                                    <button class="edit-progress-btn" aria-label="Edit reading progress">
+                                        <i class="ri-pencil-line"></i>
+                                    </button>
+                                    <div class="progress-editor" id="editor-0">
+                                        <div class="page-input-container">
+                                            <input type="number" class="page-input" value="84" min="0" max="300">
+                                            <span class="page-separator">of</span>
+                                            <span class="total-pages">300</span>
                                         </div>
-                                        <span class="progress-text">28%</span>
+                                        <div class="editor-actions">
+                                            <button class="save-btn">Save</button>
+                                            <button class="finish-btn">Mark as finished</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+                        </div>
 
-                            <!-- Book Item 2 -->
-                            <div class="current-reads__item">
-                                <div class="current-reads__cover">
-                                    <img src="assets/img/home-book-2.jpg" alt="Book cover" class="current-reads__img">
-                                </div>
-                                <div class="current-reads__info">
-                                    <h4 class="current-reads__book-title">The Remains of the Day</h4>
-                                    <p class="current-reads__author">Kazuo Ishiguro</p>
-                                    <div class="current-reads__progress">
-                                        <div class="progress-bar">
-                                            <div class="progress-fill" style="width: 94%"></div>
+                        <!-- Book Item 2 -->
+                        <div class="current-reads__item">
+                            <div class="current-reads__cover">
+                                <img src="/assets/img/book-12.jpg" alt="The Remains of the Day" class="current-reads__img">
+                            </div>
+                            <div class="current-reads__info">
+                                <h4 class="current-reads__book-title">The Remains of the Day</h4>
+                                <p class="current-reads__author">Kazuo Ishiguro</p>
+                                <div class="current-reads__progress">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 94%"></div>
+                                    </div>
+                                    <span class="progress-text">94%</span>
+                                    <button class="edit-progress-btn" aria-label="Edit reading progress">
+                                        <i class="ri-pencil-line"></i>
+                                    </button>
+                                    <div class="progress-editor" id="editor-1">
+                                        <div class="page-input-container">
+                                            <input type="number" class="page-input" value="240" min="0" max="256">
+                                            <span class="page-separator">of</span>
+                                            <span class="total-pages">256</span>
                                         </div>
-                                        <span class="progress-text">94%</span>
+                                        <div class="editor-actions">
+                                            <button class="save-btn">Save</button>
+                                            <button class="finish-btn">Mark as finished</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+                        </div>
 
-                            <!-- Book Item 3 -->
-                            <div class="current-reads__item">
-                                <div class="current-reads__cover">
-                                    <img src="assets/img/home-book-3.jpg" alt="Book cover" class="current-reads__img">
-                                </div>
-                                <div class="current-reads__info">
-                                    <h4 class="current-reads__book-title">Religion: Vintage Minis</h4>
-                                    <p class="current-reads__author">Karen Armstrong</p>
-                                    <div class="current-reads__progress">
-                                        <div class="progress-bar">
-                                            <div class="progress-fill" style="width: 23%"></div>
+                        <!-- Book Item 3 -->
+                        <div class="current-reads__item">
+                            <div class="current-reads__cover">
+                                <img src="/assets/img/book-13.jpg" alt="Religion: Vintage Minis" class="current-reads__img">
+                            </div>
+                            <div class="current-reads__info">
+                                <h4 class="current-reads__book-title">Religion: Vintage Minis</h4>
+                                <p class="current-reads__author">Karen Armstrong</p>
+                                <div class="current-reads__progress">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 23%"></div>
+                                    </div>
+                                    <span class="progress-text">23%</span>
+                                    <button class="edit-progress-btn" aria-label="Edit reading progress">
+                                        <i class="ri-pencil-line"></i>
+                                    </button>
+                                    <div class="progress-editor" id="editor-2">
+                                        <div class="page-input-container">
+                                            <input type="number" class="page-input" value="29" min="0" max="128">
+                                            <span class="page-separator">of</span>
+                                            <span class="total-pages">128</span>
                                         </div>
-                                        <span class="progress-text">23%</span>
+                                        <div class="editor-actions">
+                                            <button class="save-btn">Save</button>
+                                            <button class="finish-btn">Mark as finished</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

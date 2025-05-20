@@ -17,12 +17,13 @@
     --progress-color: hsl(120, 100%, 31%);
 
     /* Dark theme colors */
-    --dark-background: #1a1a1a;
-    --dark-card-color: #2a2a2a;
+    --dark-background: #121212;
+    --dark-card-color: #1e1e1e;
     --dark-text-color: #e0e0e0;
-    --dark-border-color: #3a3a3a;
-    --dark-highlight: #4ecdc4;
-    --dark-secondary: #444444;
+    --dark-title-color: #f5f5f5;
+    --dark-border-color: #333333;
+    --dark-container-color: #252525;
+    --dark-first-color: hsl(0, 85%, 50%);
 
     /* Font si tipografie */
     --body-font: "Montserrat", sans-serif;
@@ -116,6 +117,163 @@ img{
 /* ============
     se schimba culoarea doar in unele parti ale website ului la dark theme
    ============*/
+   /* Dark theme class stylings */
+.dark-theme {
+    background-color: var(--dark-background);
+    color: var(--dark-text-color);
+}
+
+/* Header and navigation in dark theme */
+.dark-theme .header {
+    background-color: var(--dark-background);
+}
+
+.dark-theme .shadow-header {
+    box-shadow: 0 2px 16px hsla(0, 0%, 0%, .3);
+}
+
+.dark-theme .nav__logo {
+    color: var(--dark-first-color);
+}
+
+.dark-theme .nav__link {
+    color: var(--dark-text-color);
+}
+
+.dark-theme .nav__link:hover {
+    color: var(--dark-first-color);
+}
+
+.dark-theme .nav__actions i {
+    color: var(--dark-title-color);
+}
+
+.dark-theme .nav__actions i:hover {
+    color: var(--dark-first-color);
+}
+
+.dark-theme .nav__menu {
+    background-color: var(--dark-card-color);
+    box-shadow: 0 -8px 32px hsla(0, 0%, 0%, .3);
+}
+
+/* Search in dark theme */
+.dark-theme .search {
+    background-color: hsla(0, 0%, 7%, .6);
+}
+
+.dark-theme .search__form {
+    background-color: var(--dark-card-color);
+    border-color: var(--dark-border-color);
+}
+
+.dark-theme .search__icon {
+    color: var(--dark-title-color);
+}
+
+.dark-theme .search__input {
+    background-color: var(--dark-card-color);
+    color: var(--dark-text-color);
+}
+
+.dark-theme .search__close {
+    color: var(--dark-title-color);
+}
+
+/* Profile in dark theme */
+.dark-theme .profile {
+    background-color: hsla(0, 0%, 7%, .6);
+}
+
+.dark-theme .profile__form {
+    background-color: var(--dark-card-color);
+    border-color: var(--dark-border-color);
+}
+
+.dark-theme .profile__title {
+    color: var(--dark-title-color);
+}
+
+.dark-theme .profile__label {
+    color: var(--dark-title-color);
+}
+
+.dark-theme .profile__info {
+    background-color: var(--dark-card-color);
+    border-color: var(--dark-border-color);
+    color: var(--dark-text-color);
+}
+
+.dark-theme .profile__close {
+    color: var(--dark-title-color);
+}
+
+/* Home section in dark theme */
+.dark-theme h1, 
+.dark-theme h2, 
+.dark-theme h3, 
+.dark-theme h4 {
+    color: var(--dark-title-color);
+}
+
+.dark-theme .home__title {
+    color: var(--dark-title-color);
+}
+
+.dark-theme .button {
+    background-color: var(--dark-first-color);
+}
+
+/* Current reads in dark theme */
+.dark-theme .current-reads__container {
+    background-color: var(--dark-card-color);
+    box-shadow: 0 4px 16px hsla(0, 0%, 0%, .3);
+}
+
+.dark-theme .current-reads__book-title {
+    color: var(--dark-title-color);
+}
+
+.dark-theme .progress-bar {
+    background-color: var(--dark-border-color);
+}
+
+/* Progress editor in dark theme */
+.dark-theme .progress-editor {
+    background-color: var(--dark-card-color);
+    border-color: var(--dark-border-color);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.dark-theme .page-input {
+    background-color: var(--dark-background);
+    border-color: var(--dark-border-color);
+    color: var(--dark-text-color);
+}
+
+/* Book sections in dark theme */
+.dark-theme .book-section__header {
+    border-bottom-color: var(--dark-border-color);
+}
+
+.dark-theme .book-section__title {
+    color: var(--dark-title-color);
+}
+
+.dark-theme .book-section__link {
+    background-color: var(--dark-card-color);
+    color: var(--dark-text-color);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.dark-theme .book-section__link:hover {
+    background-color: var(--dark-first-color);
+    color: var(--white-color);
+}
+
+.dark-theme .book-item__img {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
 
 /* reusable css classes */
 .container{
@@ -660,5 +818,139 @@ img{
     
     .book-item__img {
         height: 220px;
+    }
+}
+
+
+/* =========================== PROGRESS ====================================== */
+/* Progress Edit Feature Styles */
+.current-reads__progress {
+    position: relative;
+}
+
+.edit-progress-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    margin-left: 4px;
+    color: var(--text-color);
+    transition: color 0.2s ease;
+}
+
+.edit-progress-btn:hover {
+    color: var(--first-color);
+}
+
+.edit-progress-btn i {
+    font-size: 14px;
+}
+
+.progress-editor {
+    position: absolute;
+    top: 30px;
+    right: 0;
+    width: 200px;
+    background-color: var(--white-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 12px;
+    z-index: 100;
+    display: none;
+}
+
+.progress-editor.active {
+    display: block;
+}
+
+.page-input-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.page-input {
+    width: 50px;
+    padding: 4px 8px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    font-size: var(--smaller-font-size);
+    text-align: center;
+}
+
+.page-separator {
+    margin: 0 4px;
+    color: var(--text-color);
+}
+
+.total-pages {
+    color: var(--text-color);
+    font-size: var(--smaller-font-size);
+}
+
+.editor-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.save-btn {
+    background-color: var(--first-color);
+    color: var(--white-color);
+    border: none;
+    border-radius: 4px;
+    padding: 6px 8px;
+    font-size: var(--smaller-font-size);
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.save-btn:hover {
+    background-color: hsl(0, 85%, 40%);
+}
+
+.finish-btn {
+    background-color: transparent;
+    color: var(--text-color);
+    border: none;
+    text-align: center;
+    font-size: var(--smaller-font-size);
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.finish-btn:hover {
+    color: var(--first-color);
+}
+
+/* Dark theme styles */
+.dark-theme .progress-editor {
+    background-color: var(--dark-card-color);
+    border-color: var(--dark-border-color);
+}
+
+.dark-theme .page-input {
+    background-color: var(--dark-secondary);
+    border-color: var(--dark-border-color);
+    color: var(--dark-text-color);
+}
+
+.dark-theme .finish-btn {
+    color: var(--dark-text-color);
+}
+
+.dark-theme .finish-btn:hover {
+    color: var(--dark-highlight);
+}
+
+/* Mobile responsiveness */
+@media screen and (max-width: 576px) {
+    .progress-editor {
+        width: 160px;
     }
 }
