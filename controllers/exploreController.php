@@ -2,10 +2,10 @@
 namespace App\Controllers;
 use App\Views\BaseView;
 
-class HomeController{
+class ExploreController{
 
 
-    public function homeGet(){
+    public function exploreGet(){
 
         $jwt = new BaseController();
         $isLoggedIn = $jwt->verifyLogin();
@@ -16,6 +16,6 @@ class HomeController{
 
         $view= new BaseView();
         $data =[];
-        $view->renderTemplate('home',$data);
+        $view->renderTemplate('explore',$data);
     }
 }

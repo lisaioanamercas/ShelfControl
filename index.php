@@ -2,7 +2,7 @@
 use App\Controllers\LoginController;
 use App\Controllers\LandingController;
 use App\Controllers\RegisterController;
-use App\Controllers\HomeController;
+use App\Controllers\ExploreController;
 use App\Controllers\BookController;
 use App\Controllers\SaveBookController;
 
@@ -17,7 +17,7 @@ $dotenv->load();
 
 $registerController = new RegisterController();
 $loginController = new LoginController();
-$homeController = new HomeController();
+$exploreController = new ExploreController();
 $landingController = new LandingController();
 $bookController = new BookController();
 //$saveBookController = new SaveBookController();
@@ -57,15 +57,15 @@ elseif($request=='/logout')
 {
     $loginController->logout();
 }
-elseif (strstr($request,'/home')) {
+elseif (strstr($request,'/explore')) {
 
   if($_SERVER['REQUEST_METHOD']=='POST')
     {
-       $save->homePost();
+       $save->explorePost();
     }
     else
     {
-      $homeController->HomeGet();
+      $exploreController->exploreGet();
     }
 
 } 
