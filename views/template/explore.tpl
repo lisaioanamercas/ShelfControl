@@ -28,7 +28,7 @@
                 <div class="nav__menu">
                     <ul class="nav__list">
                         <li class="nav__item">
-                            <a href="index.html" class="nav__link">
+                            <a href="ShelfControl/home" class="nav__link">
                                 <i class="ri-home-2-line"></i> 
                                 <span> Home </span>
                             </a>
