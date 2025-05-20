@@ -1,52 +1,57 @@
+document.addEventListener("DOMContentLoaded", function () {
+    const container = document.getElementById("books-container");
+    const params = new URLSearchParams(window.location.search);
+    const query = params.get("query") || "love,peace,war,comedy"; // valoare implicită dacă nu e în URL
 
-    async function fetchBooks(query ="*") {
-        const apiUrl = `https://www.googleapis.com/books/v1/volumes?q=${query}&maxResults=30`;
-        try {
-            const response = await fetch(apiUrl);
-            const data = await response.json();
-            
-            const bookList = document.getElementById('book-list');
-            bookList.innerHTML = ''; 
-           
+    fetch(`https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&maxResults=30`)
+        .then(response => response.json())
+        .then(data => {
+            container.innerHTML = ""; // Golește containerul
             if (data.items) {
                 data.items.forEach(book => {
-                    const bookItem = document.createElement('div');
-                    bookItem.classList.add('book-item');
-                    bookItem.innerHTML = `
+                    const info = book.volumeInfo;
+                    container.innerHTML += `
                         <div class="book-card">
-                            <div class="book-cover">
-                                <img src="${book.volumeInfo.imageLinks ? book.volumeInfo.imageLinks.thumbnail : 'https://via.placeholder.com/150'}" width="100" height="100" alt="Coperta cărții">
+                            <div class="book-card__cover">
+                                <img src="${info.imageLinks?.thumbnail || 'assets/img/default-book.png'}" alt="Book cover" class="book-card__img">
                             </div>
-                            <div class="book-info">
-                                <h2 class="book-title"><a href="book-details.html?id=${book.id}">${book.volumeInfo.title}</a></h2>
-                                <p class="book-pages">${book.volumeInfo.pageCount ? `Pages: ${book.volumeInfo.pageCount}` : 'Page count unavailable'}</p>
-                                <p class="book-author">${book.volumeInfo.authors ? book.volumeInfo.authors.join(', ') : 'Unknown author'}</p>
+                            <div class="book-card__data">
+                                <h3 class="book-card__title">${info.title || "No title"}</h3>
+                                <p class="book-card__author">${info.authors ? info.authors.join(", ") : "Unknown author"}</p>
+                                <p class="book-card__edition">${info.publishedDate || ""}</p>
+                                <div class="book-card__rating">
+                                    <span>${info.averageRating ? info.averageRating + "★" : "No rating"}</span>
+                                </div>
                             </div>
-                            <div class="book-actions">
-                                <button class="add-to-favorite">to read</button>
-                                <button class="buy-now">mark as own</button>
-                            </div>
+                            <div class="book-card__actions">
+                                <button 
+                                    class="book-card__btn save-book"
+                                    data-title="${info.title || ''}" 
+                                    data-author="${info.authors ? info.authors.join(', ') : 'Unknown'}" 
+                                    data-date="${info.publishedDate || ''}">
+                                    <i class="ri-bookmark-line"></i>
+                                </button>
+                                <button 
+                                    class="book-card__btn"
+                                    title="Descriere: ${(info.description || "Fără descriere").replace(/"/g, "'")}\nAutor: ${info.authors ? info.authors.join(", ") : "Unknown author"}\nPublicat: ${info.publishedDate || ""}">
+                                    <i class="ri-information-line"></i>
+                                </button>
+                          </div>
                         </div>
                     `;
-                    bookList.appendChild(bookItem);
                 });
             } else {
-                bookList.innerHTML = '<p>No books found</p>';
+                container.innerHTML = "<p>No books found.</p>";
             }
-        } catch (error) {
-            console.error('Error fetching books:', error);
-            document.getElementById('book-list').innerHTML = '<p>Failed to load books</p>';
-        }
-    }
-
-        window.onload = () => {
-            fetchBooks();
-        };
+        })
+        .catch(() => {
+            container.innerHTML = "<p>Failed to load books.</p>";
+        });
+});
 
 function myFunction() {
   document.getElementById("myDropdown").classList.toggle("show");
 }
-
 
 window.onclick = function(event) {
   if (!event.target.matches('.dropbtn')) {
@@ -60,4 +65,13 @@ window.onclick = function(event) {
     }
   }
 }
+
+window.onclick = function(event) {
+  if (!event.target.matches('.book-card__btn')) {
+      
+    }
+   
+  }
+
+
 

@@ -25,7 +25,7 @@ class LoginController
 
     public function loginPost()
     {
-        require __DIR__ . '/../dbConnection.php';
+        require __DIR__ . '/../models/dbConnection.php';
 
         $email = $_POST['email'] ?? '';
         $password = $_POST['password'] ?? '';
@@ -41,7 +41,8 @@ class LoginController
                 $this->error = 'Account not found or password incorrect.';
             } else {
                 $this->success = 'Login successful!';
-                $token = $this->jwt->generateJWT($email);
+                $user = $userModel->getUserByEmail($email);
+                $token = $this->jwt->generateJWT($email,$user);
 
                 setcookie('jwt', $token, time() + 3600, '/', '', false, true);
 

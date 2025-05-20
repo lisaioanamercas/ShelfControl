@@ -13,13 +13,14 @@ class BaseController {
     }
 
     
-    public function generateJWT($username) {
+    public function generateJWT($email,$username) {
         $payload = [
             'iss' => 'ShelfControl', 
             'aud' => 'ShelfControlUsers', 
             'iat' => time(),
             'exp' => time() + (60 * 60), 
             'data' => [
+                'email'=>$email,
                 'username' => $username
             ]
         ];

@@ -14,7 +14,7 @@ class LandingController
             'subheading' => 'Cause you are one book away from a book avalanche',
             'loginUrl' => '/ShelfControl/login',
             'registerUrl' => '/ShelfControl/register',
-            'imagePath' => '/ShelfControl/models/landingPictures.jpg',
+            'imagePath' => '/ShelfControl/views/resources/landingPictures.jpg',
         ];
         $view = new BaseView();
         $view->renderTemplate('landing',$data);

@@ -4,6 +4,7 @@ use App\Controllers\LandingController;
 use App\Controllers\RegisterController;
 use App\Controllers\HomeController;
 use App\Controllers\BookController;
+use App\Controllers\SaveBookController;
 
 
 require_once __DIR__ . '/vendor/autoload.php';
@@ -19,7 +20,7 @@ $loginController = new LoginController();
 $homeController = new HomeController();
 $landingController = new LandingController();
 $bookController = new BookController();
-
+//$saveBookController = new SaveBookController();
 $request = $_SERVER['REQUEST_URI'];
 $request = str_replace('/ShelfControl', '', $_SERVER['REQUEST_URI']);
 
@@ -56,11 +57,11 @@ elseif($request=='/logout')
 {
     $loginController->logout();
 }
-elseif ($request == '/home') {
+elseif (strstr($request,'/home')) {
 
   if($_SERVER['REQUEST_METHOD']=='POST')
     {
-       $homeController->homePost();
+       $save->homePost();
     }
     else
     {
@@ -68,6 +69,18 @@ elseif ($request == '/home') {
     }
 
 } 
+/*elseif(strstr($request,'/save-book')) {
+
+    if($_SERVER['REQUEST_METHOD']=='POST')
+    {
+       $saveBookController->saveBookPost();
+    }
+    else
+    {
+      $bookController->getBook();
+    }
+
+}*/
 elseif (strstr($request,'/book-details')) {
 
     $bookController->test();

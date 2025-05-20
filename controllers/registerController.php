@@ -10,7 +10,7 @@ class RegisterController {
     
     public function registerPost() {
 
-        require __DIR__ . '/../dbConnection.php';
+        require __DIR__ . '/../models/dbConnection.php';
 
         $username = $_POST['username'] ?? '';
         $email = $_POST['email'] ?? '';
