@@ -41,7 +41,7 @@ class LoginController
                 $this->error = 'Account not found or password incorrect.';
             } else {
                 $this->success = 'Login successful!';
-                $user = $userModel->getUserByEmail($email);
+                $user = $userModel->getUserIdByEmail($email);
                 $token = $this->jwt->generateJWT($email,$user);
 
                 setcookie('jwt', $token, time() + 3600, '/', '', false, true);
