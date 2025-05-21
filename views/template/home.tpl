@@ -126,199 +126,123 @@
                     </div>
                     
                     <!-- Current reading container -->
+                    <!-- Current reading container -->
                     <div class="current-reads__container">
-                    <h3 class="current-reads__title">Current Reads (3)</h3>
-                    <div class="current-reads__books">
-                        <!-- Book Item 1 -->
-                        <div class="current-reads__item">
-                            <div class="current-reads__cover">
-                                <img src="/assets/img/book-11.jpg" alt="First Love and Other Stories" class="current-reads__img">
-                            </div>
-                            <div class="current-reads__info">
-                                <h4 class="current-reads__book-title">First Love and Other Stories</h4>
-                                <p class="current-reads__author">Ivan Turgenev</p>
-                                <div class="current-reads__progress">
-                                    <div class="progress-bar">
-                                        <div class="progress-fill" style="width: 28%"></div>
-                                    </div>
-                                    <span class="progress-text">28%</span>
-                                    <button class="edit-progress-btn" aria-label="Edit reading progress">
-                                        <i class="ri-pencil-line"></i>
-                                    </button>
-                                    <div class="progress-editor" id="editor-0">
-                                        <div class="page-input-container">
-                                            <input type="number" class="page-input" value="84" min="0" max="300">
-                                            <span class="page-separator">of</span>
-                                            <span class="total-pages">300</span>
+                        <h3 class="current-reads__title">Current Reads (<?php echo count($currentlyReading); ?>)</h3>
+                        <div class="current-reads__books">
+                            <?php if (empty($currentlyReading)): ?>
+                                <p>You're not currently reading any books.</p>
+                            <?php else: ?>
+                                <?php foreach ($currentlyReading as $index => $book): ?>
+                                    <?php 
+                                        $totalPages = intval($book['PAGES']) ?: 1;
+                                        $pagesRead = intval($book['PAGES_READ']) ?: 0;
+                                        $percentage = min(100, round(($pagesRead / $totalPages) * 100)); 
+                                    ?>
+                                    <!-- Book Item -->
+                                    <div class="current-reads__item" data-book-id="<?php echo $book['BOOK_ID']; ?>">
+                                        <div class="current-reads__cover">
+                                            <img src="<?php echo $book['COVER_URL'] ?: '/assets/img/default-book.png'; ?>" 
+                                                alt="<?php echo htmlspecialchars($book['TITLE']); ?>" 
+                                                class="current-reads__img">
                                         </div>
-                                        <div class="editor-actions">
-                                            <button class="save-btn">Save</button>
-                                            <button class="finish-btn">Mark as finished</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Book Item 2 -->
-                        <div class="current-reads__item">
-                            <div class="current-reads__cover">
-                                <img src="/assets/img/book-12.jpg" alt="The Remains of the Day" class="current-reads__img">
-                            </div>
-                            <div class="current-reads__info">
-                                <h4 class="current-reads__book-title">The Remains of the Day</h4>
-                                <p class="current-reads__author">Kazuo Ishiguro</p>
-                                <div class="current-reads__progress">
-                                    <div class="progress-bar">
-                                        <div class="progress-fill" style="width: 94%"></div>
-                                    </div>
-                                    <span class="progress-text">94%</span>
-                                    <button class="edit-progress-btn" aria-label="Edit reading progress">
-                                        <i class="ri-pencil-line"></i>
-                                    </button>
-                                    <div class="progress-editor" id="editor-1">
-                                        <div class="page-input-container">
-                                            <input type="number" class="page-input" value="240" min="0" max="256">
-                                            <span class="page-separator">of</span>
-                                            <span class="total-pages">256</span>
-                                        </div>
-                                        <div class="editor-actions">
-                                            <button class="save-btn">Save</button>
-                                            <button class="finish-btn">Mark as finished</button>
+                                        <div class="current-reads__info">
+                                            <h4 class="current-reads__book-title"><?php echo htmlspecialchars($book['TITLE']); ?></h4>
+                                            <p class="current-reads__author"><?php echo htmlspecialchars($book['AUTHOR_NAME']); ?></p>
+                                            <div class="current-reads__progress">
+                                                <div class="progress-bar">
+                                                    <div class="progress-fill" style="width: <?php echo $percentage; ?>%"></div>
+                                                </div>
+                                                <span class="progress-text"><?php echo $percentage; ?>%</span>
+                                                <button class="edit-progress-btn" aria-label="Edit reading progress">
+                                                    <i class="ri-pencil-line"></i>
+                                                </button>
+                                                <div class="progress-editor" id="editor-<?php echo $index; ?>">
+                                                    <div class="page-input-container">
+                                                        <input type="number" class="page-input" value="<?php echo $pagesRead; ?>" 
+                                                            min="0" max="<?php echo $totalPages; ?>">
+                                                        <span class="page-separator">of</span>
+                                                        <span class="total-pages"><?php echo $totalPages; ?></span>
+                                                    </div>
+                                                    <div class="editor-actions">
+                                                        <button class="save-btn">Save</button>
+                                                        <button class="finish-btn">Mark as finished</button>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Book Item 3 -->
-                        <div class="current-reads__item">
-                            <div class="current-reads__cover">
-                                <img src="/assets/img/book-13.jpg" alt="Religion: Vintage Minis" class="current-reads__img">
-                            </div>
-                            <div class="current-reads__info">
-                                <h4 class="current-reads__book-title">Religion: Vintage Minis</h4>
-                                <p class="current-reads__author">Karen Armstrong</p>
-                                <div class="current-reads__progress">
-                                    <div class="progress-bar">
-                                        <div class="progress-fill" style="width: 23%"></div>
-                                    </div>
-                                    <span class="progress-text">23%</span>
-                                    <button class="edit-progress-btn" aria-label="Edit reading progress">
-                                        <i class="ri-pencil-line"></i>
-                                    </button>
-                                    <div class="progress-editor" id="editor-2">
-                                        <div class="page-input-container">
-                                            <input type="number" class="page-input" value="29" min="0" max="128">
-                                            <span class="page-separator">of</span>
-                                            <span class="total-pages">128</span>
-                                        </div>
-                                        <div class="editor-actions">
-                                            <button class="save-btn">Save</button>
-                                            <button class="finish-btn">Mark as finished</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
              </section>
 
-             <!-- ==================SERVICII =============================== -->
-        <!-- To Read Pile section -->
-        <section class="book-section section" id="toRead">
-            <div class="container">
-                <div class="book-section__header">
-                    <h2 class="book-section__title">To-Read Pile</h2>
-                    <a href="#" class="book-section__link">
-                        <i class="ri-arrow-right-line"></i>
-                    </a>
-                </div>
-                
-                <div class="book-section__content">
-                    <div class="book-grid">
-                        <!-- Book 1 -->
-                        <div class="book-item">
-                            <img src="assets/img/book-8.png" alt="Book cover" class="book-item__img">
-                        </div>
-                        
-                        <!-- Book 2 -->
-                        <div class="book-item">
-                            <img src="assets/img/book-9.png" alt="Book cover" class="book-item__img">
-                        </div>
-                        
-                        <!-- Book 3 -->
-                        <div class="book-item">
-                            <img src="assets/img/book-10.png" alt="Book cover" class="book-item__img">
-                        </div>
-                        
-                        <!-- Book 4 -->
-                        <div class="book-item">
-                            <img src="assets/img/book-11.jpg" alt="Book cover" class="book-item__img">
-                        </div>
-                        
-                        <!-- Book 5 -->
-                        <div class="book-item">
-                            <img src="assets/img/book-12.jpg" alt="Book cover" class="book-item__img">
-                        </div>
-                        
-                        <!-- Book 6 -->
-                        <div class="book-item">
-                            <img src="assets/img/book-13.jpg" alt="Book cover" class="book-item__img">
+            <!-- ==================SERVICII =============================== -->
+            <!-- To Read Pile section -->
+            <section class="book-section section" id="toread">
+                <div class="container">
+                    <div class="book-section__header">
+                        <h2 class="book-section__title">To Read Pile</h2>
+                        <a href="/ShelfControl/toread" class="book-section__link">
+                            <i class="ri-arrow-right-line"></i>
+                        </a>
+                    </div>
+                    
+                    <div class="book-section__content">
+                        <div class="book-grid">
+                            <?php if (empty($toReadBooks)): ?>
+                                <p>No books in your to-read pile yet.</p>
+                            <?php else: ?>
+                                <?php foreach ($toReadBooks as $book): ?>
+                                    <div class="book-item">
+                                        <a href="/ShelfControl/book-details?id=<?php echo $book['BOOK_ID']; ?>">
+                                            <img src="<?php echo $book['COVER_URL'] ?: 'assets/img/default-book.png'; ?>" 
+                                                alt="<?php echo htmlspecialchars($book['TITLE']); ?>" 
+                                                class="book-item__img">
+                                        </a>
+                                    </div>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
-        
-        <!-- Owned Books section -->
-        <section class="book-section section" id="owned">
-            <div class="container">
-                <div class="book-section__header">
-                    <h2 class="book-section__title">Owned Books</h2>
-                    <a href="#" class="book-section__link">
-                        <i class="ri-arrow-right-line"></i>
-                    </a>
-                </div>
-                
-                <div class="book-section__content">
-                    <div class="book-grid">
-                        <!-- Book 1 -->
-                        <div class="book-item">
-                            <img src="assets/img/book-1.png" alt="Book cover" class="book-item__img">
-                        </div>
-                        
-                        <!-- Book 2 -->
-                        <div class="book-item">
-                            <img src="assets/img/book-2.png" alt="Book cover" class="book-item__img">
-                        </div>
-                        
-                        <!-- Book 3 -->
-                        <div class="book-item">
-                            <img src="assets/img/book-3.png" alt="Book cover" class="book-item__img">
-                        </div>
-                        
-                        <!-- Book 4 -->
-                        <div class="book-item">
-                            <img src="assets/img/book-5.png" alt="Book cover" class="book-item__img">
-                        </div>
-                        
-                        <!-- Book 5 -->
-                        <div class="book-item">
-                            <img src="assets/img/book-6.png" alt="Book cover" class="book-item__img">
-                        </div>
-                        
-                        <!-- Book 6 -->
-                        <div class="book-item">
-                            <img src="assets/img/book-7.png" alt="Book cover" class="book-item__img">
+            </section>
+
+            <!-- Owned Books section -->
+            <section class="book-section section" id="owned">
+                <div class="container">
+                    <div class="book-section__header">
+                        <h2 class="book-section__title">Owned Books</h2>
+                        <a href="/ShelfControl/library" class="book-section__link">
+                            <i class="ri-arrow-right-line"></i>
+                        </a>
+                    </div>
+                    
+                    <div class="book-section__content">
+                        <div class="book-grid">
+                            <?php if (empty($ownedBooks)): ?>
+                                <p>No owned books yet.</p>
+                            <?php else: ?>
+                                <?php foreach ($ownedBooks as $book): ?>
+                                    <div class="book-item">
+                                        <a href="/ShelfControl/book-details?id=<?php echo $book['BOOK_ID']; ?>">
+                                            <img src="<?php echo $book['COVER_URL'] ?: 'assets/img/default-book.png'; ?>" 
+                                                alt="<?php echo htmlspecialchars($book['TITLE']); ?>" 
+                                                class="book-item__img">
+                                        </a>
+                                    </div>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
          </main>         
          <!-- ==================== JAVASCRIPT =========================== -->
             <script src="/ShelfControl/views/scripts/home.js"></script>
+            <script src="/ShelfControl/views/scripts/darkTheme.js"></script>
+
     </body>
 </html>

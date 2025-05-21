@@ -45,53 +45,53 @@ const shadowHeader = () =>{
 window.addEventListener('scroll', shadowHeader)  // Fixed function name from 'scrollHeader'
 
 
-// ===================================== DARK THEME =========================================
-// Select the theme button
-const themeButton = document.getElementById('theme-button');
-const body = document.body;
+// // ===================================== DARK THEME =========================================
+// // Select the theme button
+// const themeButton = document.getElementById('theme-button');
+// const body = document.body;
 
-// Check if dark theme preference is stored in local storage
-const getCurrentTheme = () => {
-    const selectedTheme = localStorage.getItem('selected-theme');
-    return selectedTheme || 'light'; // Default to light if no theme is stored
-}
+// // Check if dark theme preference is stored in local storage
+// const getCurrentTheme = () => {
+//     const selectedTheme = localStorage.getItem('selected-theme');
+//     return selectedTheme || 'light'; // Default to light if no theme is stored
+// }
 
-// Get the current theme icon (sun or moon)
-const getCurrentIcon = () => {
-    return themeButton.classList.contains('ri-sun-line') ? 'ri-sun-line' : 'ri-moon-line';
-}
+// // Get the current theme icon (sun or moon)
+// const getCurrentIcon = () => {
+//     return themeButton.classList.contains('ri-sun-line') ? 'ri-sun-line' : 'ri-moon-line';
+// }
 
-// Load theme from local storage when page loads
-document.addEventListener('DOMContentLoaded', () => {
-    const selectedTheme = getCurrentTheme();
+// // Load theme from local storage when page loads
+// document.addEventListener('DOMContentLoaded', () => {
+//     const selectedTheme = getCurrentTheme();
     
-    // Apply saved theme
-    if (selectedTheme === 'dark') {
-        body.classList.add('dark-theme');
-        themeButton.classList.remove('ri-moon-line');
-        themeButton.classList.add('ri-sun-line');
-    } else {
-        body.classList.remove('dark-theme');
-        themeButton.classList.remove('ri-sun-line');
-        themeButton.classList.add('ri-moon-line');
-    }
-});
+//     // Apply saved theme
+//     if (selectedTheme === 'dark') {
+//         body.classList.add('dark-theme');
+//         themeButton.classList.remove('ri-moon-line');
+//         themeButton.classList.add('ri-sun-line');
+//     } else {
+//         body.classList.remove('dark-theme');
+//         themeButton.classList.remove('ri-sun-line');
+//         themeButton.classList.add('ri-moon-line');
+//     }
+// });
 
-// Toggle theme when the button is clicked
-if (themeButton) {
-    themeButton.addEventListener('click', () => {
-        // Toggle dark theme class on body
-        body.classList.toggle('dark-theme');
+// // Toggle theme when the button is clicked
+// if (themeButton) {
+//     themeButton.addEventListener('click', () => {
+//         // Toggle dark theme class on body
+//         body.classList.toggle('dark-theme');
         
-        // Toggle button icon (moon/sun)
-        themeButton.classList.toggle('ri-moon-line');
-        themeButton.classList.toggle('ri-sun-line');
+//         // Toggle button icon (moon/sun)
+//         themeButton.classList.toggle('ri-moon-line');
+//         themeButton.classList.toggle('ri-sun-line');
         
-        // Save theme preference to local storage
-        const currentTheme = body.classList.contains('dark-theme') ? 'dark' : 'light';
-        localStorage.setItem('selected-theme', currentTheme);
-    });
-}
+//         // Save theme preference to local storage
+//         const currentTheme = body.classList.contains('dark-theme') ? 'dark' : 'light';
+//         localStorage.setItem('selected-theme', currentTheme);
+//     });
+// }
 
 
 // ===================================== Progress handling for read books =========================================
@@ -111,31 +111,85 @@ document.addEventListener('DOMContentLoaded', function() {
         // Set up save button
         const saveButton = editor.querySelector('.save-btn');
         saveButton.addEventListener('click', function() {
+            const bookItem = button.closest('.current-reads__item');
+            const bookId = bookItem.dataset.bookId;
             const input = editor.querySelector('.page-input');
-            const totalPages = editor.querySelector('.total-pages').textContent;
-            updateBookProgress(index, input.value, totalPages);
-            editor.classList.remove('active');
+            const pagesRead = input.value;
+            
+            // Send AJAX request to update progress
+            fetch('/ShelfControl/update-progress', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `book_id=${bookId}&pages_read=${pagesRead}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Update UI
+                    const totalPages = parseInt(editor.querySelector('.total-pages').textContent);
+                    updateBookProgress(index, pagesRead, totalPages);
+                    editor.classList.remove('active');
+                    
+                    // Show success message
+                    showFinishNotification('Progress updated successfully!');
+                    
+                    // If book is completed (100%), reload page after a delay
+                    if (parseInt(pagesRead) >= totalPages) {
+                        setTimeout(() => {
+                            location.reload();
+                        }, 1500);
+                    }
+                } else {
+                    alert(data.message || 'Failed to update progress');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred. Please try again.');
+            });
         });
         
         // Set up finish button
         const finishButton = editor.querySelector('.finish-btn');
         finishButton.addEventListener('click', function() {
+            const bookItem = button.closest('.current-reads__item');
+            const bookId = bookItem.dataset.bookId;
             const totalPages = editor.querySelector('.total-pages').textContent;
-            const bookTitle = document.querySelectorAll('.current-reads__book-title')[index].textContent;
-            updateBookProgress(index, totalPages, totalPages);
-            showFinishNotification(bookTitle);
-            editor.classList.remove('active');
-        });
-    });
-    
-    // Close editors when clicking outside
-    document.addEventListener('click', function(e) {
-        if (!e.target.closest('.edit-progress-btn') && 
-            !e.target.closest('.progress-editor')) {
-            document.querySelectorAll('.progress-editor').forEach(editor => {
-                editor.classList.remove('active');
+            const bookTitle = bookItem.querySelector('.current-reads__book-title').textContent;
+            
+            // Send AJAX request to mark as finished
+            fetch('/ShelfControl/update-progress', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `book_id=${bookId}&pages_read=${totalPages}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Update UI to show 100%
+                    updateBookProgress(index, totalPages, totalPages);
+                    editor.classList.remove('active');
+                    
+                    // Show finish notification
+                    showFinishNotification(`"${bookTitle}" marked as finished!`);
+                    
+                    // Reload page after a delay
+                    setTimeout(() => {
+                        location.reload();
+                    }, 1500);
+                } else {
+                    alert(data.message || 'Failed to update progress');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred. Please try again.');
             });
-        }
+        });
     });
 });
 

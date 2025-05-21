@@ -56,15 +56,17 @@ class UserModel{
         }
         return false;
     }
-
-    public function getUserByEmail($email)
+    
+    public function getUserIdByEmail($email)
     {
-        $sql = "SELECT username FROM users WHERE email = :email";
+        $sql = "SELECT user_id FROM users WHERE email = :email";
         $stmt = oci_parse($this->conn, $sql);
         oci_bind_by_name($stmt, ':email', $email);
 
         oci_execute($stmt);
-        return oci_fetch_assoc($stmt);
+        $row = oci_fetch_assoc($stmt);
+
+        return $row ? $row['USER_ID'] : null;
     }
 
 

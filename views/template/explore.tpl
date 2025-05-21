@@ -13,6 +13,8 @@
         <!-- ==================== CSS =========================== -->
         <link rel="stylesheet" href="/ShelfControl/views/css/style.css">
         <link rel="stylesheet" href="/ShelfControl/views/css/lib.css">
+        <link rel="stylesheet" href="/ShelfControl/views/css/dark-theme-explore.css">
+
 
 
         <title>ShelfControl - Explore</title>
@@ -142,6 +144,8 @@
         <!-- ==================== JAVASCRIPT =========================== -->
         <script src="/ShelfControl/views/scripts/explore.js"></script>
         <script src="/ShelfControl/views/scripts/search.js"></script>
+        <script src="/ShelfControl/views/scripts/darkTheme.js"></script>
+
 
 
     </body>

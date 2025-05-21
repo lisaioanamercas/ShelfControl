@@ -1,0 +1,65 @@
+/* Dark theme styles for Explore page */
+
+/* Library section elements in dark theme */
+.dark-theme .library-header__title {
+    color: var(--dark-title-color);
+}
+
+.dark-theme .library-header__description {
+    color: var(--dark-text-color);
+}
+
+.dark-theme .library-filter__btn {
+    background-color: var(--dark-card-color);
+    color: var(--dark-text-color);
+    border-color: var(--dark-border-color);
+}
+
+.dark-theme .library-filter__btn:hover,
+.dark-theme .library-filter__btn.active {
+    background-color: var(--dark-first-color);
+    color: var(--white-color);
+}
+
+/* Book cards in dark theme */
+.dark-theme .book-card {
+    background-color: var(--dark-card-color);
+    box-shadow: 0 4px 16px hsla(0, 0%, 0%, .3);
+}
+
+.dark-theme .book-card:hover {
+    box-shadow: 0 8px 24px hsla(0, 0%, 0%, .4);
+}
+
+.dark-theme .book-card__title {
+    color: var(--dark-title-color);
+}
+
+.dark-theme .book-card__author,
+.dark-theme .book-card__edition {
+    color: var(--dark-text-color);
+}
+
+.dark-theme .book-card__rating span {
+    color: var(--dark-text-color);
+}
+
+.dark-theme .book-card__btn {
+    background-color: var(--dark-container-color);
+    color: var(--dark-text-color);
+    border-color: var(--dark-border-color);
+}
+
+.dark-theme .book-card__btn:hover {
+    background-color: var(--dark-first-color);
+    color: var(--white-color);
+}
+
+/* Footer in dark theme */
+.dark-theme .footer {
+    background-color: var(--dark-container-color);
+}
+
+.dark-theme .footer__copy {
+    color: var(--dark-text-color);
+}

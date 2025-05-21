@@ -83,6 +83,15 @@ elseif (strstr($request,'/explore')) {
     }
 
 } 
+elseif ($request == '/update-progress') {
+  
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        $homeController->updateProgressPost();
+    } else {
+        http_response_code(405); // Method Not Allowed
+        echo "This endpoint only accepts POST requests.";
+    }
+}
 /*elseif(strstr($request,'/save-book')) {
 
     if($_SERVER['REQUEST_METHOD']=='POST')

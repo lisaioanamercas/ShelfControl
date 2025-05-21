@@ -10,13 +10,25 @@ class BaseView
         if (!file_exists($templatePath)) {
             die("Template file not found: " . $templatePath);
         }
-
-        $template = file_get_contents($templatePath);
-
+        
+        // Read the template file
+        $content = file_get_contents($templatePath);
+        
+        // Replace all placeholders with values
         foreach ($data as $key => $value) {
-            $template = str_replace('{$' . $key . '}', $value, $template);
+            if (is_string($value) || is_numeric($value)) {
+                $content = str_replace('{$' . $key . '}', $value, $content);
+            }
         }
-
-        echo $template;
+        
+        // Extract data array to local variables that can be used in the template
+        extract($data);
+        
+        // Process any PHP code that might be in the template
+        ob_start();
+        eval('?>' . $content);
+        $processedContent = ob_get_clean();
+        
+        echo $processedContent;
     }
 }
