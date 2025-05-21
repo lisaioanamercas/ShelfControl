@@ -17,7 +17,7 @@
     </head>
     <body>
         <!-- =========================== HEADER ============================== -->
-         <header class="header shadow-header" id="header">
+        <header class="header shadow-header" id="header">
             <nav class="nav container">
                 <a href="#" class="nav__logo">
                     <i class="ri-book-open-fill"></i> ShelfControl
@@ -69,13 +69,13 @@
                       <i class="ri-moon-line  change-teheme" id="theme-button"></i>
                 </div>
             </nav>
-         </header>
+        </header>
 
          <!-- ========================== SEARCH =============================== -->
           <div class="search" id="search-content">
             <form action="" class="search__form">
                 <i class="ri-search-line search__icon"></i>
-                <input type="search" placeholder="Ce carte doresti sa cauti?" class="search__input">
+                <input type="search" name="query" placeholder="Ce carte doresti sa cauti?" class="search__input">
             </form>
 
             <i class="ri-close-line search__close" id="search-close"></i>
@@ -243,6 +243,6 @@
          <!-- ==================== JAVASCRIPT =========================== -->
             <script src="/ShelfControl/views/scripts/home.js"></script>
             <script src="/ShelfControl/views/scripts/darkTheme.js"></script>
-
+            <script src="./views/scripts/search_db.js"></script>
     </body>
 </html>

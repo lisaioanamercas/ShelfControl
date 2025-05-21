@@ -95,4 +95,143 @@ class BookModel {
         
         return $result;
     }
+    public function getBookById($bookId) {
+        $sql = "SELECT b.*, 
+                a.name AS author_name, 
+                ph.name AS publishing_house_name,
+                sp.name AS sub_publisher_name,
+                t.name AS translator_name
+                FROM Book b 
+                LEFT JOIN Author a ON b.author_id = a.author_id
+                LEFT JOIN PublishingHouse ph ON b.publishing_house_id = ph.publishing_house_id
+                LEFT JOIN SubPublisher sp ON b.sub_publisher_id = sp.sub_publisher_id
+                LEFT JOIN Translator t ON b.translator_id = t.translator_id
+                WHERE b.book_id = :book_id";
+        
+        $stmt = oci_parse($this->conn, $sql);
+        oci_bind_by_name($stmt, ':book_id', $bookId);
+        oci_execute($stmt);
+        
+        $row = oci_fetch_assoc($stmt);
+        
+        // Properly handle CLOB data
+        if ($row && isset($row['SUMMARY']) && is_object($row['SUMMARY'])) {
+            $row['SUMMARY'] = $row['SUMMARY']->read($row['SUMMARY']->size());
+        }
+    
+        return $row;
+    }
+
+    public function getUserBookData($userId, $bookId) {
+        $sql = "SELECT * FROM UserBook 
+                WHERE user_id = :user_id 
+                AND book_id = :book_id";
+        
+        $stmt = oci_parse($this->conn, $sql);
+        oci_bind_by_name($stmt, ':user_id', $userId);
+        oci_bind_by_name($stmt, ':book_id', $bookId);
+        oci_execute($stmt);
+        
+        $row = oci_fetch_assoc($stmt);
+        return $row;
+    }
+
+    // Methods needed for book status updates
+    public function updateBookStatus($userId, $bookId, $status) {
+        // Check if record exists
+        $existingRecord = $this->getUserBookData($userId, $bookId);
+        
+        if ($existingRecord) {
+            $sql = "UPDATE UserBook 
+                    SET status = :status 
+                    WHERE user_id = :user_id 
+                    AND book_id = :book_id";
+        } else {
+            $sql = "INSERT INTO UserBook (user_id, book_id, status) 
+                    VALUES (:user_id, :book_id, :status)";
+        }
+        
+        $stmt = oci_parse($this->conn, $sql);
+        oci_bind_by_name($stmt, ':user_id', $userId);
+        oci_bind_by_name($stmt, ':book_id', $bookId);
+        oci_bind_by_name($stmt, ':status', $status);
+        
+        return oci_execute($stmt);
+    }
+
+    public function updateBookProgress($userId, $bookId, $pagesRead) {
+        // Check if record exists
+        $existingRecord = $this->getUserBookData($userId, $bookId);
+        
+        if ($existingRecord) {
+            $sql = "UPDATE UserBook 
+                    SET pages_read = :pages_read 
+                    WHERE user_id = :user_id 
+                    AND book_id = :book_id";
+        } else {
+            $sql = "INSERT INTO UserBook (user_id, book_id, pages_read, status) 
+                    VALUES (:user_id, :book_id, :pages_read, 'reading')";
+        }
+        
+        $stmt = oci_parse($this->conn, $sql);
+        oci_bind_by_name($stmt, ':user_id', $userId);
+        oci_bind_by_name($stmt, ':book_id', $bookId);
+        oci_bind_by_name($stmt, ':pages_read', $pagesRead);
+        
+        return oci_execute($stmt);
+    }
+
+    public function updateBookOwned($userId, $bookId, $isOwned) {
+        // Check if record exists
+        $existingRecord = $this->getUserBookData($userId, $bookId);
+        
+        if ($existingRecord) {
+            $sql = "UPDATE UserBook 
+                    SET is_owned = :is_owned 
+                    WHERE user_id = :user_id 
+                    AND book_id = :book_id";
+        } else {
+            $sql = "INSERT INTO UserBook (user_id, book_id, is_owned, status) 
+                    VALUES (:user_id, :book_id, :is_owned, 'to-read')";
+        }
+        
+        $stmt = oci_parse($this->conn, $sql);
+        oci_bind_by_name($stmt, ':user_id', $userId);
+        oci_bind_by_name($stmt, ':book_id', $bookId);
+        oci_bind_by_name($stmt, ':is_owned', $isOwned);
+        
+        return oci_execute($stmt);
+    }
+
+    public function searchBooks($query) {
+    // Clean the query to prevent SQL injection
+    $searchTerm = '%' . strtoupper($query) . '%';
+    
+    $sql = "SELECT DISTINCT b.book_id, b.title, b.cover_url, b.publication_year, b.genre,
+                  a.name as author_name, ph.name as publisher_name
+           FROM Book b
+           LEFT JOIN Author a ON b.author_id = a.author_id
+           LEFT JOIN PublishingHouse ph ON b.publishing_house_id = ph.publishing_house_id
+           LEFT JOIN SubPublisher sp ON b.sub_publisher_id = sp.sub_publisher_id
+           LEFT JOIN Translator t ON b.translator_id = t.translator_id
+           WHERE UPPER(b.title) LIKE :query
+              OR UPPER(a.name) LIKE :query
+              OR UPPER(ph.name) LIKE :query
+              OR UPPER(sp.name) LIKE :query
+              OR UPPER(b.genre) LIKE :query
+              OR UPPER(t.name) LIKE :query
+              OR UPPER(b.isbn) LIKE :query
+           ORDER BY b.title";
+           
+    $stmt = oci_parse($this->conn, $sql);
+    oci_bind_by_name($stmt, ':query', $searchTerm);
+    oci_execute($stmt);
+    
+    $books = [];
+    while ($row = oci_fetch_assoc($stmt)) {
+        $books[] = $row;
+    }
+    
+    return $books;
+}
 }

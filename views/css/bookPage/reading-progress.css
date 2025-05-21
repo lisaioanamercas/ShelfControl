@@ -1,0 +1,85 @@
+.reading-progress {
+    border-top: 1px solid var(--border-color);
+    padding-top: 1.5rem;
+    display: none; /* Hidden by default, shown when status is "reading" */
+}
+
+.reading-progress.active {
+    display: block;
+}
+
+.reading-progress__title {
+    font-size: var(--h3-font-size);
+    margin-bottom: 1rem;
+}
+
+.reading-progress__bar {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.progress-bar {
+    flex-grow: 1;
+    height: 8px;
+    background-color: var(--border-color);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background-color: var(--progress-color);
+    border-radius: 4px;
+}
+
+.progress-text {
+    font-size: var(--small-font-size);
+    font-weight: var(--font-medium);
+    color: var(--progress-color);
+}
+
+.page-tracking {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.page-input-container {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.page-input {
+    width: 60px;
+    padding: 0.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    font-size: var(--small-font-size);
+    text-align: center;
+}
+
+.page-separator {
+    color: var(--text-color);
+}
+
+.total-pages {
+    color: var(--text-color);
+}
+
+.save-progress-btn {
+    padding: 0.5rem 1rem;
+    background-color: var(--first-color);
+    color: var(--white-color);
+    border: none;
+    border-radius: 4px;
+    font-size: var(--smaller-font-size);
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.save-progress-btn:hover {
+    background-color: hsl(0, 85%, 40%);
+}

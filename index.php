@@ -106,11 +106,23 @@ elseif ($request == '/update-progress') {
 }*/
 elseif (strstr($request,'/book-details')) {
 
-    $bookController->test();
- 
-
+    $bookController->showDetails();
 }
-else {
+// asta e petru AJAX ca sa dea update la statusul cartii -- nu prea merge inca
+elseif ($request =='/update-book') {
+
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        $bookController->updateBook();
+    } else {
+        http_response_code(405); // Method Not Allowed
+        echo "This endpoint only accepts POST requests.";
+    }
+}
+
+elseif (strstr($request,'/search')) {
+    $searchController = new SearchController();
+    $searchController->search();
+} else {
     http_response_code(404);
     echo "Pagina nu este disponibilă.";
 

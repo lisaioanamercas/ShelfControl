@@ -1,0 +1,42 @@
+/* Book Info Section */
+.book-details__info {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.book-title {
+    font-size: var(--h1-font-size);
+    font-family: var(--second-font);
+    color: var(--title-color);
+    margin-bottom: 0.25rem;
+}
+
+.book-author {
+    font-size: var(--h3-font-size);
+    color: var(--text-color);
+    font-weight: var(--font-medium);
+}
+
+.book-meta {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 1rem;
+    border-top: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
+    padding: 1rem 0;
+}
+
+.book-meta__item {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.book-meta__label {
+    font-weight: var(--font-medium);
+    color: var(--title-color);
+}
+
+.book-meta__value {
+    color: var(--text-color);
+}
