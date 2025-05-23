@@ -243,7 +243,7 @@ class BookModel {
     }
 
     $clob = oci_new_descriptor($this->conn, OCI_D_LOB);
-    oci_bind_by_name($stmt, ":v_json_data", $clob, -1, OCI_B_CLOB); // tipul corect e OCI_B_CLOB
+    oci_bind_by_name($stmt, ":v_json_data", $clob, -1, OCI_B_CLOB);
 
     if (!$clob->writeTemporary($jsonData, OCI_TEMP_CLOB)) {
         throw new Exception("Eroare la scrierea datelor JSON în CLOB.");
