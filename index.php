@@ -75,7 +75,7 @@ elseif (strstr($request,'/explore')) {
 
   if($_SERVER['REQUEST_METHOD']=='POST')
     {
-       $save->explorePost();
+       $exploreController->explorePost();
     }
     else
     {

@@ -234,4 +234,51 @@ class BookModel {
     
     return $books;
 }
+ public function importBooksFromJson(string $jsonData): bool {
+    $sql = "BEGIN import_book_direct(:v_json_data); END;";
+    $stmt = oci_parse($this->conn, $sql);
+    if (!$stmt) {
+        $e = oci_error($this->conn);
+        throw new Exception("Eroare la pregătirea procedurii: " . $e['message']);
+    }
+
+    $clob = oci_new_descriptor($this->conn, OCI_D_LOB);
+    oci_bind_by_name($stmt, ":v_json_data", $clob, -1, OCI_B_CLOB); // tipul corect e OCI_B_CLOB
+
+    if (!$clob->writeTemporary($jsonData, OCI_TEMP_CLOB)) {
+        throw new Exception("Eroare la scrierea datelor JSON în CLOB.");
+    }
+
+    $result = oci_execute($stmt, OCI_COMMIT_ON_SUCCESS);
+    if (!$result) {
+        $e = oci_error($stmt);
+        throw new Exception("Eroare la execuția procedurii: " . $e['message']);
+    }
+
+    oci_free_statement($stmt);
+    $clob->free();
+
+    return true;
+}
+    public function getBookidByTitle($title) {
+        $sql = "SELECT book_id FROM Book WHERE title = :title";
+        $stmt = oci_parse($this->conn, $sql);
+        oci_bind_by_name($stmt, ':title', $title);
+        oci_execute($stmt);
+        $row = oci_fetch_assoc($stmt);
+        return $row ? $row['BOOK_ID'] : null;
+    }
+
+    public function insertIntoUserBook($userId, $bookId) {
+        $sql = "INSERT INTO UserBook (user_id, book_id,status) VALUES (:user_id, :book_id,:status)";
+        $status = 'to-read'; // Default status
+        $stmt = oci_parse($this->conn, $sql);
+        oci_bind_by_name($stmt, ':user_id', $userId);
+        oci_bind_by_name($stmt, ':book_id', $bookId);
+        oci_bind_by_name($stmt, ':status', $status);
+        return oci_execute($stmt);
+    }
+
+
+ 
 }
