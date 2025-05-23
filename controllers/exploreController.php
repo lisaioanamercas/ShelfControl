@@ -26,18 +26,23 @@ class ExploreController{
 
      
     $jsonInput = file_get_contents('php://input');
+
+   
+    
     if (!$jsonInput) {
         http_response_code(400);
         echo json_encode(['error' => 'No data received']);
         exit;
     }
+   
 
    
     require __DIR__ . '/../models/dbConnection.php';
+
     $bookModel = new BookModel($conn);
+    
    
-     $bookModel->importBooksFromJson($jsonInput);
- 
+  
 
       $jwt = new BaseController();
 
@@ -51,14 +56,27 @@ class ExploreController{
     $book= $data[0];
 
     $title = $book['title'];
+
+     if($bookModel->getBookidByTitle($title)!=null)
+    {
+            echo json_encode(['message' => 'Cartea exista in to read deja!']);
+            exit;
+
+    }
+    else{
+        
+    $bookModel->importBooksFromJson($jsonInput);
+
     $bookId = $bookModel->getBookIdByTitle($title);
     $bookModel->insertIntoUserBook($userId, $bookId);
     
     echo json_encode(['message' => 'Carte salvată cu succes!']);
     exit;
+   }
+    
+}
 }
 
 
 
 
-}
