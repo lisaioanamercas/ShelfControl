@@ -68,6 +68,17 @@ class UserModel{
 
         return $row ? $row['USER_ID'] : null;
     }
+    public function getUserRoleByEmail($email)
+    {
+        $sql = "SELECT role FROM users WHERE email = :email";
+        $stmt = oci_parse($this->conn, $sql);
+        oci_bind_by_name($stmt, ':email', $email);
+
+        oci_execute($stmt);
+        $row = oci_fetch_assoc($stmt);
+
+        return $row ? $row['ROLE'] : null;
+    }
 
 
 

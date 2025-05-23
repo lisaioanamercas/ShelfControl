@@ -78,7 +78,7 @@ document.addEventListener("click", function(e) {
     }
 
     const info = book.volumeInfo;
-
+  
   
     const bookData = {
       title: info.title || null,
@@ -92,9 +92,10 @@ document.addEventListener("click", function(e) {
       language: info.language || null,
       genre: info.categories ? info.categories[0] : null,
       summary: info.description || null,
-      pages: info.pageCount || null
+      pages: info.pageCount || null,
+      source: "Google Books api"
     };
-
+      console.log("Verificare SOURCE:", bookData.source); 
   
     const dataToSend = [bookData];
 

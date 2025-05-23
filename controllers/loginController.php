@@ -42,7 +42,8 @@ class LoginController
             } else {
                 $this->success = 'Login successful!';
                 $user = $userModel->getUserIdByEmail($email);
-                $token = $this->jwt->generateJWT($email,$user);
+                $role = $userModel->getUserRoleByEmail($email);
+                $token = $this->jwt->generateJWT($email,$user,$role);
 
                 setcookie('jwt', $token, time() + 3600, '/', '', false, true);
 

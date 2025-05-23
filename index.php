@@ -92,18 +92,7 @@ elseif ($request == '/update-progress') {
         echo "This endpoint only accepts POST requests.";
     }
 }
-/*elseif(strstr($request,'/save-book')) {
 
-    if($_SERVER['REQUEST_METHOD']=='POST')
-    {
-       $saveBookController->saveBookPost();
-    }
-    else
-    {
-      $bookController->getBook();
-    }
-
-}*/
 elseif (strstr($request,'/book-details')) {
 
     $bookController->showDetails();
