@@ -11,7 +11,7 @@ body {
 .left-title {
     display: flex;
     flex-direction: column; 
-    align-items: flex-start; /
+    align-items: flex-start; /* Align items to the start */
     justify-content: flex-start; 
     padding-right: 90px;
     
