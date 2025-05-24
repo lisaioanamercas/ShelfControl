@@ -9,7 +9,7 @@ class ExploreController{
 
     public function exploreGet(){
 
-        $jwt = new BaseController();
+          $jwt = new BaseController();
         $isLoggedIn = $jwt->verifyLogin();
         if (!$isLoggedIn) {
             header('Location: /ShelfControl/login');
@@ -40,7 +40,11 @@ class ExploreController{
     require __DIR__ . '/../models/dbConnection.php';
 
     $bookModel = new BookModel($conn);
-    $jwt = new BaseController();
+    
+   
+  
+
+      $jwt = new BaseController();
 
     $decoded = $jwt->validateJWT($_COOKIE['jwt']);
     $userEmail = $decoded->data->email;
@@ -60,7 +64,7 @@ class ExploreController{
 
     }
     else{
-
+        
     $bookModel->importBooksFromJson($jsonInput);
 
     $bookId = $bookModel->getBookIdByTitle($title);
