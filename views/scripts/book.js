@@ -97,8 +97,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     
-    // Functions to send AJAX requests
     function updateBookStatus(bookId, status) {
+
+
+        
         fetch('/ShelfControl/update-book', {
             method: 'POST',
             headers: {

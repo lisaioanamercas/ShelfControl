@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
     
     const params = new URLSearchParams(window.location.search);
-    const query = params.get("query") || "*"; 
+    const query = params.get("query") || "love,history,science"; 
     loadBooks(query);
 });
 
@@ -36,7 +36,7 @@ function loadBooks(query) {
     const container = document.getElementById("books-container");
     container.innerHTML = "<p>Se încarcă cărțile...</p>";
 
-    fetch(`https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&maxResults=40`)
+    fetch(`https://www.googleapis.com/books/v1/volumes?q=intitle:${encodeURIComponent(query)}&maxResults=40`)
         .then(response => response.json())
         .then(data => {
             if (data.items) {
