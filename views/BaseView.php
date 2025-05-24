@@ -11,29 +11,25 @@ class BaseView
             die("Template file not found: " . $templatePath);
         }
         
-        // Skip header/footer
         $skipHeaderFooter = !$includeHeaderFooter || in_array($templateName, ['login', 'register', 'landing']);
         
         if ($skipHeaderFooter) {
-            // For pages without header/footer, just load the template itself
             $content = file_get_contents($templatePath);
             
-            // Replace all placeholders with values
             foreach ($data as $key => $value) {
                 if (is_string($value) || is_numeric($value)) {
                     $content = str_replace('{$' . $key . '}', $value, $content);
                 }
             }
             
-            // Extract data array to local variables
+        
             extract($data);
             
-            // Process any PHP code that might be in the template
             ob_start();
             eval('?>' . $content);
             $processedContent = ob_get_clean();
         } else {
-            // Read the template files
+
             $headerPath = __DIR__ . "/template/header.tpl";
             $footerPath = __DIR__ . "/template/footer.tpl";
             
@@ -51,10 +47,10 @@ class BaseView
                 }
             }
             
-            // Extract data array to local variables
+            
             extract($data);
             
-            // Process any PHP code that might be in the template
+           
             ob_start();
             eval('?>' . $fullContent);
             $processedContent = ob_get_clean();

@@ -1,51 +1,94 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const container = document.getElementById("books-container");
+    
     const params = new URLSearchParams(window.location.search);
-    const query = params.get("query") || "love,peace,war,comedy"; 
+    const query = params.get("query") || "*"; 
+    loadBooks(query);
+});
 
-    fetch(`https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&maxResults=30`)
+document.getElementById("apply-filter-btn").addEventListener("click", function() {
+    const author = document.getElementById("filter-author").value.trim();
+    const genre = document.getElementById("filter-genre").value.trim();
+
+  
+    let queryParts = [];
+
+    const params = new URLSearchParams(window.location.search);
+    const queryFromUrl = params.get("query") || "*"; 
+    if (queryFromUrl && queryFromUrl !== "*") {
+        queryParts.push(queryFromUrl);
+    }
+
+    if (author) {
+        queryParts.push(`inauthor:${author}`);
+    }
+
+    if (genre) {
+        queryParts.push(`subject:${genre}`);
+    }
+
+    
+    let query = queryParts.length > 0 ? queryParts.join('+') : '*';
+
+    loadBooks(query);
+});
+
+function loadBooks(query) {
+    const container = document.getElementById("books-container");
+    container.innerHTML = "<p>Se încarcă cărțile...</p>";
+
+    fetch(`https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&maxResults=40`)
         .then(response => response.json())
         .then(data => {
-            container.innerHTML = "";  
             if (data.items) {
-                window.allBooks = data.items;  // <-- aici salvezi toate cărțile
-                data.items.forEach((book, index) => {
-                    const info = book.volumeInfo;
-                    container.innerHTML += `
-                        <div class="book-card">
-                            <div class="book-card__cover">
-                                <img src="${info.imageLinks?.thumbnail || 'assets/img/default-book.png'}" alt="Book cover" class="book-card__img">
-                            </div>
-                            <div class="book-card__data">
-                                <h3 class="book-card__title">${info.title || "No title"}</h3>
-                                <p class="book-card__author">${info.authors ? info.authors.join(", ") : "Unknown author"}</p>
-                                <p class="book-card__edition">${info.publishedDate || ""}</p>
-                                <div class="book-card__rating">
-                                    <span>${info.averageRating ? info.averageRating + "★" : "No rating"}</span>
-                                </div>
-                            </div>
-                            <div class="book-card__actions">
-                                <button 
-                                    class="book-card__btn save-book" data-index="${index}">  <!-- pui index numeric aici -->
-                                    <i class="ri-bookmark-line"></i>
-                                </button>
-                                <button 
-                                    class="book-card__btn"
-                                    title="Descriere: ${(info.description || "Fără descriere").replace(/"/g, "'")}\nAutor: ${info.authors ? info.authors.join(", ") : "Unknown author"}\nPublicat: ${info.publishedDate || ""}">
-                                    <i class="ri-information-line"></i>
-                                </button>
-                          </div>
-                        </div>
-                    `;
-                });
+                window.allBooks = data.items;
+                renderBooks(data.items);
             } else {
-                container.innerHTML = "<p>No books found.</p>";
+                container.innerHTML = "<p>Nu s-au găsit cărți.</p>";
             }
         })
         .catch(() => {
-            container.innerHTML = "<p>Failed to load books.</p>";
+            container.innerHTML = "<p>Eroare la încărcarea cărților.</p>";
         });
-});
+}
+
+function renderBooks(books) {
+    const container = document.getElementById("books-container");
+    container.innerHTML = "";
+
+    if (!books || books.length === 0) {
+        container.innerHTML = "<p>Nu s-au găsit cărți.</p>";
+        return;
+    }
+
+    books.forEach((book, index) => {
+        const info = book.volumeInfo;
+        container.innerHTML += `
+        <a href="/ShelfControl/book-details?id=${book.id}" class="book-card-link">
+            <div class="book-card" >
+                <div class="book-card__cover">
+                    <img src="${info.imageLinks?.thumbnail || 'assets/img/default-book.png'}" alt="Book cover" class="book-card__img">
+                </div>
+                <div class="book-card__data">
+                    <h3 class="book-card__title">${info.title || "Fără titlu"}</h3>
+                    <p class="book-card__author">${info.authors ? info.authors.join(", ") : "Autor necunoscut"}</p>
+                    <p class="book-card__edition">${info.publishedDate || ""}</p>
+                    <div class="book-card__rating">
+                        <span>${info.averageRating ? info.averageRating + "★" : "Fără rating"}</span>
+                    </div>
+                </div>
+                <div class="book-card__actions">
+                    <button class="book-card__btn save-book" data-index="${index}">
+                        <i class="ri-bookmark-line"></i>
+                    </button>
+                    <button class="book-card__btn" title="Descriere: ${(info.description || "Fără descriere").replace(/"/g, "'")}\nAutor: ${info.authors ? info.authors.join(", ") : "Autor necunoscut"}\nPublicat: ${info.publishedDate || ""}">
+                        <i class="ri-information-line"></i>
+                    </button>
+                </div>
+            </div>
+            </a>
+        `;
+    });
+}
 
 
 function myFunction() {

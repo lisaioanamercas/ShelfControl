@@ -65,6 +65,54 @@ class BookController{
         }
     
     }
+      public function lookInApi($bookId){
+        $apiUrl = "https://www.googleapis.com/books/v1/volumes/" . $bookId;
+
+        $response = file_get_contents($apiUrl);
+        if ($response) {
+           $data = json_decode($response, true);
+           $templateData= [ 
+            'book_id' => $data['id'],
+            'book_title' => $data['volumeInfo']['title'] ?? 'N/A',
+            'book_author' => $data['volumeInfo']['authors'] ? implode(', ', $data['volumeInfo']['authors']) : 'N/A',
+            'book_translator' => isset($data['volumeInfo']['translator']) ? implode(', ', $data['volumeInfo']['translator']) : 'N/A',
+            'book_genre' => isset($data['volumeInfo']['categories']) ? implode(', ', $data['volumeInfo']['categories']) : 'N/A',
+            'book_publication_year' => $data['volumeInfo']['publishedDate'] ?? 'N/A',
+            'book_image_url' => $data['volumeInfo']['imageLinks']['thumbnail'] ?? 'assets/img/default-book.png',
+            'book_description' => $data['volumeInfo']['description'] ?? 'No description available.',
+            'book_page_count' => $data['volumeInfo']['pageCount'] ?? 'N/A',
+            'book_isbn' => isset($data['volumeInfo']['industryIdentifiers'][0]['identifier']) ? $data['volumeInfo']['industryIdentifiers'][0]['identifier'] : 'N/A',
+            'book_language' => $data['volumeInfo']['language'] ?? 'N/A',
+            'book_publisher' => $data['volumeInfo']['publisher'] ?? 'N/A',
+            'book_sub_publisher' => 'N/A',
+            'book_source_api' => 'Google Books API',
+            'is_owned' => false, 
+            'reading_status' => 'to-read',
+            'pages_read' => 0,
+            'additionalCSS' => [
+                '/ShelfControl/views/css/book.css',
+                '/ShelfControl/views/css/bookPage/book-info.css',
+                '/ShelfControl/views/css/bookPage/reading-progress.css',
+                '/ShelfControl/views/css/bookPage/similar-books.css',
+                '/ShelfControl/views/css/bookPage/dark-theme-book.css'
+            ],
+            'additionalScripts' => [
+                '/ShelfControl/views/scripts/book.js'
+            ]
+            ];
+
+            // Render the view
+            $view = new BaseView();
+            $view->renderTemplate('book', $templateData);
+
+
+        } else {
+            http_response_code(404);
+            echo json_encode(["error" => "Book not found"]);
+        }
+
+
+    }
 
     public function showDetails(){
         //caut ID-ul cartii
@@ -96,18 +144,17 @@ class BookController{
         $bookDetails = $bookModel->getBookById($bookId);
         
         if (!$bookDetails) {
-            // Book not found
-            header('Location: /ShelfControl/home');
+             
+            $this->lookInApi($bookId);
             exit;
         }
+        else{
         
-        // Get user-specific book data if logged in
         $userBookData = null;
         if ($userId) {
             $userBookData = $bookModel->getUserBookData($userId, $bookId);
         }
         
-        // Format data for template
         $templateData = [
             'book_id' => $bookDetails['BOOK_ID'],
             'book_title' => $bookDetails['TITLE'],
@@ -141,7 +188,9 @@ class BookController{
         // Render the view
         $view = new BaseView();
         $view->renderTemplate('book', $templateData);
+       }
     }
+  
     
     // New method for AJAX updates
     public function updateBook() {
