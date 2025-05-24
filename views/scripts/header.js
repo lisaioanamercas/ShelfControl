@@ -1,19 +1,19 @@
 // ===================================== SEARCH =========================================
 const searchButton = document.getElementById('search-button'),
       searchClose = document.getElementById('search-close'),
-      saerchContent = document.getElementById('search-content')
+      searchContent = document.getElementById('search-content');  // Fixed variable name from 'saerchContent'
 
-/* SAERCH show */
+/* SEARCH show */
 if(searchButton){
     searchButton.addEventListener('click', () =>{
-        saerchContent.classList.add('show-search')
+        searchContent.classList.add('show-search')
     })
 }
 
 /* SEARCH hidden */
 if(searchClose){
     searchClose.addEventListener('click', () =>{
-        saerchContent.classList.remove('show-search')
+        searchContent.classList.remove('show-search')
     })
 }
 
@@ -29,7 +29,7 @@ if(profileButton){
     })
 }
 
-/* SEARCH hidden */
+/* PROFILE hidden */
 if(profileClose){
     profileClose.addEventListener('click', () =>{
         profileContent.classList.remove('show-profile')
@@ -42,11 +42,4 @@ const shadowHeader = () =>{
     this.scrollY >= 50 ? header.classList.add('shadow-header') 
                        : header.classList.remove('shadow-header')
 }
-window.addEventListener('scroll', scrollHeader)
-
-// =====================================  =========================================
-// =====================================  =========================================
-// =====================================  =========================================
-// =====================================  =========================================
-// =====================================  =========================================
-// =====================================  =========================================
+window.addEventListener('scroll', shadowHeader)  // Fixed function name from 'scrollHeader'

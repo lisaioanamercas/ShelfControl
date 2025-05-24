@@ -126,6 +126,16 @@ class BookController{
             'is_owned' => $userBookData ? ($userBookData['IS_OWNED'] == 'Y') : false,
             'reading_status' => $userBookData ? $userBookData['STATUS'] : 'to-read',
             'pages_read' => $userBookData ? $userBookData['PAGES_READ'] : 0,
+            'additionalCSS' => [
+                '/ShelfControl/views/css/book.css',
+                '/ShelfControl/views/css/bookPage/book-info.css',
+                '/ShelfControl/views/css/bookPage/reading-progress.css',
+                '/ShelfControl/views/css/bookPage/similar-books.css',
+                '/ShelfControl/views/css/bookPage/dark-theme-book.css'
+            ],
+            'additionalScripts' => [
+                '/ShelfControl/views/scripts/book.js'
+            ]
         ];
                 
         // Render the view

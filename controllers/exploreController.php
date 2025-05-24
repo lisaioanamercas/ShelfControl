@@ -1,6 +1,6 @@
 <?php
 namespace App\Controllers;
-use App\Views\BaseView;
+use App\Views\BaseView; 
 use App\Models\BookModel;
 use App\Models\UserModel;
 
@@ -17,26 +17,31 @@ class ExploreController{
         }
 
         $view= new BaseView();
-        $data =[];
+        $data = [
+            'pageTitle' => 'Explore',
+            'currentPage' => 'library',
+            'additionalCSS' => [
+                '/ShelfControl/views/css/lib.css', 
+                '/ShelfControl/views/css/dark-theme-explore.css'],
+            'additionalScripts' => [
+                '/ShelfControl/views/scripts/explore.js',
+                '/ShelfControl/views/scripts/darkTheme.js'
+            ]
+        ];
         $view->renderTemplate('explore',$data);
     }
+
    public function explorePost() {
 
     header('Content-Type: application/json');
 
-     
     $jsonInput = file_get_contents('php://input');
-
-   
-    
     if (!$jsonInput) {
         http_response_code(400);
         echo json_encode(['error' => 'No data received']);
         exit;
     }
-   
 
-   
     require __DIR__ . '/../models/dbConnection.php';
 
     $bookModel = new BookModel($conn);

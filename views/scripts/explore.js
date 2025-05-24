@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", function () {
     fetch(`https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&maxResults=30`)
         .then(response => response.json())
         .then(data => {
-            container.innerHTML = ""; 
+            container.innerHTML = "";  
             if (data.items) {
                 window.allBooks = data.items;  // <-- aici salvezi toate cărțile
                 data.items.forEach((book, index) => {

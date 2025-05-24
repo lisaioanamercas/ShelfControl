@@ -27,8 +27,8 @@ body {
     color: var(--dark-text-color);
 }
 
-/* ================================= REGISTER CONTAINER =================================== */
-.register-container {
+/* ================================= LOGIN CONTAINER =================================== */
+.login-container {
     background-color: var(--white-color);
     padding: 3rem 2.5rem;
     border-radius: 1.5rem;
@@ -40,7 +40,7 @@ body {
     transition: background-color .4s, box-shadow .4s;
 }
 
-.register-container::before {
+.login-container::before {
     content: '';
     position: absolute;
     top: 0;
@@ -50,18 +50,18 @@ body {
     background: linear-gradient(90deg, var(--first-color), hsl(0, 85%, 60%));
 }
 
-.dark-theme .register-container {
+.dark-theme .login-container {
     background-color: var(--dark-card-color);
     box-shadow: 0 12px 32px hsla(0, 0%, 0%, .3);
 }
 
 /* ================================= HEADER =================================== */
-.register-header {
+.login-header {
     text-align: center;
     margin-bottom: 2rem;
 }
 
-.register-logo {
+.login-logo {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -72,12 +72,12 @@ body {
     margin-bottom: 1rem;
 }
 
-.register-logo i {
+.login-logo i {
     font-size: 1.5rem;
     color: var(--white-color);
 }
 
-.register-title {
+.login-title {
     font-size: var(--h1-font-size);
     font-family: var(--second-font);
     color: var(--title-color);
@@ -85,21 +85,21 @@ body {
     font-weight: var(--font-medium);
 }
 
-.register-subtitle {
+.login-subtitle {
     color: var(--text-color);
     font-size: var(--small-font-size);
 }
 
-.dark-theme .register-title {
+.dark-theme .login-title {
     color: var(--dark-title-color);
 }
 
-.dark-theme .register-subtitle {
+.dark-theme .login-subtitle {
     color: var(--dark-text-color);
 }
 
 /* ================================= FORM =================================== */
-.register-form {
+.login-form {
     display: grid;
     gap: 1.5rem;
 }
@@ -139,18 +139,6 @@ body {
     transition: color .3s;
 }
 
-        /* Center lock icons for password fields */
-.form-icon.icon-center {
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
-/* Add padding for centered icon inputs */
-.form-input.with-centered-icon {
-    padding: 1rem;
-    text-align: center;
-}
-
 .form-input:focus + .form-icon {
     color: var(--first-color);
 }
@@ -179,7 +167,7 @@ body {
 }
 
 /* ================================= BUTTON =================================== */
-.register-button {
+.login-button {
     width: 100%;
     padding: 1rem;
     background: linear-gradient(135deg, var(--first-color), hsl(0, 85%, 40%));
@@ -189,21 +177,16 @@ body {
     font-size: var(--normal-font-size);
     font-weight: var(--font-semi-bold);
     cursor: pointer;
-    transition: transform .3s, box-shadow .3s, opacity .3s;
+    transition: transform .3s, box-shadow .3s;
 }
 
-.register-button:hover:not(:disabled) {
+.login-button:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 24px hsla(0, 85%, 46%, .3);
 }
 
-.register-button:active {
+.login-button:active {
     transform: translateY(0);
-}
-
-.register-button:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
 }
 
 /* ================================= MESSAGE =================================== */
@@ -228,42 +211,42 @@ body {
 }
 
 /* ================================= FOOTER =================================== */
-.register-footer {
+.login-footer {
     text-align: center;
     margin-top: 2rem;
     padding-top: 1.5rem;
     border-top: 1px solid var(--border-color);
 }
 
-.login-link {
+.register-link {
     color: var(--text-color);
     text-decoration: none;
     font-size: var(--small-font-size);
     transition: color .3s;
 }
 
-.login-link:hover {
+.register-link:hover {
     color: var(--first-color);
 }
 
-.login-link span {
+.register-link span {
     color: var(--first-color);
     font-weight: var(--font-medium);
 }
 
-.dark-theme .register-footer {
+.dark-theme .login-footer {
     border-top-color: var(--dark-border-color);
 }
 
-.dark-theme .login-link {
+.dark-theme .register-link {
     color: var(--dark-text-color);
 }
 
-.dark-theme .login-link:hover {
+.dark-theme .register-link:hover {
     color: var(--dark-first-color);
 }
 
-.dark-theme .login-link span {
+.dark-theme .register-link span {
     color: var(--dark-first-color);
 }
 
@@ -295,12 +278,12 @@ body {
 
 /* ================================= RESPONSIVE =================================== */
 @media screen and (max-width: 576px) {
-    .register-container {
+    .login-container {
         margin: 1rem;
         padding: 2rem 1.5rem;
     }
     
-    .register-title {
+    .login-title {
         font-size: var(--h2-font-size);
     }
 }

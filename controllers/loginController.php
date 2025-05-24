@@ -2,7 +2,7 @@
 
 namespace App\Controllers;
 
-use App\Models\UserModel;
+use App\Models\UserModel; 
 use App\Views\BaseView;
 use App\Controllers\BaseController;
 

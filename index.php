@@ -7,7 +7,6 @@ use App\Controllers\BookController;
 use App\Controllers\HomeController;
 use App\Controllers\SaveBookController;
 
-
 require_once __DIR__ . '/vendor/autoload.php';
 
 use Dotenv\Dotenv;
@@ -71,18 +70,18 @@ elseif($request=='/logout')
 {
     $loginController->logout();
 }
+
 elseif (strstr($request,'/explore')) {
-
-  if($_SERVER['REQUEST_METHOD']=='POST')
-    {
-       $exploreController->explorePost();
+    if($_SERVER['REQUEST_METHOD']=='POST') {
+        $exploreController->explorePost();
+    } else {
+        $exploreController->exploreGet();
     }
-    else
-    {
-      $exploreController->exploreGet();
-    }
-
 } 
+elseif (strstr($request,'/search')) {
+    // Route search requests to the explore controller !!!
+    $exploreController->exploreGet();
+}
 elseif ($request == '/update-progress') {
   
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -106,13 +105,4 @@ elseif ($request =='/update-book') {
         http_response_code(405); // Method Not Allowed
         echo "This endpoint only accepts POST requests.";
     }
-}
-
-elseif (strstr($request,'/search')) {
-    $searchController = new SearchController();
-    $searchController->search();
-} else {
-    http_response_code(404);
-    echo "Pagina nu este disponibilă.";
-
-}
+} 
