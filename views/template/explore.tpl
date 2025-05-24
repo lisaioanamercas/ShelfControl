@@ -115,12 +115,13 @@
                     <p class="library-header__description">
                         Explore your personal collection of books and discover new reads.
                     </p>
-                        <div class="library-filter">
-                        <button class="library-filter__btn active">All Books</button>
-                        <button class="library-filter__btn">Fiction</button>
-                        <button class="library-filter__btn">Non-Fiction</button>
-                        <button class="library-filter__btn">Classics</button>
+               <div class="library-filter">
+                    <input type="text" id="filter-author" class="library-filter__input" placeholder="Filtrează după autor">
+                    <input type="text" id="filter-genre" class="library-filter__input" placeholder="Filtrează după gen">
+                    <button id="apply-filter-btn" class="library-filter__btn">Aplică filtre</button>
                     </div>
+
+
                 </div>
              </section>
 
