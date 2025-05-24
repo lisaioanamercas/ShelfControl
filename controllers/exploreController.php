@@ -58,9 +58,16 @@ class ExploreController{
     $title = $book['title'];
 
      if($bookModel->getBookidByTitle($title)!=null)
-    {
-            echo json_encode(['message' => 'Cartea exista in to read deja!']);
+    {     
+        $bookId = $bookModel->getBookIdByTitle($title);
+        if($bookModel->isBookInUserList($userId, $bookId)){
+             echo json_encode(['message' => 'Cartea exista in to read deja!']);
             exit;
+        }else {
+            $bookModel->insertIntoUserBook($userId, $bookId);
+            echo json_encode(['message' => 'Cartea a fost adaugata in to read!']);
+            exit;
+        }
 
     }
     else{

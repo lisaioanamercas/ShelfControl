@@ -279,6 +279,16 @@ class BookModel {
         return oci_execute($stmt);
     }
 
+    public function isBookInUserList($userId, $bookId) {
+        $sql = "SELECT COUNT(*) as count FROM UserBook WHERE user_id = :user_id AND book_id = :book_id";
+        $stmt = oci_parse($this->conn, $sql);
+        oci_bind_by_name($stmt, ':user_id', $userId);
+        oci_bind_by_name($stmt, ':book_id', $bookId);
+        oci_execute($stmt);
+        $row = oci_fetch_assoc($stmt);
+        return $row['COUNT'] > 0;
+    }
+
 
  
 }
