@@ -63,11 +63,11 @@ function renderBooks(books) {
     books.forEach((book, index) => {
         const info = book.volumeInfo;
         container.innerHTML += `
-        <a href="/ShelfControl/book-details?id=${book.id}" class="book-card-link">
             <div class="book-card" >
                 <div class="book-card__cover">
                     <img src="${info.imageLinks?.thumbnail || 'assets/img/default-book.png'}" alt="Book cover" class="book-card__img">
                 </div>
+                <a href="/ShelfControl/book-details?id=${book.id}" class="book-card-link">
                 <div class="book-card__data">
                     <h3 class="book-card__title">${info.title || "Fără titlu"}</h3>
                     <p class="book-card__author">${info.authors ? info.authors.join(", ") : "Autor necunoscut"}</p>
@@ -76,6 +76,7 @@ function renderBooks(books) {
                         <span>${info.averageRating ? info.averageRating + "★" : "Fără rating"}</span>
                     </div>
                 </div>
+                </a>
                 <div class="book-card__actions">
                     <button class="book-card__btn save-book" data-index="${index}">
                         <i class="ri-bookmark-line"></i>
@@ -85,7 +86,7 @@ function renderBooks(books) {
                     </button>
                 </div>
             </div>
-            </a>
+            
         `;
     });
 }
