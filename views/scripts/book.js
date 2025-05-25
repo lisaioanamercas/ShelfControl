@@ -92,31 +92,36 @@ document.addEventListener('DOMContentLoaded', () => {
     const buyBtn = document.getElementById('buyBtn');
     if (buyBtn) {
         buyBtn.addEventListener('click', () => {
-            // Open a modal or redirect to a purchase page
             alert("This would redirect to a purchase page in a real application");
         });
     }
     
-    function updateBookStatus(bookId, status) {
-
-
-        
-        fetch('/ShelfControl/update-book', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: `action=status&book_id=${bookId}&status=${status}`
-        })
-        .then(response => response.json())
-        .then(data => {
+  function updateBookStatus(bookId, status) {
+    fetch('/ShelfControl/update-book', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: `action=status&book_id=${bookId}&status=${status}`
+    })
+    .then(response => response.text())
+    .then(text => {
+        console.log('Server response:', text);
+        try {
+            const data = JSON.parse(text);
             if (!data.success) {
                 console.error('Error updating status:', data.message);
+            } if (bookId.toString() !== data.book_id.toString()) {
+                     window.location.href = data.redirect_url;
             }
-        })
-        .catch(error => console.error('Error:', error));
-    }
-    
+
+        } catch (e) {
+            console.error('Invalid JSON:', text);
+        }
+    });
+}
+
+
     function updateBookProgress(bookId, pagesRead) {
         fetch('/ShelfControl/update-book', {
             method: 'POST',

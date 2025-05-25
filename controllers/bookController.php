@@ -153,17 +153,92 @@ class BookController{
         $view->renderTemplate('book', $templateData);
        }
     }
+    function extractISBN(array $industryIdentifiers): ?string {
+    if (empty($industryIdentifiers)) {
+        return null;
+    }
+
+    $isbn13 = null;
+    $isbn10 = null;
+
+    foreach ($industryIdentifiers as $identifier) {
+        if (!isset($identifier['type']) || !isset($identifier['identifier'])) {
+            continue;
+        }
+
+        if ($identifier['type'] === 'ISBN_13') {
+            $isbn13 = $identifier['identifier'];
+        } elseif ($identifier['type'] === 'ISBN_10') {
+            $isbn10 = $identifier['identifier'];
+        }
+    }
+
+    // Preferăm ISBN_13 dacă există
+    if ($isbn13 !== null) {
+        return $isbn13;
+    }
+
+    // Dacă nu, returnăm ISBN_10 dacă există
+    if ($isbn10 !== null) {
+        return $isbn10;
+    }
+
+    // Dacă nu există niciunul, returnăm null
+    return null;
+}
+
+    public function saveBookApi($bookModel, $bookId,$userId) {
+        $apiUrl = 'https://www.googleapis.com/books/v1/volumes/' . urlencode($bookId);
+            $jsonStr = file_get_contents($apiUrl);
+            $json = json_decode($jsonStr, true);
+
+            if (!$json || !isset($json['volumeInfo'])) {
+                header('Content-Type: application/json');
+                echo json_encode(['success' => false, 'message' => 'Book not found in API']);
+                exit;
+            }
+
+                    $info = $json['volumeInfo'];
+
+                    $bookData = [
+                        'title' => $info['title'] ?? null,
+                        'author' => isset($info['authors'][0]) ? $info['authors'][0] : null,
+                        'translator' => null,
+                        'publishing_house' => $info['publisher'] ?? null,
+                        'sub_publisher' => null,
+                        'isbn' => $this->extractISBN($info['industryIdentifiers'] ?? []),
+                        'publication_year' => isset($info['publishedDate']) ? intval(substr($info['publishedDate'], 0, 4)) : null,
+                        'cover' => $info['imageLinks']['thumbnail'] ?? null,
+                        'language' => $info['language'] ?? null,
+                        'genre' => isset($info['categories'][0]) ? $info['categories'][0] : null,
+                        'summary' => $info['description'] ?? null,
+                        'pages' => $info['pageCount'] ?? null,
+                        'source' => 'Google Books API'
+                    ];
+                  
+                  
+                  $bookTitle = $bookData['title'];
+
+                  $jsonToImport = json_encode([$bookData]); // array cu un singur obiect (carte)
+                   $result = $bookModel->importBooksFromJson($jsonToImport);
+                   
+                   $bookModel->insertIntoUserBook($userId, $bookModel->getBookIdByTitle($bookTitle));
+
+                    return  $bookModel->getBookIdByTitle($bookTitle);
+                          
+
+             }
   
     
     public function updateBook() {
-        // Check if user is logged in
+
         if (!$this->jwt->verifyLogin()) {
+           
             header('Content-Type: application/json');
             echo json_encode(['success' => false, 'message' => 'Not authenticated']);
             exit;
         }
         
-        // Get user ID from JWT
         $decoded = $this->jwt->validateJWT($_COOKIE['jwt']);
         $email = $decoded->data->email;
         
@@ -184,12 +259,12 @@ class BookController{
         $action = $_POST['action'];
         $bookModel = new BookModel($conn);
         
-        if(!$bookModel->bookExists($bookId)) {
-            header('Content-Type: application/json');
-            echo json_encode(['success' => false, 'message' => 'Book not found']);
-            exit;
+        if(!is_numeric($bookId)) {
+             $bookId=$this->saveBookApi($bookModel, $bookId, $userId);
+      
         }
 
+   
         switch ($action) {
             case 'status':
                 $status = $_POST['status'] ?? 'to-read';
@@ -211,7 +286,12 @@ class BookController{
         }
         
         header('Content-Type: application/json');
-        echo json_encode(['success' => $result]);
-    }
+            echo json_encode([
+                                'success' => true,
+                                'book_id' => $bookId,
+                                'redirect_url' =>  '/ShelfControl/book-details?id=' . $bookId
+                            ]);
+                   exit;    }
+    
 }
 

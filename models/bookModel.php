@@ -52,7 +52,7 @@ class BookModel {
             FROM Book b 
             JOIN Author a ON b.author_id = a.author_id
             JOIN UserBook ub ON b.book_id = ub.book_id 
-            WHERE ub.user_id = :user_id AND ub.status = 'currently-reading'";
+            WHERE ub.user_id = :user_id AND ub.status = 'reading'";
 
         $stmt = oci_parse($this->conn, $sql);
         oci_bind_by_name($stmt, ':user_id', $userId);
