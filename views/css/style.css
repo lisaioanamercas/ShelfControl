@@ -1087,6 +1087,46 @@ img{
 .dark-theme .footer__logo {
     color: var(--dark-first-color);
 }
+/*sugestii de carti*/
+.suggestions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.suggestion-card {
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    text-align: center;
+    transition: transform 0.3s;
+}
+
+.suggestion-card:hover {
+    transform: translateY(-5px);
+}
+
+.suggestion-cover {
+    width: 100%;
+    height: auto;
+}
+
+.suggestion-info {
+    padding: 0.75rem;
+}
+
+.suggestion-title {
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.suggestion-author {
+    font-size: 0.9rem;
+    color: #777;
+}
+
 
 /* Responsive footer */
 @media screen and (max-width: 768px) {

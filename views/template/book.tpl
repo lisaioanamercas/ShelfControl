@@ -107,3 +107,10 @@
         </div>
     </div>
 </section>
+<section class="book-suggestions section">
+    <div class="book-suggestions__container container">
+        <h2 class="suggestions-title">You might also like</h2>
+        <div class="suggestions-grid" id="suggestionsGrid"></div>
+    </div>
+</section>
+

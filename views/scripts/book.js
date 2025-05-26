@@ -4,6 +4,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const statusOptions = document.getElementById('statusOptions');
     const currentStatus = document.getElementById('currentStatus');
     const readingProgress = document.getElementById('readingProgress');
+     const authorElement = document.querySelector('.book-author');
+     const titleElement = document.querySelector('.book-title');
+     
+     
+    const author = authorElement.innerText;
+    console.log('Autor:', author);
+        
+        
+    const currentTitle = titleElement.innerText;
+    console.log('Titlu:', currentTitle);
+
+
     
     // Toggle status dropdown
     if (statusBtn) {
@@ -157,4 +169,44 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .catch(error => console.error('Error:', error));
     }
+     fetch(`https://www.googleapis.com/books/v1/volumes?q=inauthor:${encodeURIComponent(author)}&maxResults=6`)
+        .then(response => response.json())
+        .then(data => {
+            if (!data.items) {
+                suggestionsGrid.innerHTML = '<p>No suggestions found.</p>';
+                return;
+            }
+
+            const books = data.items.filter(item =>
+                item.volumeInfo.title.toLowerCase() !== currentTitle.toLowerCase()
+            );
+                const seenBooks = new Set();
+
+                books.forEach(book => {
+                    const title = book.volumeInfo.title || 'Unknown Title';
+                    const authors = book.volumeInfo.authors ? book.volumeInfo.authors.join(', ') : 'Unknown Author';
+                    const uniqueKey = `${title.toLowerCase()}|${authors.toLowerCase()}`;
+
+                    if (seenBooks.has(uniqueKey)) {
+                        return; // carte deja adăugată
+                    }
+                    seenBooks.add(uniqueKey);
+
+                    const thumbnail = book.volumeInfo.imageLinks?.thumbnail || 'default.jpg';
+                    const link = `https://books.google.com/books?id=${book.id}`;
+
+                    const card = document.createElement('div');
+                    card.className = 'suggestion-card';
+                    card.innerHTML = `
+                        <a href="${link}" target="_blank">
+                            <img src="${thumbnail}" alt="${title}" class="suggestion-cover">
+                            <div class="suggestion-info">
+                                <h3 class="suggestion-title">${title}</h3>
+                                <p class="suggestion-author">${authors}</p>
+                            </div>
+                        </a>
+                    `;
+                    suggestionsGrid.appendChild(card);
+                });
+            });
 });
