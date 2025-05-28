@@ -58,6 +58,8 @@
 <!-- ==================== COMMON JAVASCRIPT =========================== -->
 <script src="/ShelfControl/views/scripts/darkTheme.js"></script>
 <script src="/ShelfControl/views/scripts/header.js"></script>
+<script src="/ShelfControl/views/scripts/admin.js"></script>
+
 
 
 <!-- ==================== PAGE SPECIFIC JAVASCRIPT =========================== -->

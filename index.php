@@ -8,6 +8,7 @@ use App\Controllers\HomeController;
 use App\Controllers\SaveBookController;
 
 require_once __DIR__ . '/vendor/autoload.php';
+define('TEMPLATE_PATH', __DIR__ . '/views/template/');
 
 use Dotenv\Dotenv;
 
@@ -106,3 +107,18 @@ elseif ($request =='/update-book') {
         echo "This endpoint only accepts POST requests.";
     }
 } 
+// Admin API endpoints - only for processing form submissions
+elseif ($request == '/admin/add-book') {
+    $adminController = new \App\Controllers\AdminController();
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        $adminController->addBookPost();
+    } else {
+        // Instead of an error, redirect to home page
+        header('Location: /ShelfControl/home');
+        exit;
+    }
+} elseif ($request == '/admin/upload-cover') {
+    $adminController = new \App\Controllers\AdminController();
+    $adminController->uploadCover();
+}
+
