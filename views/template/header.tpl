@@ -65,18 +65,11 @@
                 
                 <div class="nav__actions">
 
+                    <!-- Admin button -->
                     <?php if (isset($user['role']) && $user['role'] === 'admin'): ?>
-                        <div class="admin-add-button">
-                            <i class="ri-add-line admin-button" id="admin-button"></i>
-                            <div class="admin-dropdown" id="admin-dropdown">
-                                <a href="/ShelfControl/admin/add-book" class="admin-dropdown__item">
-                                    <i class="ri-book-line"></i> Add Book
-                                </a>
-                                <a href="/ShelfControl/admin/manage-users" class="admin-dropdown__item">
-                                    <i class="ri-group-line"></i> Manage Users
-                                </a>
-                            </div>
-                        </div>
+                        <a href="/ShelfControl/admin/add-book" class="admin-add-button" title="Add New Book">
+                            <i class="ri-add-line admin-button"></i>
+                        </a>
                     <?php endif; ?>
 
                     <!-- Search button -->
