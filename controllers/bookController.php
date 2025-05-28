@@ -31,7 +31,7 @@ class BookController{
         }
     
     }
-      public function lookInApi($bookId){
+    public function lookInApi($bookId){
         $apiUrl = "https://www.googleapis.com/books/v1/volumes/" . $bookId;
 
         $response = file_get_contents($apiUrl);
@@ -96,6 +96,7 @@ class BookController{
         if ($isLoggedIn) {
             $decoded = $this->jwt->validateJWT($_COOKIE['jwt']);
             $email = $decoded->data->email;
+            
             
             require_once __DIR__ . '/../models/dbConnection.php';
             

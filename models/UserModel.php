@@ -80,7 +80,44 @@ class UserModel{
         return $row ? $row['ROLE'] : null;
     }
 
+    public function getUserByEmail($email)
+    {
+        $sql = "SELECT * FROM users WHERE email = :email";
+        $stmt = oci_parse($this->conn, $sql);
+        oci_bind_by_name($stmt, ':email', $email);
+        oci_execute($stmt);
+        return oci_fetch_assoc($stmt);
+    }
 
+    public function getUserStats($userId)
+    {
+        // Books read (status = 'completed')
+        $sqlRead = "SELECT COUNT(*) AS books_read FROM UserBook WHERE user_id = :user_id AND status = 'completed'";
+        $stmtRead = oci_parse($this->conn, $sqlRead);
+        oci_bind_by_name($stmtRead, ':user_id', $userId);
+        oci_execute($stmtRead);
+        $read = oci_fetch_assoc($stmtRead);
+
+        // Currently reading (status = 'reading')
+        $sqlCurrent = "SELECT COUNT(*) AS currently_reading FROM UserBook WHERE user_id = :user_id AND status = 'reading'";
+        $stmtCurrent = oci_parse($this->conn, $sqlCurrent);
+        oci_bind_by_name($stmtCurrent, ':user_id', $userId);
+        oci_execute($stmtCurrent);
+        $current = oci_fetch_assoc($stmtCurrent);
+
+        // Want to read (status = 'to-read')
+        $sqlWant = "SELECT COUNT(*) AS want_to_read FROM UserBook WHERE user_id = :user_id AND status = 'to-read'";
+        $stmtWant = oci_parse($this->conn, $sqlWant);
+        oci_bind_by_name($stmtWant, ':user_id', $userId);
+        oci_execute($stmtWant);
+        $want = oci_fetch_assoc($stmtWant);
+
+        return [
+            'books_read' => $read['BOOKS_READ'] ?? 0,
+            'currently_reading' => $current['CURRENTLY_READING'] ?? 0,
+            'want_to_read' => $want['WANT_TO_READ'] ?? 0
+        ];
+    }
 
 }
 
