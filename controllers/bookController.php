@@ -53,7 +53,8 @@ class BookController{
             'book_sub_publisher' => 'N/A',
             'book_source_api' => 'Google Books API',
             'is_owned' => false, 
-            'reading_status' => 'Put status here', 
+            'reading_status' => 'Put status here',
+            'google_api' => $data['id'],
             'pages_read' => 0,
             'additionalCSS' => [
                 '/ShelfControl/views/css/book.css',
@@ -106,17 +107,21 @@ class BookController{
         
         $bookModel = new BookModel($conn);
         $bookDetails = $bookModel->getBookById($bookId);
+        $bookIdreplace = $bookModel->findGoogleId($bookId);
         
-        if (!$bookDetails) {
+        if (!$bookDetails&& !$bookIdreplace) {
              
             $this->lookInApi($bookId);
             exit;
         }
-        else{
+        else if ($bookIdreplace) {
+            $bookId= $bookIdreplace;
+        }
         
         $userBookData = null;
         if ($userId) {
             $userBookData = $bookModel->getUserBookData($userId, $bookId);
+             $bookDetails = $bookModel->getBookById($bookId);
         }
         
         $templateData = [
@@ -153,7 +158,7 @@ class BookController{
         $view = new BaseView();
         $view->renderTemplate('book', $templateData);
        }
-    }
+    
     function extractISBN(array $industryIdentifiers): ?string {
     if (empty($industryIdentifiers)) {
         return null;

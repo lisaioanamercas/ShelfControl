@@ -288,6 +288,15 @@ class BookModel {
         $row = oci_fetch_assoc($stmt);
         return $row['COUNT'] > 0;
     }
+    public function findGoogleId($id)
+    {
+        $sql = "SELECT book_id FROM Book WHERE google_books_id = :google_id";
+        $stmt = oci_parse($this->conn, $sql);
+        oci_bind_by_name($stmt, ':google_id', $id);
+        oci_execute($stmt);
+        $row = oci_fetch_assoc($stmt);
+        return $row ? $row['BOOK_ID'] : null;
+    }
 
 
  

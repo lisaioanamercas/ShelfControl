@@ -137,7 +137,9 @@ document.addEventListener("click", function(e) {
       genre: info.categories ? info.categories[0] : null,
       summary: info.description || null,
       pages: info.pageCount || null,
-      source: 'Google Books API' 
+      source: 'Google Books API' ,
+      google_id: book.id || null,
+
     };
       console.log("Verificare SOURCE:", bookData.source); 
   

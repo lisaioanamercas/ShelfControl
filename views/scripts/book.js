@@ -123,9 +123,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const data = JSON.parse(text);
             if (!data.success) {
                 console.error('Error updating status:', data.message);
-            } if (bookId.toString() !== data.book_id.toString()) {
+            }/* if (bookId.toString() !== data.book_id.toString()) {
                      window.location.href = data.redirect_url;
-            }
+            }*/
 
         } catch (e) {
             console.error('Invalid JSON:', text);
