@@ -302,7 +302,58 @@ class BookController{
                                 'book_id' => $bookId,
                                 'redirect_url' =>  '/ShelfControl/book-details?id=' . $bookId
                             ]);
-                   exit;    }
+        exit;    
+    }
     
+    public function showBooksByAttribute($type, $value) {
+        // Verify login
+        $isLoggedIn = $this->jwt->verifyLogin();
+        if (!$isLoggedIn) {
+            header('Location: /ShelfControl/login');
+            exit;
+        }
+    
+        // Get current user ID
+        $decoded = $this->jwt->validateJWT($_COOKIE['jwt']);
+        $email = $decoded->data->email;
+        
+        require_once __DIR__ . '/../models/dbConnection.php';
+        $userModel = new \App\Models\UserModel($conn);
+        $userId = $userModel->getUserIdByEmail($email);
+        
+        // Get filtered books
+        $bookModel = new BookModel($conn);
+        $books = [];
+        $title = "";
+        
+        switch ($type) {
+            case 'author':
+                $books = $bookModel->getBooksByAuthor($value);
+                $title = "Books by $value";
+                break;
+            case 'publisher':
+                $books = $bookModel->getBooksByPublisher($value);
+                $title = "Books from $value";
+                break;
+            case 'translator':
+                $books = $bookModel->getBooksByTranslator($value);
+                $title = "Books translated by $value";
+                break;
+            case 'subpublisher':
+                $books = $bookModel->getBooksBySubPublisher($value);
+                $title = "Books from $value";
+                break;
+        }
+        
+        // Render the view
+        $view = new \App\Views\BaseView();
+        $view->renderTemplate('userBooksDisplay', [
+            'section_title' => $title,
+            'books' => $books,
+            'empty_message' => "No books found for this $type.",
+            'additionalCSS' => [
+                '/ShelfControl/views/css/lib.css'
+            ]
+        ]);
+    }
 }
-

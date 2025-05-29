@@ -31,9 +31,12 @@
                         <!-- Book Item -->
                         <div class="current-reads__item" data-book-id="<?php echo $book['BOOK_ID']; ?>">
                             <div class="current-reads__cover">
-                                <img src="<?php echo $book['COVER_URL'] ?: '/assets/img/default-book.png'; ?>" 
-                                    alt="<?php echo htmlspecialchars($book['TITLE']); ?>" 
-                                    class="current-reads__img">
+                                <!-- Add this anchor tag around the image -->
+                                <a href="/ShelfControl/book-details?id=<?php echo $book['BOOK_ID']; ?>">
+                                    <img src="<?php echo $book['COVER_URL'] ?: '/assets/img/default-book.png'; ?>" 
+                                        alt="<?php echo htmlspecialchars($book['TITLE']); ?>" 
+                                        class="current-reads__img">
+                                </a>
                             </div>
                             <div class="current-reads__info">
                                 <h4 class="current-reads__book-title"><?php echo htmlspecialchars($book['TITLE']); ?></h4>
