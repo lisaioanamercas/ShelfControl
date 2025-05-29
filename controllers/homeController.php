@@ -74,7 +74,7 @@ class HomeController {
         // Validate input
         $bookId = $_POST['book_id'] ?? null;
         $pagesRead = $_POST['pages_read'] ?? null;
-        
+         
         if (!$bookId || !$pagesRead) {
             header('Content-Type: application/json');
             echo json_encode(['success' => false, 'message' => 'Missing required parameters']);

@@ -253,7 +253,7 @@ class BookModel {
     if (!$result) {
         $e = oci_error($stmt);
         throw new Exception("Eroare la execuția procedurii: " . $e['message']);
-    }
+    } 
 
     oci_free_statement($stmt);
     $clob->free();

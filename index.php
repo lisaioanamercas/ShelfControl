@@ -121,4 +121,12 @@ elseif ($request == '/admin/add-book') {
     $adminController = new \App\Controllers\AdminController();
     $adminController->uploadCover();
 }
-
+// Add these routes after your existing routes
+elseif ($request == '/toread') {
+    $userBooksController = new \App\Controllers\UserBooksController();
+    $userBooksController->toReadBooks();
+} 
+elseif ($request == '/library') {
+    $userBooksController = new \App\Controllers\UserBooksController();
+    $userBooksController->ownedBooks();
+}
