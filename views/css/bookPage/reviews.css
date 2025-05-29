@@ -1,0 +1,302 @@
+/* Review Section Styles */
+.book-review-section {
+    grid-column: 1 / -1;
+    border-top: 1px solid var(--border-color);
+    padding-top: 2rem;
+    margin-top: 2rem;
+}
+
+.book-reviews__title {
+    font-size: var(--h3-font-size);
+    margin-bottom: 1rem;
+}
+
+.write-review-btn {
+    padding: 0.75rem 1.5rem;
+    background-color: var(--first-color);
+    color: var(--white-color);
+    border: none;
+    border-radius: 4px;
+    font-weight: var(--font-medium);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    transition: background-color 0.3s;
+}
+
+.write-review-btn:hover {
+    background-color: hsl(0, 85%, 40%);
+}
+
+.reviews-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.review-item {
+    padding: 1.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background-color: var(--container-color);
+}
+
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+.reviewer-info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.reviewer-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--first-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--white-color);
+    font-weight: var(--font-bold);
+}
+
+.reviewer-name {
+    font-weight: var(--font-medium);
+}
+
+.review-date {
+    color: var(--text-color-light);
+    font-size: var(--smaller-font-size);
+}
+
+.review-rating {
+    display: flex;
+    gap: 0.25rem;
+    color: #FFD700;
+}
+
+.review-content {
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+/* Review Form Overlay */
+.review-form-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s;
+}
+
+.review-form-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.review-form-container {
+    width: 90%;
+    max-width: 600px;
+    background-color: var(--container-color);
+    border-radius: 8px;
+    padding: 2rem;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.review-form-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.close-review-form {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--title-color);
+}
+
+.star-rating {
+    margin-bottom: 1.5rem;
+}
+
+.stars {
+    display: flex;
+    gap: 0.5rem;
+    font-size: 1.5rem;
+    color: #CCCCCC;
+    margin-top: 0.5rem;
+}
+
+.stars .star {
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.stars .star.active {
+    color: #FFD700;
+}
+
+.review-text {
+    margin-bottom: 1.5rem;
+}
+
+.review-text label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: var(--font-medium);
+}
+
+.review-text textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    resize: vertical;
+    font-family: inherit;
+}
+
+.submit-review-btn {
+    padding: 0.75rem 1.5rem;
+    background-color: var(--first-color);
+    color: var(--white-color);
+    border: none;
+    border-radius: 4px;
+    font-weight: var(--font-medium);
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.submit-review-btn:hover {
+    background-color: hsl(0, 85%, 40%);
+}
+
+
+.book-actions__write-review {
+    margin: 1.5rem 0;
+    padding: 1rem 0;
+    border-top: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: flex-start;
+}
+
+.write-review-btn {
+    background-color: var(--first-color);
+    color: var(--white-color);
+    border: none;
+    border-radius: 4px;
+    padding: 0.75rem 1.5rem;
+    font-size: var(--normal-font-size);
+    font-weight: var(--font-medium);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: background-color 0.3s;
+}
+
+.write-review-btn:hover {
+    background-color: hsl(0, 85%, 40%);
+}
+
+.dark-theme .book-actions__write-review {
+    border-color: var(--dark-border-color);
+}
+
+.dark-theme .write-review-btn {
+    background-color: var(--dark-first-color);
+}
+
+.book-actions__write-review .write-review-btn {
+    width: auto;
+    max-width: 250px;
+    padding: 0.75rem 1.5rem;
+    background-color: var(--first-color);
+    color: var(--white-color);
+    border: none;
+    border-radius: 4px;
+    font-weight: var(--font-medium);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: background-color 0.3s;
+}
+
+.book-actions__write-review .write-review-btn:hover {
+    background-color: hsl(0, 85%, 40%);
+}
+
+.dark-theme .book-actions__write-review {
+    border-color: var(--dark-border-color);
+}
+
+.dark-theme .book-actions__write-review .write-review-btn {
+    background-color: var(--dark-first-color);
+}
+
+.dark-theme .book-actions__write-review .write-review-btn:hover {
+    background-color: hsl(0, 75%, 35%);
+}
+
+/* .book-actions__write-review .write-review-btn {
+    width: 100%;
+    max-width: 250px;
+    padding: 0.75rem 1.5rem;
+    background-color: var(--first-color);
+    color: var(--white-color);
+    border: none;
+    border-radius: 4px;
+    font-weight: var(--font-medium);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: background-color 0.3s;
+} */
+
+/* Dark Theme Styles */
+.dark-theme .review-item {
+    background-color: var(--dark-card-color);
+    border-color: var(--dark-border-color);
+}
+
+.dark-theme .review-form-container {
+    background-color: var(--dark-card-color);
+}
+
+.dark-theme .review-text textarea {
+    background-color: var(--dark-background);
+    border-color: var(--dark-border-color);
+    color: var(--dark-text-color);
+}
+
+.dark-theme .close-review-form {
+    color: var(--dark-text-color);
+}
+
+@media screen and (min-width: 768px) {
+    .book-review-section {
+        margin-top: 3rem;
+    }
+}

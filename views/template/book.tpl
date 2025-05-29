@@ -88,15 +88,6 @@
                         <a href="#" class="read-more-btn" id="readMoreBtn">Read more</a>
                     </div>
                 
-                <!-- Similar Books - MOVED HERE -->
-                <div class="similar-books">
-                    <h3 class="similar-books__title">You might also like</h3>
-                    <div class="similar-books__grid" id="suggestionsGrid">
-                        <!-- The content will be dynamically populated by book.js -->
-                    </div>
-                </div>
-            </div>
-            
             <!-- Reading progress section (visible when status is "reading") -->
             <div class="reading-progress <?php echo ($reading_status == 'reading') ? 'active' : ''; ?>" id="readingProgress">
                 <h3 class="reading-progress__title">Reading Progress</h3>
@@ -115,5 +106,55 @@
                     <button class="save-progress-btn" id="saveProgressBtn" data-book-id="{$book_id}">Update Progress</button>
                 </div>
             </div>
-        </div> 
-    </div>
+
+
+            <!-- Similar Books - MOVED HERE !!!!!!!!!! -->
+            <div class="similar-books">
+                <h3 class="similar-books__title">You might also like</h3>
+                <div class="similar-books__grid" id="suggestionsGrid">
+                    <!-- The content will be dynamically populated by book.js -->
+                </div>
+            </div>
+        </div>
+        <!-- SECTIUNE PENTRU REVIEW URI -->
+
+        <div class="book-reviews">
+            <h3 class="book-reviews__title">Reviews</h3>
+                <button class="write-review-btn" id="writeReviewBtn">
+                    <i class="ri-edit-line"></i> Write a Review
+                </button>
+            <div class="reviews-list" id="reviewsList">
+                <!-- Reviews will be loaded here -->
+            </div>
+        </div>
+    
+        <div class="review-form-overlay" id="reviewFormOverlay">
+            <div class="review-form-container">
+                <div class="review-form-header">
+                    <h3>Write a Review</h3>
+                    <button class="close-review-form" id="closeReviewForm">
+                        <i class="ri-close-line"></i>
+                    </button>
+                </div>
+                <form class="review-form" id="reviewForm">
+                    <div class="star-rating">
+                        <p>Your Rating:</p>
+                        <div class="stars">
+                            <i class="ri-star-line star" data-value="1"></i>
+                            <i class="ri-star-line star" data-value="2"></i>
+                            <i class="ri-star-line star" data-value="3"></i>
+                            <i class="ri-star-line star" data-value="4"></i>
+                            <i class="ri-star-line star" data-value="5"></i>
+                            <input type="hidden" id="ratingValue" name="rating" value="0">
+                        </div>
+                    </div>
+                    <div class="review-text">
+                        <label for="reviewContent">Your Review:</label>
+                        <textarea id="reviewContent" name="reviewContent" rows="5" placeholder="Share your thoughts about this book..."></textarea>
+                    </div>
+                    <button type="submit" class="submit-review-btn">Submit Review</button>
+                </form>
+            </div>
+        </div>
+    </div> 
+</div>
