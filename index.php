@@ -6,9 +6,9 @@ use App\Controllers\ExploreController;
 use App\Controllers\BookController;
 use App\Controllers\HomeController;
 use App\Controllers\SaveBookController;
+use App\Controllers\NewsController;
 
 require_once __DIR__ . '/vendor/autoload.php';
-define('TEMPLATE_PATH', __DIR__ . '/views/template/');
 
 use Dotenv\Dotenv;
 
@@ -22,6 +22,7 @@ $exploreController = new ExploreController();
 $landingController = new LandingController();
 $bookController = new BookController();
 $homeController = new HomeController();
+$newsController = new NewsController();
 //$saveBookController = new SaveBookController();
 $request = $_SERVER['REQUEST_URI'];
 $request = str_replace('/ShelfControl', '', $_SERVER['REQUEST_URI']);
@@ -125,4 +126,7 @@ elseif ($request == '/toread') {
 elseif ($request == '/library') {
     $userBooksController = new \App\Controllers\UserBooksController();
     $userBooksController->ownedBooks();
+}
+elseif ($request == '/news') {
+    $newsController->index();
 }
