@@ -53,16 +53,14 @@
 
             <!-- Book Cover Upload -->
             <div class="cover-upload-section">
+                <!-- Book Cover URL Input -->
                 <div class="form-group">
-                    <label class="form-label">Book Cover</label>
-                    <div class="cover-upload-area" id="cover-upload-area">
-                        <i class="ri-image-add-line upload-icon"></i>
-                        <p class="upload-text">Click to upload or drag and drop</p>
-                        <p class="upload-subtext">PNG, JPG, JPEG up to 5MB</p>
-                    </div>
-                    <input type="file" id="cover-input" class="hidden-file-input" accept="image/*">
+                    <label class="form-label" for="cover-url">Book Cover URL</label>
+                    <input type="url" id="cover-url" name="cover_url" class="form-input" placeholder="https://example.com/book-cover.jpg">
+                    <p class="upload-subtext">Paste a direct link to the book cover image</p>
                 </div>
-                
+
+                <!-- Cover Preview -->
                 <div class="cover-preview" id="cover-preview" style="display: none;">
                     <img id="cover-image" src="" alt="Book cover preview">
                     <button type="button" class="remove-cover-btn" id="remove-cover-btn">

@@ -117,11 +117,7 @@ elseif ($request == '/admin/add-book') {
         header('Location: /ShelfControl/home');
         exit;
     }
-} elseif ($request == '/admin/upload-cover') {
-    $adminController = new \App\Controllers\AdminController();
-    $adminController->uploadCover();
 }
-// Add these routes after your existing routes
 elseif ($request == '/toread') {
     $userBooksController = new \App\Controllers\UserBooksController();
     $userBooksController->toReadBooks();

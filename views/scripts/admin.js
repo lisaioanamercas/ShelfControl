@@ -16,11 +16,69 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Cover upload
     const coverUploadArea = document.getElementById('cover-upload-area');
-    const coverInput = document.getElementById('cover-input');
+    const coverUrlInput = document.getElementById('cover-url');
     const coverPreview = document.getElementById('cover-preview');
     const coverImage = document.getElementById('cover-image');
     const removeCoverBtn = document.getElementById('remove-cover-btn');
 
+// Preview cover when URL is entered
+    if (coverUrlInput) {
+        coverUrlInput.addEventListener('blur', function() {
+            const url = this.value.trim();
+            if (url) {
+                previewCoverUrl(url);
+            }
+        });
+        
+        // Also preview when pressing Enter
+        coverUrlInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                const url = this.value.trim();
+                if (url) {
+                    previewCoverUrl(url);
+                }
+            }
+        });
+    }
+    
+    // Function to preview the cover using our proxy
+    // Function to preview the cover - modified to quietly handle errors
+    function previewCoverUrl(url) {
+        // Only proceed if we have a URL
+        if (!url) return;
+        
+        // Set image source directly without proxy
+        coverImage.src = url;
+        
+        // Show preview when loaded
+        coverImage.onload = function() {
+            coverPreview.style.display = 'flex';
+        };
+        
+        // Silently handle load errors - just don't show preview
+        coverImage.onerror = function() {
+            // Still show preview with placeholder or fallback image
+            coverImage.src = '/ShelfControl/assets/images/cover-placeholder.jpg'; // Use a placeholder
+            coverPreview.style.display = 'flex';
+        };
+    }
+
+    
+    // Remove button handler
+    if (removeCoverBtn) {
+        removeCoverBtn.addEventListener('click', function() {
+            coverUrlInput.value = '';
+            coverPreview.style.display = 'none';
+        });
+    }
+
+    // Ensure we don't try to preview on page load if no URL
+    // This prevents the initial error
+    if (coverUrlInput && coverUrlInput.value) {
+        previewCoverUrl(coverUrlInput.value);
+    }
+    
     let selectedFile = null;
 
     // ====================== EARLY EXIT IF ADMIN BUTTON NOT PRESENT ======================
@@ -145,13 +203,10 @@ document.addEventListener('DOMContentLoaded', function () {
     removeCoverBtn?.addEventListener('click', resetCoverPreview);
 
     function resetCoverPreview() {
-        if (!coverImage || !coverPreview || !coverUploadArea || !coverInput) return;
-
-        selectedFile = null;
+        if (!coverImage || !coverPreview || !coverUrlInput) return;
+        coverUrlInput.value = '';
         coverImage.src = '';
         coverPreview.style.display = 'none';
-        coverUploadArea.style.display = 'block';
-        coverInput.value = '';
     }
 
     // ====================== FORM SUBMISSION ======================
