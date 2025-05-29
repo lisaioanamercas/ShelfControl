@@ -40,3 +40,66 @@
 .book-meta__value {
     color: var(--text-color);
 }
+
+/* Complete replacement for metadata-link styles */
+.metadata-link {
+    color: inherit !important; 
+    /* important da override la default styles cum e la hyperlinks */
+    text-decoration: none !important;
+    cursor: text;
+    background: none !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    font: inherit !important;
+    pointer-events: auto !important;
+}
+
+.metadata-link:hover {
+    font-weight: var(--font-bold);
+    cursor: pointer;
+}
+
+/* Reset focus outline */
+.metadata-link:focus {
+    outline: none !important;
+}
+
+/* Reset visited state */
+.metadata-link:visited {
+    color: inherit !important;
+}
+
+/* 
+.metadata-link {
+    color: inherit;
+    text-decoration: none;
+    position: relative;
+}
+
+.metadata-link:hover {
+    color: var(--first-color);
+}
+
+.metadata-link:after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 1px;
+    bottom: -2px;
+    left: 0;
+    background-color: var(--first-color);
+    transition: width 0.3s ease;
+}
+
+.metadata-link:hover:after {
+    width: 100%;
+}
+
+.dark-theme .metadata-link:hover {
+    color: var(--dark-first-color);
+}
+
+.dark-theme .metadata-link:after {
+    background-color: var(--dark-first-color);
+} */

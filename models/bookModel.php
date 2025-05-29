@@ -365,5 +365,79 @@ class BookModel {
         
         return $books;
     }
- 
+
+    public function getBooksByAuthor($authorName) {
+        $sql = "SELECT b.book_id, b.title, b.cover_url, a.name as author_name 
+                FROM Book b 
+                JOIN Author a ON b.author_id = a.author_id
+                WHERE UPPER(a.name) = UPPER(:author_name)";
+        
+        $stmt = oci_parse($this->conn, $sql);
+        oci_bind_by_name($stmt, ':author_name', $authorName);
+        oci_execute($stmt);
+        
+        $books = [];
+        while ($row = oci_fetch_assoc($stmt)) {
+            $books[] = $row;
+        }
+        
+        return $books;
+    }
+
+    public function getBooksByPublisher($publisherName) {
+        $sql = "SELECT b.book_id, b.title, b.cover_url, a.name as author_name 
+                FROM Book b 
+                JOIN Author a ON b.author_id = a.author_id
+                JOIN PublishingHouse ph ON b.publishing_house_id = ph.publishing_house_id
+                WHERE UPPER(ph.name) = UPPER(:publisher_name)";
+        
+        $stmt = oci_parse($this->conn, $sql);
+        oci_bind_by_name($stmt, ':publisher_name', $publisherName);
+        oci_execute($stmt);
+        
+        $books = [];
+        while ($row = oci_fetch_assoc($stmt)) {
+            $books[] = $row;
+        }
+        
+        return $books;
+    }
+
+    public function getBooksByTranslator($translatorName) {
+        $sql = "SELECT b.book_id, b.title, b.cover_url, a.name as author_name 
+                FROM Book b 
+                JOIN Author a ON b.author_id = a.author_id
+                JOIN Translator t ON b.translator_id = t.translator_id
+                WHERE UPPER(t.name) = UPPER(:translator_name)";
+        
+        $stmt = oci_parse($this->conn, $sql);
+        oci_bind_by_name($stmt, ':translator_name', $translatorName);
+        oci_execute($stmt);
+        
+        $books = [];
+        while ($row = oci_fetch_assoc($stmt)) {
+            $books[] = $row;
+        }
+        
+        return $books;
+    }
+
+    public function getBooksBySubPublisher($subPublisherName) {
+        $sql = "SELECT b.book_id, b.title, b.cover_url, a.name as author_name 
+                FROM Book b 
+                JOIN Author a ON b.author_id = a.author_id
+                JOIN SubPublisher sp ON b.sub_publisher_id = sp.sub_publisher_id
+                WHERE UPPER(sp.name) = UPPER(:sub_publisher_name)";
+        
+        $stmt = oci_parse($this->conn, $sql);
+        oci_bind_by_name($stmt, ':sub_publisher_name', $subPublisherName);
+        oci_execute($stmt);
+        
+        $books = [];
+        while ($row = oci_fetch_assoc($stmt)) {
+            $books[] = $row;
+        }
+        
+        return $books;
+    }
 }

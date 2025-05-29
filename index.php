@@ -134,3 +134,23 @@ elseif ($request == '/admin/books') {
     $adminController = new \App\Controllers\AdminController();
     $adminController->showAdminBooks();
 }
+elseif (preg_match('/^\/books\/author\/(.+)$/', $request, $matches)) {
+    $bookController = new \App\Controllers\BookController();
+    $author = urldecode($matches[1]);
+    $bookController->showBooksByAttribute('author', $author);
+}
+elseif (preg_match('/^\/books\/publisher\/(.+)$/', $request, $matches)) {
+    $bookController = new \App\Controllers\BookController();
+    $publisher = urldecode($matches[1]);
+    $bookController->showBooksByAttribute('publisher', $publisher);
+}
+elseif (preg_match('/^\/books\/translator\/(.+)$/', $request, $matches)) {
+    $bookController = new \App\Controllers\BookController();
+    $translator = urldecode($matches[1]);
+    $bookController->showBooksByAttribute('translator', $translator);
+}
+elseif (preg_match('/^\/books\/subpublisher\/(.+)$/', $request, $matches)) {
+    $bookController = new \App\Controllers\BookController();
+    $subpublisher = urldecode($matches[1]);
+    $bookController->showBooksByAttribute('subpublisher', $subpublisher);
+}

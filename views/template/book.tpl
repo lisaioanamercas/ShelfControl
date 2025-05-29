@@ -35,7 +35,7 @@
         <!-- Book Info Column -->
         <div class="book-details__info">
             <h1 class="book-title">{$book_title}</h1>
-            <h2 class="book-author">{$book_author}</h2>
+                <h2 class="book-author">{$book_author}</h2> 
             
             <!-- Book metadata -->
             <div class="book-meta">
@@ -57,20 +57,29 @@
                 </div>
                 <div class="book-meta__item">
                     <span class="book-meta__label">Publisher:</span>
-                    <span class="book-meta__value">{$book_publisher}</span>
+                    <span class="book-meta__value">
+                        <a href="/ShelfControl/books/publisher/<?php echo urlencode($book_publisher); ?>" class="metadata-link">{$book_publisher}</a>
+                    </span>
                 </div>
+
                 <?php if ($book_sub_publisher != 'N/A'): ?>
                 <div class="book-meta__item">
                     <span class="book-meta__label">Sub-publisher:</span>
-                    <span class="book-meta__value">{$book_sub_publisher}</span>
+                    <span class="book-meta__value">
+                        <a href="/ShelfControl/books/subpublisher/<?php echo urlencode($book_sub_publisher); ?>" class="metadata-link">{$book_sub_publisher}</a>
+                    </span>
                 </div>
                 <?php endif; ?>
+
                 <?php if ($book_translator != 'N/A'): ?>
                 <div class="book-meta__item">
                     <span class="book-meta__label">Translator:</span>
-                    <span class="book-meta__value">{$book_translator}</span>
+                    <span class="book-meta__value">
+                        <a href="/ShelfControl/books/translator/<?php echo urlencode($book_translator); ?>" class="metadata-link">{$book_translator}</a>
+                    </span>
                 </div>
                 <?php endif; ?>
+
                 <?php if ($book_source_api != 'N/A'): ?>
                 <div class="book-meta__item">
                     <span class="book-meta__label">Source:</span>
