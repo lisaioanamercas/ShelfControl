@@ -4,6 +4,7 @@ namespace App\Controllers;
 use App\Models\BookModel;
 use App\Views\BaseView;
 
+
 class BookController{
     private $jwt;
 
@@ -54,7 +55,7 @@ class BookController{
             'book_source_api' => 'Google Books API',
             'is_owned' => false, 
             'reading_status' => 'Put status here',
-            'google_api' => $data['id'],
+            'google_id' => $data['id'],
             'pages_read' => 0,
             'additionalCSS' => [
                 '/ShelfControl/views/css/book.css',
@@ -112,15 +113,13 @@ class BookController{
         $bookDetails = $bookModel->getBookById($bookId);
         $bookIdreplace = $bookModel->findGoogleId($bookId);
         
-        if (!$bookDetails&& !$bookIdreplace) {
-             
+        if (!is_numeric($bookId)&& !$bookIdreplace) {
             $this->lookInApi($bookId);
             exit;
         }
         else if ($bookIdreplace) {
             $bookId= $bookIdreplace;
         }
-        
         $userBookData = null;
         if ($userId) {
             $userBookData = $bookModel->getUserBookData($userId, $bookId);
@@ -224,6 +223,7 @@ class BookController{
                         'genre' => isset($info['categories'][0]) ? $info['categories'][0] : null,
                         'summary' => $info['description'] ?? null,
                         'pages' => $info['pageCount'] ?? null,
+                        'google_id' => $bookId,
                         'source' => 'Google Books API'
                     ];
                   
@@ -269,10 +269,15 @@ class BookController{
         $bookId = $_POST['book_id'];
         $action = $_POST['action'];
         $bookModel = new BookModel($conn);
-        
-        if(!is_numeric($bookId)) {
+        $bookIdreplace = $bookModel->findGoogleId($bookId);
+
+
+        if(!is_numeric($bookId)&& !$bookIdreplace) {
              $bookId=$this->saveBookApi($bookModel, $bookId, $userId);
       
+        }
+        else if ($bookIdreplace) {
+            $bookId = $bookIdreplace;
         }
 
    
