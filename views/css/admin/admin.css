@@ -48,22 +48,31 @@
     background-color: rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(10px);
     z-index: 1000;
+    
+    /* Complete initial hiding - no transitions */
+    display: none;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    
+    /* Remove all transitions by default */
+    transition: none;
+}
+
+/* Only add display flex when explicitly shown */
+.add-book-modal.show-modal {
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 1rem;
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.3s ease;
-    pointer-events: none;
-
-}
-
-
-.add-book-modal.show-modal {
     visibility: visible;
     opacity: 1;
     pointer-events: auto;
+}
+
+/* Only enable transitions after the page has fully loaded */
+.add-book-modal.transitions-enabled.show-modal {
+    transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
 .modal-content {
@@ -296,15 +305,22 @@
     border-radius: 0.5rem;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     z-index: 1001;
+    
+    /* Complete initial hiding - no transitions */
+    display: none;
+    transform: translateX(400px);
+    
+    /* Remove transition by default */
+    transition: none;
+}
+
+
+.success-message.show {
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    transform: translateX(400px);
-    transition: transform 0.3s;
-}
-
-.success-message.show {
     transform: translateX(0);
+    transition: transform 0.3s ease;
 }
 
 /* Loading State */

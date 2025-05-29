@@ -99,4 +99,15 @@ class BaseView
         
         echo $processedContent;
     }
+
+    // BaseView.php — add this utility
+    public function includePartial($partialName) {
+        $path = __DIR__ . "/template/{$partialName}.tpl";
+        if (file_exists($path)) {
+            include $path;
+        } else {
+            echo "<!-- Partial not found: $path -->";
+        }
+    }
+
 }

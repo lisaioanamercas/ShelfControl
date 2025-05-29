@@ -81,8 +81,19 @@
 
             <div class="book-summary">
                 <h3 class="book-summary__title">Description</h3>
-                <div class="book-summary__content" id="bookSummary">
-                    <p><?php echo $book_description; ?></p>
+                    <div class="book-summary__content" id="bookSummary">
+                        <p><?php echo substr($book_description, 0, 300); ?>...</p>
+                        <!-- Store the full description in a hidden element -->
+                        <p class="full-description" style="display: none;"><?php echo $book_description; ?></p>
+                        <a href="#" class="read-more-btn" id="readMoreBtn">Read more</a>
+                    </div>
+                
+                <!-- Similar Books - MOVED HERE -->
+                <div class="similar-books">
+                    <h3 class="similar-books__title">You might also like</h3>
+                    <div class="similar-books__grid" id="suggestionsGrid">
+                        <!-- The content will be dynamically populated by book.js -->
+                    </div>
                 </div>
             </div>
             
@@ -104,13 +115,5 @@
                     <button class="save-progress-btn" id="saveProgressBtn" data-book-id="{$book_id}">Update Progress</button>
                 </div>
             </div>
-        </div>
+        </div> 
     </div>
-</section>
-<section class="book-suggestions section">
-    <div class="book-suggestions__container container">
-        <h2 class="suggestions-title">You might also like</h2>
-        <div class="suggestions-grid" id="suggestionsGrid"></div>
-    </div>
-</section>
-

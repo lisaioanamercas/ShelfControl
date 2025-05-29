@@ -1,3 +1,4 @@
+/* Similar Books */
 .similar-books {
     border-top: 1px solid var(--border-color);
     padding-top: 1.5rem;
@@ -28,4 +29,95 @@
     object-fit: cover;
     border-radius: 4px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Dark Theme Styles */
+.dark-theme .book-cover {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+.dark-theme .status-options {
+    background-color: var(--dark-card-color);
+    border-color: var(--dark-border-color);
+}
+
+.dark-theme .status-option:hover {
+    background-color: var(--dark-background);
+}
+
+.dark-theme .book-action__btn {
+    background-color: var(--dark-card-color);
+    border-color: var(--dark-border-color);
+    color: var(--dark-text-color);
+}
+
+.dark-theme .book-action__btn:hover {
+    border-color: var(--dark-first-color);
+    color: var(--dark-first-color);
+}
+
+.dark-theme .book-action__btn.active {
+    background-color: var(--dark-first-color);
+    color: var(--white-color);
+    border-color: var(--dark-first-color);
+}
+
+.dark-theme .book-meta {
+    border-color: var(--dark-border-color);
+}
+
+.dark-theme .book-tag {
+    background-color: var(--dark-card-color);
+    border-color: var(--dark-border-color);
+    color: var(--dark-text-color);
+}
+
+.dark-theme .book-tag:hover {
+    background-color: var(--dark-first-color);
+    color: var(--white-color);
+    border-color: var(--dark-first-color);
+}
+
+.dark-theme .book-summary,
+.dark-theme .reading-progress,
+.dark-theme .similar-books {
+    border-color: var(--dark-border-color);
+}
+
+.dark-theme .page-input {
+    background-color: var(--dark-background);
+    border-color: var(--dark-border-color);
+    color: var(--dark-text-color);
+}
+
+.dark-theme .similar-book__img {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Responsive Design */
+@media screen and (min-width: 768px) {
+    .book-details__container {
+        grid-template-columns: 300px 1fr;
+        gap: 3rem;
+        align-items: start;
+    }
+    
+    .book-details__cover-container {
+        position: sticky;
+        top: calc(var(--header-height) + 2rem);
+    }
+}
+
+@media screen and (min-width: 1150px) {
+    .book-details__container {
+        gap: 4rem;
+    }
+    
+    .similar-books__grid {
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    }
+    
+    .similar-book__img {
+        height: 150px;
+    }
 }

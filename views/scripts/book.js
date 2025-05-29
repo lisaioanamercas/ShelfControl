@@ -4,8 +4,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const statusOptions = document.getElementById('statusOptions');
     const currentStatus = document.getElementById('currentStatus');
     const readingProgress = document.getElementById('readingProgress');
-     const authorElement = document.querySelector('.book-author');
-     const titleElement = document.querySelector('.book-title');
+    const authorElement = document.querySelector('.book-author');
+    const titleElement = document.querySelector('.book-title');
      
      
     const author = authorElement.innerText;
@@ -15,7 +15,28 @@ document.addEventListener('DOMContentLoaded', () => {
     const currentTitle = titleElement.innerText;
     console.log('Titlu:', currentTitle);
 
-
+    const bookSummary = document.getElementById('bookSummary');
+    const readMoreBtn = document.getElementById('readMoreBtn');
+    
+    //chestie relativ useless dar face sa arate bine
+    if (bookSummary && readMoreBtn) {
+        // Get short and full description paragraphs
+        const shortDescP = bookSummary.querySelector('p:first-child');
+        const fullDescP = bookSummary.querySelector('.full-description');
+        
+        if (shortDescP && fullDescP) {
+            // Add click event listener to the read more link
+            readMoreBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                
+                // Replace the short description with the full description
+                shortDescP.innerHTML = fullDescP.innerHTML;
+                
+                // Hide the read more button
+                readMoreBtn.style.display = 'none';
+            });
+        }
+    }
     
     // Toggle status dropdown
     if (statusBtn) {
@@ -113,7 +134,7 @@ document.addEventListener('DOMContentLoaded', () => {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
-        },
+        }, 
         body: `action=status&book_id=${bookId}&status=${status}`
     })
     .then(response => response.text())
@@ -169,44 +190,69 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .catch(error => console.error('Error:', error));
     }
-     fetch(`https://www.googleapis.com/books/v1/volumes?q=inauthor:${encodeURIComponent(author)}&maxResults=6`)
-        .then(response => response.json())
-        .then(data => {
-            if (!data.items) {
-                suggestionsGrid.innerHTML = '<p>No suggestions found.</p>';
-                return;
-            }
+    fetch(`https://www.googleapis.com/books/v1/volumes?q=inauthor:${encodeURIComponent(author)}&maxResults=6`)
+    .then(response => response.json())
+    .then(data => {
+        if (!data.items) {
+            suggestionsGrid.innerHTML = '<p>No suggestions found.</p>';
+            return;
+        }
 
-            const books = data.items.filter(item =>
-                item.volumeInfo.title.toLowerCase() !== currentTitle.toLowerCase()
-            );
-                const seenBooks = new Set();
+        // Filter books to exclude current title AND ensure they have cover images
+        const books = data.items.filter(item =>
+            item.volumeInfo.title.toLowerCase() !== currentTitle.toLowerCase() && 
+            item.volumeInfo.imageLinks && 
+            item.volumeInfo.imageLinks.thumbnail
+        );
 
-                books.forEach(book => {
-                    const title = book.volumeInfo.title || 'Unknown Title';
-                    const authors = book.volumeInfo.authors ? book.volumeInfo.authors.join(', ') : 'Unknown Author';
-                    const uniqueKey = `${title.toLowerCase()}|${authors.toLowerCase()}`;
+        if (books.length === 0) {
+            suggestionsGrid.innerHTML = '<p>No suggestions with cover images found.</p>';
+            return;
+        }
 
-                    if (seenBooks.has(uniqueKey)) {
-                        return; // carte deja adăugată
-                    }
-                    seenBooks.add(uniqueKey);
+        const seenBooks = new Set();
+        //chestia asta da display la mai multe informatii despre carte, eu am pus doar sa arate pozele
+        // books.forEach(book => {
+        //     const title = book.volumeInfo.title || 'Unknown Title';
+        //     const authors = book.volumeInfo.authors ? book.volumeInfo.authors.join(', ') : 'Unknown Author';
+        //     const uniqueKey = `${title.toLowerCase()}|${authors.toLowerCase()}`;
 
-                    const thumbnail = book.volumeInfo.imageLinks?.thumbnail || 'default.jpg';
-                    const link = `https://books.google.com/books?id=${book.id}`;
+        //     if (seenBooks.has(uniqueKey)) {
+        //         return; // carte deja adăugată
+        //     }
+        //     seenBooks.add(uniqueKey);
 
-                    const card = document.createElement('div');
-                    card.className = 'suggestion-card';
-                    card.innerHTML = `
-                        <a href="${link}" target="_blank">
-                            <img src="${thumbnail}" alt="${title}" class="suggestion-cover">
-                            <div class="suggestion-info">
-                                <h3 class="suggestion-title">${title}</h3>
-                                <p class="suggestion-author">${authors}</p>
-                            </div>
-                        </a>
-                    `;
-                    suggestionsGrid.appendChild(card);
-                });
-            });
+        //     // Since we filtered earlier, we know thumbnail exists
+        //     const thumbnail = book.volumeInfo.imageLinks.thumbnail;
+        //     const link = `https://books.google.com/books?id=${book.id}`;
+
+        //     const card = document.createElement('div');
+        //     card.className = 'suggestion-card';
+        //     card.innerHTML = `
+        //         <a href="${link}" target="_blank">
+        //             <img src="${thumbnail}" alt="${title}" class="suggestion-cover">
+        //             <div class="suggestion-info">
+        //                 <h3 class="suggestion-title">${title}</h3>
+        //                 <p class="suggestion-author">${authors}</p>
+        //             </div>
+        //         </a>
+        //     `;
+        //     suggestionsGrid.appendChild(card);
+        // });
+        books.forEach(book => {
+            const title = book.volumeInfo.title || 'Unknown Title';
+            // Since we filtered earlier, we know thumbnail exists
+            const thumbnail = book.volumeInfo.imageLinks.thumbnail;
+            const link = `https://books.google.com/books?id=${book.id}`;
+
+            const card = document.createElement('div');
+            card.className = 'similar-book';
+            card.innerHTML = `
+                <a href="${link}" target="_blank">
+                    <img src="${thumbnail}" alt="${title}" class="similar-book__img">
+                </a>
+            `;
+            suggestionsGrid.appendChild(card);
+        });
+    });
 });

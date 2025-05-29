@@ -1,140 +1,152 @@
-document.addEventListener('DOMContentLoaded', function() {
-    // Modal elements
+document.addEventListener('DOMContentLoaded', function () {
+    console.log('Admin.js loaded'); // Debug line
+    
+    // Modal and form elements
     const adminButton = document.getElementById('admin-button');
     const adminModal = document.getElementById('add-book-modal');
     const modalClose = document.getElementById('modal-close');
     const cancelBtn = document.getElementById('cancel-btn');
-    
-    // Form elements
     const bookForm = document.getElementById('book-form');
     const submitBtn = document.getElementById('submit-btn');
     const successMessage = document.getElementById('success-message');
-    
-    // Cover upload elements
+
+    // Debug logging
+    console.log('Admin button found:', !!adminButton);
+    console.log('Admin modal found:', !!adminModal);
+
+    // Cover upload
     const coverUploadArea = document.getElementById('cover-upload-area');
     const coverInput = document.getElementById('cover-input');
     const coverPreview = document.getElementById('cover-preview');
     const coverImage = document.getElementById('cover-image');
     const removeCoverBtn = document.getElementById('remove-cover-btn');
-    
+
     let selectedFile = null;
 
-    // ===================================== MODAL FUNCTIONALITY =========================================
-    
+    // ====================== EARLY EXIT IF ADMIN BUTTON NOT PRESENT ======================
+    if (!adminButton) {
+        console.log('No admin button found - user likely not admin');
+        return;
+    }
+
+    // ====================== HANDLE MISSING MODAL (REDIRECT) ======================
+    if (!adminModal) {
+        console.log('Admin button found but modal missing - setting up redirect');
+        adminButton.addEventListener('click', () => {
+            console.log('Admin button clicked - redirecting');
+            window.location.href = '/ShelfControl/home?openAdminModal=true';
+        });
+        return;
+    }
+
+    console.log('Both admin button and modal found - setting up modal functionality');
+
+    if (adminModal) {
+        // Enable transitions after a small delay to prevent flash
+        setTimeout(() => {
+            adminModal.classList.add('transitions-enabled');
+        }, 50);
+    }
+    // ====================== MODAL LOGIC ======================
     function openModal() {
+        console.log('Opening modal');
+        if (document.body.classList.contains('dark-theme')) {
+            adminModal.classList.add('dark-theme');
+        } else {
+            adminModal.classList.remove('dark-theme');
+        }
+
         adminModal.classList.add('show-modal');
         document.body.style.overflow = 'hidden';
     }
 
     function closeModal() {
+        console.log('Closing modal');
         adminModal.classList.remove('show-modal');
         document.body.style.overflow = 'auto';
-        
-        // Reset form
+
         if (bookForm) {
             bookForm.reset();
         }
-        
-        // Reset cover preview
+
         resetCoverPreview();
     }
 
-    // Open modal when admin button is clicked
-    if (adminButton) {
-        adminButton.addEventListener('click', openModal);
-    }
-    
+    // Open modal button
+    adminButton.addEventListener('click', (e) => {
+        console.log('Admin button clicked');
+        e.preventDefault();
+        openModal();
+    });
+
     // Close modal events
-    if (modalClose) {
-        modalClose.addEventListener('click', closeModal);
-    }
-    
-    if (cancelBtn) {
-        cancelBtn.addEventListener('click', closeModal);
-    }
-    
-    // Close modal when clicking outside
-    if (adminModal) {
-        adminModal.addEventListener('click', function(e) {
-            if (e.target === adminModal) {
-                closeModal();
-            }
-        });
+    modalClose?.addEventListener('click', closeModal);
+    cancelBtn?.addEventListener('click', closeModal);
+    adminModal.addEventListener('click', (e) => {
+        if (e.target === adminModal) closeModal();
+    });
+
+    // ====================== AUTO OPEN MODAL FROM URL PARAM ======================
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('openAdminModal') === 'true') {
+        console.log('Opening modal from URL parameter');
+        openModal();
+        history.replaceState({}, document.title, window.location.pathname); // clean URL
     }
 
-    // ===================================== COVER UPLOAD =========================================
-    
-    // Upload area click - open file dialog
+    // ====================== COVER UPLOAD ======================
     if (coverUploadArea && coverInput) {
-        coverUploadArea.addEventListener('click', () => {
-            coverInput.click();
-        });
-        
-        // File input change
+        coverUploadArea.addEventListener('click', () => coverInput.click());
+
         coverInput.addEventListener('change', (e) => {
             const file = e.target.files[0];
-            if (file) {
-                handleFile(file);
-            }
+            if (file) handleFile(file);
         });
-        
-        // Drag and drop functionality
+
         coverUploadArea.addEventListener('dragover', (e) => {
             e.preventDefault();
             coverUploadArea.classList.add('dragover');
         });
-        
+
         coverUploadArea.addEventListener('dragleave', () => {
             coverUploadArea.classList.remove('dragover');
         });
-        
+
         coverUploadArea.addEventListener('drop', (e) => {
             e.preventDefault();
             coverUploadArea.classList.remove('dragover');
-            
             const files = e.dataTransfer.files;
-            if (files.length > 0) {
-                handleFile(files[0]);
-            }
+            if (files.length > 0) handleFile(files[0]);
         });
     }
-    
-    // Handle file selection/validation
+
     function handleFile(file) {
-        // Validate file type
         if (!file.type.startsWith('image/')) {
             alert('Please select an image file.');
             return;
         }
 
-        // Validate file size (5MB)
         if (file.size > 5 * 1024 * 1024) {
             alert('File size must be less than 5MB.');
             return;
         }
 
         selectedFile = file;
-        
-        // Show preview
-        if (coverImage && coverPreview && coverUploadArea) {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                coverImage.src = e.target.result;
-                coverPreview.style.display = 'flex';
-                coverUploadArea.style.display = 'none';
-            };
-            reader.readAsDataURL(file);
-        }
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            coverImage.src = e.target.result;
+            coverPreview.style.display = 'flex';
+            coverUploadArea.style.display = 'none';
+        };
+        reader.readAsDataURL(file);
     }
-    
-    // Remove cover functionality
-    if (removeCoverBtn) {
-        removeCoverBtn.addEventListener('click', resetCoverPreview);
-    }
-    
+
+    removeCoverBtn?.addEventListener('click', resetCoverPreview);
+
     function resetCoverPreview() {
         if (!coverImage || !coverPreview || !coverUploadArea || !coverInput) return;
-        
+
         selectedFile = null;
         coverImage.src = '';
         coverPreview.style.display = 'none';
@@ -142,25 +154,18 @@ document.addEventListener('DOMContentLoaded', function() {
         coverInput.value = '';
     }
 
-    // ===================================== FORM SUBMISSION =========================================
-    
-    // Form submission handler
+    // ====================== FORM SUBMISSION ======================
     if (bookForm) {
         bookForm.addEventListener('submit', async (e) => {
             e.preventDefault();
+            console.log('Form submitted');
 
-            if (submitBtn) {
-                submitBtn.classList.add('loading');
-                submitBtn.disabled = true;
-            }
+            submitBtn?.classList.add('loading');
+            submitBtn.disabled = true;
 
             try {
-                // Gather form data
                 const formData = new FormData(bookForm);
 
-                // If you want to handle cover upload, you need to upload it separately first and get the file path
-
-                // Send form data to backend
                 const response = await fetch('/ShelfControl/admin/add-book', {
                     method: 'POST',
                     body: formData
@@ -177,27 +182,23 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.error('Error adding book:', error);
                 alert('Error adding book. Please try again.');
             } finally {
-                if (submitBtn) {
-                    submitBtn.classList.remove('loading');
-                    submitBtn.disabled = false;
-                }
+                submitBtn?.classList.remove('loading');
+                submitBtn.disabled = false;
             }
         });
     }
-    
+
     function showSuccessMessage() {
-        successMessage.classList.add('show');
+        successMessage?.classList.add('show');
         setTimeout(() => {
-            successMessage.classList.remove('show');
+            successMessage?.classList.remove('show');
         }, 3000);
     }
 
-    // Prevent form submission on Enter key in input fields
-    document.querySelectorAll('.form-input').forEach(input => {
+    // Prevent Enter key from submitting the form prematurely
+    document.querySelectorAll('.form-input').forEach((input) => {
         input.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-            }
+            if (e.key === 'Enter') e.preventDefault();
         });
     });
 });
