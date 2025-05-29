@@ -34,6 +34,7 @@ class AdminController {
         // Get the book data
         $title = $_POST['title'] ?? '';
         $author = $_POST['author'] ?? '';
+        $translator = $_POST['translator'] ?? ''; // Add this line for translator
         $publication = $_POST['publication'] ?? '';
         $pages = $_POST['pages'] ?? '';
         $language = $_POST['language'] ?? '';
@@ -43,6 +44,10 @@ class AdminController {
         $coverUrl = $_POST['cover_url'] ?? ''; // New field for cover URL
         $summary = $_POST['summary'] ?? ''; // Add this line to capture the description
         
+        // Convert publication year to integer if it's not empty
+        $publicationYear = !empty($publication) ? (int)$publication : null;
+
+
         // Validate required fields
         if (empty($title) || empty($author)) {
             echo json_encode(['success' => false, 'message' => 'Title and author are required']);
@@ -55,15 +60,15 @@ class AdminController {
                 [
                     'title' => $title,
                     'author' => $author,
-                    'publication_year' => $publication,
+                    'translator' => $translator, // Add this line
+                    'publication_year' => $publicationYear,
                     'pages' => $pages,
                     'language' => $language,
                     'isbn' => $isbn,
-                    'publisher' => $publisher,
-                    'subpublisher' => $subpublisher,
+                    'publishing_house' => $publisher,
+                    'sub_publisher' => $subpublisher,
                     'cover' => $coverUrl, // Add cover URL here
                     'summary' => $summary, // Add this line to include the description
-
                     'source' => 'MANUAL'
                 ]
             ]);

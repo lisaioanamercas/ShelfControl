@@ -18,6 +18,19 @@
                 </div>
             </div>
 
+            <!-- ============FIELD NOU PT TRADUCATOR +++++++++++++++++ -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label" for="translator">Translator</label>
+                    <input type="text" id="translator" name="translator" class="form-input" placeholder="Optional">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="language">Language</label>
+                    <input type="text" id="language" name="language" class="form-input">
+                </div>
+            </div>
+
+
             <div class="form-row">
                 <div class="form-group">
                     <label class="form-label" for="publication">Publication Year</label>
@@ -29,11 +42,8 @@
                 </div>
             </div>
 
+
             <div class="form-row">
-                <div class="form-group">
-                    <label class="form-label" for="language">Language</label>
-                    <input type="text" id="language" name="language" class="form-input">
-                </div>
                 <div class="form-group">
                     <label class="form-label" for="isbn">ISBN</label>
                     <input type="text" id="isbn" name="isbn" class="form-input">
@@ -49,12 +59,15 @@
                     <label class="form-label" for="subpublisher">Sub-publisher</label>
                     <input type="text" id="subpublisher" name="subpublisher" class="form-input" placeholder="Optional">
                 </div>
-                <!-- Book Description Field -->
+            </div>
+
+            <div class="form-row">
                 <div class="form-group" style="grid-column: 1 / -1;">
                     <label class="form-label" for="summary">Book Description</label>
-                    <textarea id="summary" name="summary" class="form-textarea" rows="4" placeholder="Enter a description of the book"></textarea>
+                    <textarea id="summary" name="summary" class="form-textarea description-textarea" rows="6" placeholder="Enter a description of the book..."></textarea>
                 </div>
             </div>
+
 
             <!-- Book Cover Upload -->
             <div class="cover-upload-section">

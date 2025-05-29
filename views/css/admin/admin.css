@@ -162,37 +162,121 @@
 }
 
 
-.add-book-modal .form-textarea {
-    background-color: var(--container-color);
-    border: 2px solid var(--border-color);
-    border-radius: 0.5rem;
-    padding: 0.75rem 1rem;
-    color: var(--text-color);
-    font-size: var(--normal-font-size);
-    transition: border-color 0.3s;
-    width: 100%;
-    min-height: 120px;
-    font-family: inherit;
-    resize: vertical;
+/* Enhanced Description Field Styling */
+
+/* Enhanced Description Field Styling - Complete Fix */
+
+/* Primary description textarea styling with high specificity */
+.book-form .form-group textarea#summary,
+.book-form textarea#summary,
+textarea#summary.description-textarea,
+.form-textarea.description-textarea {
+    background-color: var(--container-color) !important;
+    border: 2px solid var(--border-color) !important;
+    border-radius: 0.5rem !important;
+    padding: 1rem !important;
+    color: var(--text-color) !important;
+    font-size: var(--normal-font-size) !important;
+    line-height: 1.5 !important;
+    font-family: var(--body-font) !important;
+    resize: vertical !important;
+    min-height: 140px !important;
+    width: 100% !important;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease !important;
+    
+    /* Additional styling for better appearance */
+    outline: none !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: textfield !important;
+    box-sizing: border-box !important;
 }
 
-.form-textarea:focus {
-    outline: none;
-    border-color: var(--first-color);
+/* Focus state with high specificity */
+.book-form .form-group textarea#summary:focus,
+.book-form textarea#summary:focus,
+textarea#summary.description-textarea:focus,
+.form-textarea.description-textarea:focus {
+    outline: none !important;
+    border-color: var(--first-color) !important;
+    box-shadow: 0 0 0 3px hsla(0, 85%, 46%, 0.15) !important;
+    background-color: var(--white-color) !important;
 }
 
-/* Add dark theme support for the textarea */
-.dark-theme .form-textarea {
-    background-color: var(--dark-container-color);
-    border-color: var(--dark-border-color);
-    color: var(--dark-text-color);
+/* Hover state */
+.book-form .form-group textarea#summary:hover,
+.book-form textarea#summary:hover,
+textarea#summary.description-textarea:hover,
+.form-textarea.description-textarea:hover {
+    border-color: var(--first-color) !important;
 }
 
-.dark-theme .form-textarea:focus {
-    border-color: var(--dark-first-color);
+/* Placeholder styling */
+.book-form .form-group textarea#summary::placeholder,
+.book-form textarea#summary::placeholder,
+textarea#summary.description-textarea::placeholder,
+.form-textarea.description-textarea::placeholder {
+    color: var(--text-color) !important;
+    opacity: 0.6 !important;
+    font-style: italic !important;
 }
 
+/* Label styling for description */
+.form-label[for="summary"] {
+    font-weight: var(--font-medium) !important;
+    color: var(--title-color) !important;
+    font-size: 0.95rem !important;
+    margin-bottom: 0.5rem !important;
+    display: block !important;
+}
 
+/* Dark theme support with high specificity */
+.dark-theme .book-form .form-group textarea#summary,
+.dark-theme .book-form textarea#summary,
+.dark-theme textarea#summary.description-textarea,
+.dark-theme .form-textarea.description-textarea {
+    background-color: var(--dark-container-color) !important;
+    border-color: var(--dark-border-color) !important;
+    color: var(--dark-text-color) !important;
+}
+
+.dark-theme .book-form .form-group textarea#summary:focus,
+.dark-theme .book-form textarea#summary:focus,
+.dark-theme textarea#summary.description-textarea:focus,
+.dark-theme .form-textarea.description-textarea:focus {
+    border-color: var(--first-color) !important;
+    box-shadow: 0 0 0 3px hsla(0, 85%, 46%, 0.25) !important;
+    background-color: var(--dark-card-color) !important;
+}
+
+.dark-theme .form-label[for="summary"] {
+    color: var(--dark-title-color) !important;
+}
+
+/* Remove any conflicting styles */
+textarea {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+/* Ensure the form group container doesn't interfere */
+.form-group:has(textarea#summary) {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0.5rem !important;
+}
+
+/* Additional responsive styling */
+@media screen and (max-width: 768px) {
+    .book-form .form-group textarea#summary,
+    .book-form textarea#summary,
+    textarea#summary.description-textarea,
+    .form-textarea.description-textarea {
+        min-height: 120px !important;
+        padding: 0.75rem !important;
+    }
+}
 
 .form-input:focus {
     outline: none;
@@ -379,4 +463,26 @@
 @keyframes spin {
     0% { transform: translate(-50%, -50%) rotate(0deg); }
     100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+.book-form .form-group textarea#summary {
+    background-color: var(--container-color);
+    border: 2px solid var(--border-color);
+    border-radius: 0.5rem;
+    padding: 1rem;
+    color: var(--text-color);
+    font-size: var(--normal-font-size);
+    line-height: 1.5;
+    font-family: var(--body-font);
+    resize: vertical;
+    min-height: 140px;
+    width: 100%;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.book-form .form-group textarea#summary:focus {
+    outline: none;
+    border-color: var(--first-color);
+    box-shadow: 0 0 0 3px hsla(0, 85%, 46%, 0.15);
 }
