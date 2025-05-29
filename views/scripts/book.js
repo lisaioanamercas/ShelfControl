@@ -52,12 +52,52 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
     
+    // Select status option -- am renuntat la functia asta ca nu lua id ul bine
+    // const statusOptionElements = document.querySelectorAll('.status-option');
+    // statusOptionElements.forEach(option => {
+    //     option.addEventListener('click', () => {
+    //         const selectedStatus = option.getAttribute('data-status');
+    //         const bookId = document.querySelector('.owned-btn').getAttribute('data-book-id');
+            
+    //         // Update UI
+    //         currentStatus.textContent = selectedStatus;
+    //         statusOptions.classList.remove('active');
+            
+    //         // Show reading progress if status is "reading"
+    //         if (selectedStatus === 'reading') {
+    //             readingProgress.classList.add('active');
+    //         } else {
+    //             readingProgress.classList.remove('active');
+    //         }
+            
+    //         // Send status update to server
+    //         updateBookStatus(bookId, selectedStatus);
+    //     });
+    // });
+
     // Select status option
     const statusOptionElements = document.querySelectorAll('.status-option');
     statusOptionElements.forEach(option => {
         option.addEventListener('click', () => {
             const selectedStatus = option.getAttribute('data-status');
-            const bookId = document.querySelector('.owned-btn').getAttribute('data-book-id');
+            
+            // Get book ID from URL first (more reliable)
+            let bookId;
+            const urlParams = new URLSearchParams(window.location.search);
+            bookId = urlParams.get('id');
+            
+            // If not in URL, try the button attribute as fallback
+            if (!bookId) {
+                const ownedBtn = document.querySelector('.owned-btn');
+                if (ownedBtn) {
+                    bookId = ownedBtn.getAttribute('data-book-id');
+                }
+            }
+            
+            if (!bookId) {
+                console.error('Could not determine book ID');
+                return;
+            }
             
             // Update UI
             currentStatus.textContent = selectedStatus;

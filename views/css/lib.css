@@ -242,3 +242,32 @@
     }
 }
 
+
+
+
+/* pentru categorized .book-card__actionsCategory styling for criteria pages */
+.books-category {
+    margin-bottom: 2rem;
+}
+
+.books-category__title {
+    font-size: var(--h3-font-size);
+    margin-bottom: 1rem;
+    color: var(--title-color);
+    position: relative;
+    padding-left: 1rem;
+    border-left: 3px solid var(--first-color);
+}
+
+.empty-message {
+    color: var(--text-color-light);
+    font-style: italic;
+    text-align: center;
+    margin: 2rem 0;
+}
+
+/* Dark theme adjustments */
+.dark-theme .books-category__title {
+    color: var(--dark-title-color);
+    border-left-color: var(--dark-first-color);
+}

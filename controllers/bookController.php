@@ -312,7 +312,7 @@ class BookController{
             header('Location: /ShelfControl/login');
             exit;
         }
-    
+
         // Get current user ID
         $decoded = $this->jwt->validateJWT($_COOKIE['jwt']);
         $email = $decoded->data->email;
@@ -345,14 +345,36 @@ class BookController{
                 break;
         }
         
-        // Render the view
+        // Categorize books by status
+        $ownedBooks = [];
+        $toReadBooks = [];
+        
+        foreach ($books as $book) {
+            // Get user-book relationship data
+            $userBookData = $bookModel->getUserBookData($userId, $book['BOOK_ID']);
+            
+            if ($userBookData) {
+                if ($userBookData['IS_OWNED'] == 'Y') {
+                    $ownedBooks[] = $book;
+                }
+                
+                if ($userBookData['STATUS'] == 'to-read') {
+                    $toReadBooks[] = $book;
+                }
+            }
+        }
+        
+        // Render the new categorized view
         $view = new \App\Views\BaseView();
-        $view->renderTemplate('userBooksDisplay', [
+        $view->renderTemplate('categorizedBooksDisplay', [
             'section_title' => $title,
-            'books' => $books,
+            'ownedBooks' => $ownedBooks,
+            'toReadBooks' => $toReadBooks,
             'empty_message' => "No books found for this $type.",
             'additionalCSS' => [
-                '/ShelfControl/views/css/lib.css'
+                '/ShelfControl/views/css/lib.css',
+                '/ShelfControl/views/css/style.css'
+
             ]
         ]);
     }

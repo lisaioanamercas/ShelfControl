@@ -35,14 +35,7 @@
         <!-- Book Info Column -->
         <div class="book-details__info">
             <h1 class="book-title">{$book_title}</h1>
-            <!-- <h2 class="book-author">{$book_author}</h2> -->
-            <div class="book-meta__item">
-                <h2 span class="book-meta__label">
-                    <span class="book-meta__value">
-                        <a href="/ShelfControl/books/author/<?php echo urlencode($book_author); ?>" class="metadata-link">{$book_author}</a>
-                    </span>
-                </h2>
-            </div>
+                <h2 class="book-author">{$book_author}</h2> 
             
             <!-- Book metadata -->
             <div class="book-meta">
@@ -97,8 +90,11 @@
 
             <div class="book-summary">
                 <h3 class="book-summary__title">Description</h3>
-                    <div class="book-summary__content">
-                        <p><?php echo $book_description; ?></p>
+                    <div class="book-summary__content" id="bookSummary">
+                        <p><?php echo substr($book_description, 0, 300); ?>...</p>
+                        <!-- Store the full description in a hidden element -->
+                        <p class="full-description" style="display: none;"><?php echo $book_description; ?></p>
+                        <a href="#" class="read-more-btn" id="readMoreBtn">Read more</a>
                     </div>
                 
             <!-- Reading progress section (visible when status is "reading") -->
