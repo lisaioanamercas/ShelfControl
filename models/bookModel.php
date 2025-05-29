@@ -46,6 +46,51 @@ class BookModel {
         
         return $books;
     }
+
+
+
+    // aici limitez cartile care o sa imi apara la sectiunile din homepage !!!
+    public function getToReadBooksLimited($userId, $limit = 6) {
+        $sql = "SELECT b.book_id, b.title, b.cover_url, a.name as author_name 
+                FROM Book b 
+                JOIN Author a ON b.author_id = a.author_id
+                JOIN UserBook ub ON b.book_id = ub.book_id 
+                WHERE ub.user_id = :user_id AND ub.status = 'to-read'
+                AND ROWNUM <= :limit";
+        
+        $stmt = oci_parse($this->conn, $sql);
+        oci_bind_by_name($stmt, ':user_id', $userId);
+        oci_bind_by_name($stmt, ':limit', $limit);
+        oci_execute($stmt, OCI_NO_AUTO_COMMIT);
+        
+        $books = [];
+        while ($row = oci_fetch_assoc($stmt)) {
+            $books[] = $row;
+        }
+        
+        return $books;
+    }
+
+    public function getOwnedBooksLimited($userId, $limit = 6) {
+        $sql = "SELECT b.book_id, b.title, b.cover_url, a.name as author_name 
+                FROM Book b 
+                JOIN Author a ON b.author_id = a.author_id
+                JOIN UserBook ub ON b.book_id = ub.book_id 
+                WHERE ub.user_id = :user_id AND ub.is_owned = 'Y'
+                AND ROWNUM <= :limit";
+        
+        $stmt = oci_parse($this->conn, $sql);
+        oci_bind_by_name($stmt, ':user_id', $userId);
+        oci_bind_by_name($stmt, ':limit', $limit);
+        oci_execute($stmt);
+        
+        $books = [];
+        while ($row = oci_fetch_assoc($stmt)) {
+            $books[] = $row;
+        }
+        
+        return $books;
+    }
     public function getCurrentlyReadingBooks($userId) {
         $sql = "SELECT b.book_id, b.title, b.cover_url, b.pages, a.name as author_name,
                     ub.pages_read, ub.status

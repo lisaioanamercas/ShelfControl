@@ -36,8 +36,8 @@ class HomeController {
         // Get books
         $bookModel = new BookModel($conn);
         $currentlyReading = $bookModel->getCurrentlyReadingBooks($userId);
-        $toReadBooks = $bookModel->getToReadBooks($userId);
-        $ownedBooks = $bookModel->getOwnedBooks($userId);
+        $toReadBooks = $bookModel->getToReadBooksLimited($userId, 7);
+        $ownedBooks = $bookModel->getOwnedBooksLimited($userId, 7);
         
         // Render the home page with book data
         $data = [
