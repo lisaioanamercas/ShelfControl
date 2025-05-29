@@ -1423,3 +1423,23 @@ img{
         gap: 0.25rem;
     }
 }
+/* Progress editor styling */
+.progress-editor {
+    position: absolute;
+    right: 0;
+    top: 100%;
+    background-color: var(--container-color);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    z-index: 10;
+    display: none;
+    width: 200px;
+    border: 1px solid var(--border-color);
+}
+
+.progress-editor.active {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}

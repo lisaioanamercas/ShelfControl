@@ -141,6 +141,10 @@ class BookModel {
         return $result;
     }
     public function getBookById($bookId) {
+        if (!is_numeric($bookId)) {
+        // Return null or throw an exception for invalid book IDs
+        return null;
+    }
         $sql = "SELECT b.*, 
                 a.name AS author_name, 
                 ph.name AS publishing_house_name,

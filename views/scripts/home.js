@@ -1,40 +1,52 @@
-
-// ===================================== Progress handling for read books =========================================
 document.addEventListener('DOMContentLoaded', function() {
-    // Set up click events for edit buttons
-    const editButtons = document.querySelectorAll('.edit-progress-btn');
+    console.log('Home.js loaded - initializing edit buttons');
     
-    editButtons.forEach((button, index) => {
-        const editor = document.getElementById(`editor-${index}`);
-        
-        // Toggle editor when clicking pencil icon
-        button.addEventListener('click', function(e) {
-            e.stopPropagation();
-            toggleEditor(editor);
-        });
-        
-        // Set up save button
-        const saveButton = editor.querySelector('.save-btn');
-        saveButton.addEventListener('click', function() {
+    // DIRECT METHOD: Add event listeners using event delegation
+    document.addEventListener('click', function(event) {
+        // Handle edit button clicks
+        if (event.target.closest('.edit-progress-btn')) {
+            console.log('Edit button clicked');
+            const button = event.target.closest('.edit-progress-btn');
             const bookItem = button.closest('.current-reads__item');
+            const editorId = bookItem.querySelector('.progress-editor').id;
+            const editor = document.getElementById(editorId);
+            
+            if (editor) {
+                event.stopPropagation();
+                toggleEditor(editor);
+            }
+        }
+        
+        // Handle save button clicks
+        if (event.target.closest('.save-btn')) {
+            console.log('Save button clicked');
+            event.preventDefault();
+            const saveBtn = event.target.closest('.save-btn');
+            const editor = saveBtn.closest('.progress-editor');
+            const bookItem = editor.closest('.current-reads__item');
             const bookId = bookItem.dataset.bookId;
             const input = editor.querySelector('.page-input');
             const pagesRead = input.value;
             
+            // Find the index position
+            const allBookItems = Array.from(document.querySelectorAll('.current-reads__item'));
+            const bookIndex = allBookItems.indexOf(bookItem);
+            
             // Send AJAX request to update progress
-            fetch('/ShelfControl/update-progress', {
+            // Update the fetch calls in home.js to add the action parameter
+            fetch('/ShelfControl/update-book', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
                 },
-                body: `book_id=${bookId}&pages_read=${pagesRead}`
+                body: `action=progress&book_id=${bookId}&pages_read=${pagesRead}`
             })
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
                     // Update UI
                     const totalPages = parseInt(editor.querySelector('.total-pages').textContent);
-                    updateBookProgress(index, pagesRead, totalPages);
+                    updateBookProgress(bookIndex, pagesRead, totalPages);
                     editor.classList.remove('active');
                     
                     // Show success message
@@ -54,29 +66,37 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.error('Error:', error);
                 alert('An error occurred. Please try again.');
             });
-        });
+        }
         
-        // Set up finish button
-        const finishButton = editor.querySelector('.finish-btn');
-        finishButton.addEventListener('click', function() {
-            const bookItem = button.closest('.current-reads__item');
+        // Handle finish button clicks
+        if (event.target.closest('.finish-btn')) {
+            console.log('Finish button clicked');
+            event.preventDefault();
+            const finishBtn = event.target.closest('.finish-btn');
+            const editor = finishBtn.closest('.progress-editor');
+            const bookItem = editor.closest('.current-reads__item');
             const bookId = bookItem.dataset.bookId;
             const totalPages = editor.querySelector('.total-pages').textContent;
             const bookTitle = bookItem.querySelector('.current-reads__book-title').textContent;
             
+            // Find the index position
+            const allBookItems = Array.from(document.querySelectorAll('.current-reads__item'));
+            const bookIndex = allBookItems.indexOf(bookItem);
+            
             // Send AJAX request to mark as finished
-            fetch('/ShelfControl/update-progress', {
+            // Update the fetch calls in home.js to add the action parameter
+            fetch('/ShelfControl/update-book', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
                 },
-                body: `book_id=${bookId}&pages_read=${totalPages}`
+                body: `action=progress&book_id=${bookId}&pages_read=${pagesRead}`
             })
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
                     // Update UI to show 100%
-                    updateBookProgress(index, totalPages, totalPages);
+                    updateBookProgress(bookIndex, totalPages, totalPages);
                     editor.classList.remove('active');
                     
                     // Show finish notification
@@ -94,11 +114,23 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.error('Error:', error);
                 alert('An error occurred. Please try again.');
             });
-        });
+        }
+        
+        // Close editors when clicking elsewhere
+        const isEditor = event.target.closest('.progress-editor');
+        const isEditButton = event.target.closest('.edit-progress-btn');
+        
+        if (!isEditor && !isEditButton) {
+            document.querySelectorAll('.progress-editor').forEach(editor => {
+                editor.classList.remove('active');
+            });
+        }
     });
 });
 
 function toggleEditor(editor) {
+    console.log('Toggling editor:', editor.id);
+    
     // Close all other editors
     document.querySelectorAll('.progress-editor').forEach(ed => {
         if (ed !== editor) {
@@ -133,7 +165,7 @@ function showFinishNotification(bookTitle) {
     notification.style.padding = '10px 20px';
     notification.style.borderRadius = '4px';
     notification.style.zIndex = '1000';
-    notification.textContent = `"${bookTitle}" marked as finished!`;
+    notification.textContent = `${bookTitle}`;
     
     document.body.appendChild(notification);
     
