@@ -130,3 +130,7 @@ elseif ($request == '/library') {
 elseif ($request == '/news') {
     $newsController->index();
 }
+elseif ($request == '/admin/books') {
+    $adminController = new \App\Controllers\AdminController();
+    $adminController->showAdminBooks();
+}

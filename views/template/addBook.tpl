@@ -49,6 +49,11 @@
                     <label class="form-label" for="subpublisher">Sub-publisher</label>
                     <input type="text" id="subpublisher" name="subpublisher" class="form-input" placeholder="Optional">
                 </div>
+                <!-- Book Description Field -->
+                <div class="form-group" style="grid-column: 1 / -1;">
+                    <label class="form-label" for="summary">Book Description</label>
+                    <textarea id="summary" name="summary" class="form-textarea" rows="4" placeholder="Enter a description of the book"></textarea>
+                </div>
             </div>
 
             <!-- Book Cover Upload -->

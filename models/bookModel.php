@@ -343,6 +343,23 @@ class BookModel {
         return $row ? $row['BOOK_ID'] : null;
     }
 
-
+    /// asta e folosit pentru admin page !!!
+    public function getBooksBySource($source) {
+        $sql = "SELECT b.book_id as BOOK_ID, b.title as TITLE, b.cover_url as COVER_URL, a.name as AUTHOR_NAME 
+                FROM Book b 
+                JOIN Author a ON b.author_id = a.author_id
+                WHERE b.source_api = :source";
+        
+        $stmt = oci_parse($this->conn, $sql);
+        oci_bind_by_name($stmt, ':source', $source);
+        oci_execute($stmt, OCI_NO_AUTO_COMMIT);
+        
+        $books = [];
+        while ($row = oci_fetch_assoc($stmt)) {
+            $books[] = $row;
+        }
+        
+        return $books;
+    }
  
 }

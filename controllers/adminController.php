@@ -41,7 +41,7 @@ class AdminController {
         $publisher = $_POST['publisher'] ?? '';
         $subpublisher = $_POST['subpublisher'] ?? '';
         $coverUrl = $_POST['cover_url'] ?? ''; // New field for cover URL
-
+        $summary = $_POST['summary'] ?? ''; // Add this line to capture the description
         
         // Validate required fields
         if (empty($title) || empty($author)) {
@@ -62,6 +62,8 @@ class AdminController {
                     'publisher' => $publisher,
                     'subpublisher' => $subpublisher,
                     'cover' => $coverUrl, // Add cover URL here
+                    'summary' => $summary, // Add this line to include the description
+
                     'source' => 'MANUAL'
                 ]
             ]);
@@ -87,53 +89,25 @@ class AdminController {
         }
     }
     
-    // Handle file upload for book cover
-    // public function uploadCover() {
-    //     header('Content-Type: application/json');
+    public function showAdminBooks() {
+        // Connect to database
+        require_once __DIR__ . '/../models/dbConnection.php';
+        $conn = getConnection();
         
-    //     // Check if file was uploaded
-    //     if (!isset($_FILES['cover']) || $_FILES['cover']['error'] !== UPLOAD_ERR_OK) {
-    //         echo json_encode(['success' => false, 'message' => 'No file uploaded or upload error']);
-    //         exit;
-    //     }
+        // Get admin-added books
+        $bookModel = new BookModel($conn);
+        $books = $bookModel->getBooksBySource('MANUAL');
         
-    //     // Define allowed file types and max size
-    //     $allowedTypes = ['image/jpeg', 'image/png', 'image/jpg'];
-    //     $maxSize = 5 * 1024 * 1024; // 5MB
-        
-    //     // Validate file
-    //     $file = $_FILES['cover'];
-        
-    //     if (!in_array($file['type'], $allowedTypes)) {
-    //         echo json_encode(['success' => false, 'message' => 'Invalid file type. Only JPG, JPEG and PNG are allowed']);
-    //         exit;
-    //     }
-        
-    //     if ($file['size'] > $maxSize) {
-    //         echo json_encode(['success' => false, 'message' => 'File too large. Maximum size is 5MB']);
-    //         exit;
-    //     }
-        
-    //     // Generate a unique filename
-    //     $filename = uniqid() . '_' . $file['name'];
-    //     $uploadDir = __DIR__ . '/../uploads/covers/';
-        
-    //     // Create directory if it doesn't exist
-    //     if (!file_exists($uploadDir)) {
-    //         mkdir($uploadDir, 0777, true);
-    //     }
-        
-    //     $uploadPath = $uploadDir . $filename;
-        
-    //     // Move the file
-    //     if (move_uploaded_file($file['tmp_name'], $uploadPath)) {
-    //         // Return the path for saving in the database
-    //         echo json_encode([
-    //             'success' => true, 
-    //             'file' => '/ShelfControl/uploads/covers/' . $filename
-    //         ]);
-    //     } else {
-    //         echo json_encode(['success' => false, 'message' => 'Failed to save file']);
-    //     }
-    // }
+        // Render the view
+        $view = new BaseView();
+        $view->renderTemplate('userBooksDisplay', [
+            'section_title' => 'Admin-Added Books',
+            'books' => $books,
+            'empty_message' => 'No books have been added by the admin yet.',
+            'currentPage' => 'admin-books',
+            'additionalCSS' => [
+                '/ShelfControl/views/css/lib.css'
+            ]
+        ]);
+    }
 }

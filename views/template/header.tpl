@@ -64,6 +64,17 @@
                                 <span>News</span>
                             </a>
                         </li>
+
+                        <!-- Add this after the News nav item -->
+                        <?php if (isset($user['role']) && $user['role'] === 'admin'): ?>
+                            <li class="nav__item">
+                                <a href="/ShelfControl/admin/books" class="nav__link <?php echo ($currentPage ?? '') === 'admin-books' ? 'active-link' : ''; ?>">
+                                    <i class="ri-database-2-line"></i>
+                                    <span>Admin Books</span>
+                                </a>
+                            </li>
+                        <?php endif; ?>
+
                     </ul>
                 </div>
                 
