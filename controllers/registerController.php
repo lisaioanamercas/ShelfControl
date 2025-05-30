@@ -8,6 +8,13 @@ use App\Views\BaseView;
 class RegisterController {
 
     
+      function removeDiacritics($string) {
+        $map = [
+            'ă' => 'a', 'â' => 'a', 'î' => 'i', 'ș' => 's', 'ț' => 't',
+            'Ă' => 'A', 'Â' => 'A', 'Î' => 'I', 'Ș' => 'S', 'Ț' => 'T'
+        ];
+        return strtr($string, $map);
+   }
     public function registerPost() {
 
         require __DIR__ . '/../models/dbConnection.php';
@@ -16,8 +23,9 @@ class RegisterController {
         $email = $_POST['email'] ?? '';
         $password = $_POST['password'] ?? '';
         $confirmPassword = $_POST['confirm_password'] ?? '';
+        $city = $_POST['city'] ?? '';
 
-        if (empty($username) || empty($email) || empty($password) || empty($confirmPassword)) {
+        if (empty($username) || empty($email) || empty($password) || empty($confirmPassword)|| empty($city)) {
             $error = 'All fields are required.';
         } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $error = 'Invalid email format.';
@@ -40,6 +48,11 @@ class RegisterController {
                 $location = json_decode($geo_info, true);
 
                 $city = $location['city'] ?? "Locație necunoscută";
+
+                
+                    if (!empty($city)) {
+                        $city = $this->removeDiacritics($city);
+                    }
 
                 $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
@@ -79,5 +92,6 @@ class RegisterController {
         $view = new BaseView();
         $view->renderTemplate('register', $data);
     }
+  
 }
 

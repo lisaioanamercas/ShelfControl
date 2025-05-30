@@ -23,7 +23,9 @@
             <p class="register-subtitle">Create your ShelfControl account</p>
         </div>
 
-        <div id="message" class="message" style="display: none;"></div>
+        <div id="message" class="message" style="display: <?= !empty($message) ? 'block' : 'none'; ?>;">
+                <?= $message ?? '' ?>
+            </div>
 
         <form class="register-form" id="registerForm" method="POST" action="">
             <div class="form-group">
@@ -44,6 +46,12 @@
             <div class="form-group">
                 <input type="password" name="confirm_password" id="confirm_password" class="form-input" placeholder="Confirm Password" required>
                 <i class="fas fa-lock form-icon"></i>
+            </div>
+
+            
+            <div class="form-group">
+                <input type="city" name="city" id="city" class="form-input" placeholder="City" required>
+                <i class="fas fa-city form-icon"></i>
             </div>
 
             <button type="submit" class="register-button" id="submitBtn">
