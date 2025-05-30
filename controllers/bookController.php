@@ -383,4 +383,56 @@ class BookController{
             ]
         ]);
     }
+    public function addReview() {
+
+
+        $isLoggedIn = $this->jwt->verifyLogin();
+        if (!$isLoggedIn) {
+            header('Location: /ShelfControl/login');
+            exit;
+        }
+
+        $decoded = $this->jwt->validateJWT($_COOKIE['jwt']);
+        $email = $decoded->data->email;
+        
+        require_once __DIR__ . '/../models/dbConnection.php';
+        $userModel = new \App\Models\UserModel($conn);
+        $userId = $userModel->getUserIdByEmail($email);
+        
+        $bookId = $_POST['book_id'] ?? null;
+        $reviewText = $_POST['review_text'] ?? '';
+        $stars = $_POST['rating'] ?? 0;
+
+        $bookModel = new BookModel($conn);
+        $bookIdreplace = $bookModel->findGoogleId($bookId);
+
+
+        if (!$bookId) {
+            http_response_code(400); // Bad Request
+            echo json_encode(['error' => 'Missing book ID or review text']);
+            exit;
+        }
+
+
+         if(!is_numeric($bookId)&& !$bookIdreplace) {
+             $bookId=$this->saveBookApi($bookModel, $bookId, $userId);
+      
+        }
+        else if ($bookIdreplace) {
+            $bookId = $bookIdreplace;
+        }
+
+        
+      
+        $result = $bookModel->addReview($userId, $bookId, $stars,$reviewText);
+        
+
+        if ($result) {
+            echo json_encode(['success' => true, 'message' => 'Review added successfully']);
+        } else {
+            http_response_code(500); // Internal Server Error
+            echo json_encode(['error' => 'Failed to add review']);
+        }
+    }
+    
 }

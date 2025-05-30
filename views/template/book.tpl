@@ -161,7 +161,7 @@
                         <label for="reviewContent">Your Review:</label>
                         <textarea id="reviewContent" name="reviewContent" rows="5" placeholder="Share your thoughts about this book..."></textarea>
                     </div>
-                    <button type="submit" class="submit-review-btn">Submit Review</button>
+                    <button type="submit" class="submit-review-btn" id="submitForm">Submit Review</button>
                 </form>
             </div>
         </div>

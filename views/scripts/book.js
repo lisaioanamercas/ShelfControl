@@ -6,7 +6,67 @@ document.addEventListener('DOMContentLoaded', () => {
     const readingProgress = document.getElementById('readingProgress');
     const authorElement = document.querySelector('.book-author');
     const titleElement = document.querySelector('.book-title');
+    const writeReviewBtn = document.getElementById('writeReviewBtn');
+    const reviewFormOverlay = document.getElementById('reviewFormOverlay');
+    const closeReviewForm = document.getElementById('closeReviewForm');
+    const reviewForm = document.getElementById('reviewForm');
+
+
      
+     if (writeReviewBtn && reviewFormOverlay) {
+        writeReviewBtn.addEventListener('click', () => {
+            reviewFormOverlay.classList.add('active');
+        });
+    }
+
+    if (closeReviewForm && reviewFormOverlay) {
+        closeReviewForm.addEventListener('click', () => {
+            reviewFormOverlay.classList.remove('active');
+        });
+    }
+
+    // Optional: close overlay when clicking outside the form
+    if (reviewFormOverlay) {
+        reviewFormOverlay.addEventListener('click', (e) => {
+            if (e.target === reviewFormOverlay) {
+                reviewFormOverlay.classList.remove('active');
+            }
+        });
+    }
+    if(reviewForm)
+    {
+         reviewForm.addEventListener('submit', function(e) {
+
+            const rating = document.getElementById('ratingValue').value;
+            const reviewText = document.getElementById('reviewContent').value;
+            const bookId = document.querySelector('.owned-btn')?.getAttribute('data-book-id');
+
+             if (!rating || rating < 1) {
+                alert('Selectează un rating.');
+                return;
+            }
+
+            fetch('/ShelfControl/add-review', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                    body: `book_id=${encodeURIComponent(bookId)}&rating=${encodeURIComponent(rating)}&review_text=${encodeURIComponent(reviewText)}`  })
+              .then(response => response.json())
+                        .then(data => {
+                            // Afișează mesajul de la server
+                            if (data.success) {
+                                alert(data.message || 'Review adăugat cu succes!');
+                                reviewForm.reset();
+                                reviewFormOverlay.classList.remove('active');
+                            } else {
+                                alert(data.message || 'A apărut o eroare!');
+                            }
+                        })
+
+            e.preventDefault();
+            console.log('Review submitted');});
+    }
      
     const author = authorElement.innerText;
     console.log('Autor:', author);
@@ -51,6 +111,13 @@ document.addEventListener('DOMContentLoaded', () => {
             statusOptions.classList.remove('active');
         }
     });
+    
+
+
+          
+        
+   
+});
     
     // Select status option -- am renuntat la functia asta ca nu lua id ul bine
     // const statusOptionElements = document.querySelectorAll('.status-option');
@@ -110,7 +177,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 readingProgress.classList.remove('active');
             }
             
-            // Send status update to server
             updateBookStatus(bookId, selectedStatus);
         });
     });
@@ -295,4 +361,47 @@ document.addEventListener('DOMContentLoaded', () => {
             suggestionsGrid.appendChild(card);
         });
     });
+    
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    const stars = document.querySelectorAll('.star');
+    const ratingValue = document.getElementById('ratingValue');
+
+    if (stars && ratingValue) {
+        // Evidențiază stelele pe mouseover
+        stars.forEach(star => {
+            star.addEventListener('mouseover', () => {
+                const value = parseInt(star.getAttribute('data-value'));
+                highlightStars(value);
+            });
+
+            star.addEventListener('mouseout', () => {
+                const currentRating = parseInt(ratingValue.value);
+                highlightStars(currentRating);
+            });
+
+            star.addEventListener('click', () => {
+                const value = parseInt(star.getAttribute('data-value'));
+                ratingValue.value = value; // Setează valoarea rating-ului
+                highlightStars(value); // Evidențiază stelele selectate
+                console.log(`Rating selected: ${value}`);
+            });
+        });
+    }
+
+    // Funcție pentru evidențierea stelelor
+    function highlightStars(rating) {
+        stars.forEach((star, index) => {
+            if (index < rating) {
+                star.classList.add('active');
+                star.classList.remove('ri-star-line');
+                star.classList.add('ri-star-fill');
+            } else {
+                star.classList.remove('active');
+                star.classList.add('ri-star-line');
+                star.classList.remove('ri-star-fill');
+            }
+        });
+    }
 });

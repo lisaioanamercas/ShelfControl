@@ -13,6 +13,8 @@
         <!-- ==================== CSS =========================== -->
         <link rel="stylesheet" href="/ShelfControl/views/css/style.css">
         <link rel="stylesheet" href="/ShelfControl/views/css/footer.css">
+        <link rel="stylesheet" href="/ShelfControl/views/css/bookPage/review.css">
+
         <?php if (isset($user['role']) && $user['role'] === 'admin'): ?>
             <link rel="stylesheet" href="/ShelfControl/views/css/admin/admin.css">
         <?php endif; ?>            

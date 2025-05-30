@@ -108,6 +108,15 @@ elseif ($request =='/update-book') {
         echo "This endpoint only accepts POST requests.";
     }
 } 
+else if($request=='/add-review') {
+    
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        $bookController->addReview();
+    } else {
+        http_response_code(405); // Method Not Allowed
+        echo "This endpoint only accepts POST requests.";
+    }
+}
 // Admin API endpoints - only for processing form submissions
 elseif ($request == '/admin/add-book') {
     $adminController = new \App\Controllers\AdminController();

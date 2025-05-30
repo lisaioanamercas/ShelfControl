@@ -440,4 +440,22 @@ class BookModel {
         
         return $books;
     }
+    public function addReview($userId, $bookId, $stars,$reviewText)
+    {
+        $sql = "INSERT INTO review(user_id, book_id,text,stars)
+                VALUES (:user_id, :book_id,:review_text,:stars)";
+        
+        $stmt = oci_parse($this->conn, $sql);
+        oci_bind_by_name($stmt, ':user_id', $userId);
+        oci_bind_by_name($stmt, ':book_id', $bookId);
+        oci_bind_by_name($stmt, ':stars', $stars);
+        oci_bind_by_name($stmt, ':review_text', $reviewText);
+        
+        if (oci_execute($stmt)) {
+            return true;
+        } else {
+            $e = oci_error($stmt);
+            throw new \Exception("Error adding review: " . $e['message']);
+        }
+    }
 }
