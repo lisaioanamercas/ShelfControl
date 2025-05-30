@@ -25,7 +25,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Optional: close overlay when clicking outside the form
     if (reviewFormOverlay) {
         reviewFormOverlay.addEventListener('click', (e) => {
             if (e.target === reviewFormOverlay) {
@@ -117,7 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
           
         
    
-});
+
     
     // Select status option -- am renuntat la functia asta ca nu lua id ul bine
     // const statusOptionElements = document.querySelectorAll('.status-option');
@@ -354,16 +353,16 @@ document.addEventListener('DOMContentLoaded', () => {
             const card = document.createElement('div');
             card.className = 'similar-book';
             card.innerHTML = `
-                <a href="${link}" target="_blank">
-                    <img src="${thumbnail}" alt="${title}" class="similar-book__img">
-                </a>
-            `;
+            <a href="/ShelfControl/book-details?id=${book.id}" target="_blank">
+                <img src="${thumbnail}" alt="${title}" class="similar-book__img">
+            </a>
+        `;
             suggestionsGrid.appendChild(card);
         });
     });
     
 
-
+});
 document.addEventListener('DOMContentLoaded', () => {
     const stars = document.querySelectorAll('.star');
     const ratingValue = document.getElementById('ratingValue');

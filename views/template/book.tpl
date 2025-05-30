@@ -133,7 +133,29 @@
                     <i class="ri-edit-line"></i> Write a Review
                 </button>
             <div class="reviews-list" id="reviewsList">
-                <!-- Reviews will be loaded here -->
+                <div class="reviews-list">
+        <?php if (!empty($reviews)): ?>
+            <?php foreach ($reviews as $review): ?>
+                <div class="review-item">
+                    <div class="review-header">
+                        <span class="reviewer-name"><?php echo htmlspecialchars($review['USERNAME'] ?? 'Anonim'); ?></span>
+                        <span class="review-rating">
+                            <?php
+                                $stars = intval($review['STARS']);
+                                for ($i = 0; $i < $stars; $i++) echo '★';
+                                for ($i = 5; $i < $stars; $i++) echo '☆';
+                            ?>
+                        </span>
+                    </div>
+                    <div class="review-content">
+                        <?php echo nl2br(htmlspecialchars($review['TEXT'])); ?>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <p>Nu există recenzii pentru această carte.</p>
+        <?php endif; ?>
+      </div>
             </div>
         </div>
     

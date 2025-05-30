@@ -125,6 +125,8 @@ class BookController{
             $userBookData = $bookModel->getUserBookData($userId, $bookId);
              $bookDetails = $bookModel->getBookById($bookId);
         }
+
+        $reviews = $bookModel->getReviewsByBookId($bookId);
         
         $templateData = [
             'book_id' => $bookDetails['BOOK_ID'],
@@ -144,6 +146,7 @@ class BookController{
             'is_owned' => $userBookData ? ($userBookData['IS_OWNED'] == 'Y') : false,
             'reading_status' => $userBookData ? $userBookData['STATUS'] : 'to-read',
             'pages_read' => $userBookData ? $userBookData['PAGES_READ'] : 0,
+             'reviews' => $reviews,
             'additionalCSS' => [
                 '/ShelfControl/views/css/book.css',
                 '/ShelfControl/views/css/bookPage/book-info.css',
