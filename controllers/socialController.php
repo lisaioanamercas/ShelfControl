@@ -181,7 +181,7 @@ class SocialController {
             }
             
             // Create a standalone database connection to avoid any shared state issues
-            require_once __DIR__ . '/../models/dbConnection.php';
+
             $socialModel = new SocialModel($this->conn);
             
             // Perform search with error handling

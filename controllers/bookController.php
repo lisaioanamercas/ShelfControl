@@ -433,9 +433,11 @@ class BookController{
             $bookId = $bookIdreplace;
         }
 
-        
+        ////////////////////////////aici se adauga review-ul in baza de date+stiri
       
         $result = $bookModel->addReview($userId, $bookId, $stars,$reviewText);
+        $newsModel = new \App\Models\NewsModel($conn);
+        $newsModel->addNews('review', 'New Review Added ', $reviewText, $bookId);
         
 
         if ($result) {

@@ -21,4 +21,39 @@ class NewsController
         $view = new BaseView();
         $view->renderTemplate('news', $data);
     }
+    public function getNews()
+    {
+       
+      
+         require_once __DIR__ . '/../models/newsModel.php';
+         require_once __DIR__ . '/../models/dbConnection.php';
+
+            $newsModel = new \App\Models\NewsModel($conn);
+            $newsItems = $newsModel->getAllNews();
+       
+      
+            header('Content-Type: application/rss+xml; charset=UTF-8');
+            echo "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n";
+            echo "<rss version=\"2.0\"><channel>";
+            echo "<title>ShelfControl News</title>";
+            echo "<link>https://localhost/ShelfControl/explore</link>";
+            echo "<description>Ultimele știri din ShelfControl</description>";
+
+            foreach ($newsItems as $item) {
+                echo "<item>";
+                echo "<guid>{$item['FEED_ID']}</guid>";
+                echo "<type>{$item['TYPE']}</type>";
+                echo "<title><![CDATA[{$item['TITLE']}]]></title>";
+                $content = $item['CONTENT'];
+                 $content = $content->load();
+                
+                echo "<description><![CDATA[{$content}]]></description>";
+                echo "<link>localhost//ShelfControl/news/book-details?id={$item['RELATED_ID']}</link>";
+                echo "<pubDate>" . date(DATE_RSS, strtotime($item['PUBLISHED_AT'])) . "</pubDate>";
+                echo "</item>";
+            }
+
+            echo "</channel></rss>";
+            exit;
+    }
 }

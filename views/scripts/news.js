@@ -1,5 +1,5 @@
 let newsData = [
-    {
+    /*{
         id: 1,
         type: 'review',
         title: 'New Review: "Tehnologii Web - UAIC"',
@@ -34,7 +34,7 @@ let newsData = [
         author: 'Tot eu',
         date: '2025-05-26',
         link: '#rankings'
-    }
+    }*/
 ];
 
 // DOM elements
@@ -46,7 +46,39 @@ const modalOverlay = document.getElementById('modal-overlay');
 const modalClose = document.getElementById('modal-close');
 const newsForm = document.getElementById('news-form');
 
+
 // Get news type icon
+function fetchNews() {
+
+    showLoader();
+    fetch('/ShelfControl/rss')
+        .then(response => response.text())
+       .then(str => {
+            const parser = new DOMParser();
+            const xml = parser.parseFromString(str, "application/xml");
+            console.log('Parsed XML:', xml);
+            const items = Array.from(xml.getElementsByTagName("item"));
+            console.log(items);
+            newsData = items.map(item => ({
+                id: item.getElementsByTagName("guid")[0]?.textContent || Date.now() + Math.random(),
+                type: item.getElementsByTagName("type")[0]?.textContent || 'announcement',
+                title: item.getElementsByTagName("title")[0]?.textContent || '',
+                description: item.getElementsByTagName("description")[0]?.textContent || '',
+                author: '', // dacă nu ai author în RSS, lasă gol sau elimină din render
+                date: item.getElementsByTagName("pubDate")[0]?.textContent || '',
+                link: item.getElementsByTagName("link")[0]?.textContent || ''
+}));
+            console.log(newsData) 
+            renderNews();
+            hideLoader();
+        })
+        .catch(() => {
+            newsData = [];
+            renderNews();
+            hideLoader();
+        });
+}
+
 function getNewsTypeIcon(type) {
     const icons = {
         review: 'ri-star-line',
@@ -165,8 +197,7 @@ modalOverlay.addEventListener('click', (e) => {
 
 newsForm.addEventListener('submit', (e) => {
     e.preventDefault();
-    
-    const formData = new FormData(newsForm);
+
     const newsItem = {
         type: document.getElementById('news-type').value,
         title: document.getElementById('news-title').value,
@@ -189,7 +220,11 @@ document.addEventListener('keydown', (e) => {
 document.addEventListener('DOMContentLoaded', () => {
     showLoader();
     setTimeout(() => {
-        hideLoader();
-        renderNews();
+        fetchNews();
     }, 800);
+
+    // 🔁 Auto-refresh la fiecare 60 de secunde
+    setInterval(() => {
+        fetchNews();
+    }, 60000); // 60000 ms = 1 minut
 });

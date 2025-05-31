@@ -80,6 +80,10 @@ elseif (strstr($request,'/explore')) {
         $exploreController->exploreGet();
     }
 } 
+elseif (strstr($request ,'/search-users')) {
+    $socialController = new \App\Controllers\SocialController();
+    $socialController->searchUsers();
+}
 elseif (strstr($request,'/search')) {
     // Route search requests to the explore controller !!!
     $exploreController->exploreGet();
@@ -184,11 +188,11 @@ elseif ($request == '/add-member') {
     $socialController = new \App\Controllers\SocialController();
     $socialController->addMember();
 }
-elseif ($request == '/search-users') {
-    $socialController = new \App\Controllers\SocialController();
-    $socialController->searchUsers();
-}
 elseif ($request == '/start-group-reading') {
     $socialController = new \App\Controllers\SocialController();
     $socialController->startGroupReading();
+}
+elseif ($request == '/rss') {
+   
+    $newsController->getNews();
 }
