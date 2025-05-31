@@ -4,7 +4,39 @@
         <div class="book-section__header">
             <h2 class="book-section__title">{$section_title}</h2>
         </div>
+
+        <!-- Add Statistics Summary -->
+        <div class="category-stats">
+            <div class="reading-stats__container container">
+                <h2 class="reading-stats__title">
+                    <i class="ri-bar-chart-line"></i> Statistics
+                </h2>
+                <div class="reading-stats__boxes">
+                    <div class="stats-box">
+                        <h3 class="stats-box__number"><?php echo count($toReadBooks); ?></h3>
+                        <p class="stats-box__text">WANT TO<br>READ</p>
+                    </div>
+                    
+                    <div class="stats-box">
+                        <h3 class="stats-box__number"><?php echo count($ownedBooks); ?></h3>
+                        <p class="stats-box__text">OWNED<br>BOOKS</p>
+                    </div>
+                    
+                    <div class="stats-box">
+                        <h3 class="stats-box__number"><?php echo count($readBooks); ?></h3>
+                        <p class="stats-box__text">BOOKS<br>READ</p>
+                    </div>
+                    
+                    <div class="stats-box">
+                        <h3 class="stats-box__number"><?php echo count($toReadBooks) + count($ownedBooks) + count($readBooks); ?></h3>
+                        <p class="stats-box__text">TOTAL<br>BOOKS</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
+
 </section>
 
 <?php if (empty($ownedBooks) && empty($readBooks) && empty($toReadBooks)): ?>
