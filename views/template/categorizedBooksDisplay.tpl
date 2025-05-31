@@ -13,28 +13,32 @@
                 </h2>
                 <div class="reading-stats__boxes">
                     <div class="stats-box">
-                        <h3 class="stats-box__number"><?php echo count($toReadBooks); ?></h3>
+                        <h3 class="stats-box__number"><?php echo isset($toReadBooks) ? count($toReadBooks) : 0; ?></h3>
                         <p class="stats-box__text">WANT TO<br>READ</p>
                     </div>
                     
                     <div class="stats-box">
-                        <h3 class="stats-box__number"><?php echo count($ownedBooks); ?></h3>
+                        <h3 class="stats-box__number"><?php echo isset($ownedBooks) ? count($ownedBooks) : 0; ?></h3>
                         <p class="stats-box__text">OWNED<br>BOOKS</p>
                     </div>
                     
                     <div class="stats-box">
-                        <h3 class="stats-box__number"><?php echo count($readBooks); ?></h3>
+                        <h3 class="stats-box__number"><?php echo isset($readBooks) ? count($readBooks) : 0; ?></h3>
                         <p class="stats-box__text">BOOKS<br>READ</p>
                     </div>
                     
                     <div class="stats-box">
-                        <h3 class="stats-box__number"><?php echo count($toReadBooks) + count($ownedBooks) + count($readBooks); ?></h3>
+                        <h3 class="stats-box__number"><?php 
+                            $total = 
+                                (isset($toReadBooks) ? count($toReadBooks) : 0) + 
+                                (isset($ownedBooks) ? count($ownedBooks) : 0); 
+                            echo $total;
+                        ?></h3>
                         <p class="stats-box__text">TOTAL<br>BOOKS</p>
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
 
 </section>

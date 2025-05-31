@@ -358,7 +358,8 @@ class BookController{
         // Categorize books by status
         $ownedBooks = [];
         $toReadBooks = [];
-        
+        $readBooks = [];
+
         foreach ($books as $book) {
             // Get user-book relationship data
             $userBookData = $bookModel->getUserBookData($userId, $book['BOOK_ID']);

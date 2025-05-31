@@ -76,7 +76,6 @@
                                 </a>
                             </li>
                         <?php endif; ?>
-
                     </ul>
                 </div>
                 
@@ -164,6 +163,15 @@
                                 <span class="profile__stat-label">Want to Read</span>
                             </div>
                         </div>
+                    </div>
+
+                    <!-- Inside the profile content div -->
+                    <div class="profile__actions">
+                        <a href="/ShelfControl/social" class="profile__action-btn">
+                            <i class="ri-group-line"></i>
+                            <span>Groups & Friends</span>
+                        </a>
+                        <!-- Other profile buttons... -->
                     </div>
                 </div>
 

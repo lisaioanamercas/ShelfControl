@@ -76,7 +76,7 @@
     <section class="book-section section" id="toread">
         <div class="container">
             <div class="book-section__header">
-                <h2 class="book-section__title">To Read Pile (<?php echo count($toReadBooks); ?>)</h2>
+                <h2 class="book-section__title">To Read Pile </h2>
                 <a href="/ShelfControl/toread" class="book-section__link">
                     <i class="ri-arrow-right-line"></i>
                 </a>
@@ -106,7 +106,7 @@
     <section class="book-section section" id="owned">
         <div class="container">
             <div class="book-section__header">
-                <h2 class="book-section__title">Owned Books (<?php echo count($ownedBooks); ?>)</h2>
+                <h2 class="book-section__title">Owned Books </h2>
                 <a href="/ShelfControl/library" class="book-section__link">
                     <i class="ri-arrow-right-line"></i>
                 </a>
@@ -136,7 +136,7 @@
     <section class="book-section section" id="read">
         <div class="container">
             <div class="book-section__header">
-                <h2 class="book-section__title">Read Books (<?php echo count($readBooks); ?>)</h2>
+                <h2 class="book-section__title">Read Books</h2>
                 <a href="/ShelfControl/read" class="book-section__link">
                     <i class="ri-arrow-right-line"></i>
                 </a>
