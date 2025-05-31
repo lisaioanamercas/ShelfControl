@@ -11,6 +11,28 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeReviewForm = document.getElementById('closeReviewForm');
     const reviewForm = document.getElementById('reviewForm');
 
+     const buyBtn = document.getElementById('buyBtn');
+    const libraryPopupOverlay = document.getElementById('libraryPopupOverlay');
+    const closeLibraryPopup = document.getElementById('closeLibraryPopup');
+
+    if (buyBtn && libraryPopupOverlay) {
+        buyBtn.addEventListener('click', () => {
+            libraryPopupOverlay.style.display = 'flex';
+        });
+    }
+    if (closeLibraryPopup && libraryPopupOverlay) {
+        closeLibraryPopup.addEventListener('click', () => {
+            libraryPopupOverlay.style.display = 'none';
+        });
+    }
+    if (libraryPopupOverlay) {
+        libraryPopupOverlay.addEventListener('click', (e) => {
+            if (e.target === libraryPopupOverlay) {
+                libraryPopupOverlay.style.display = 'none';
+            }
+        });
+    }
+
 
      
      if (writeReviewBtn && reviewFormOverlay) {
@@ -226,13 +248,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     
-    // Buy button
-    const buyBtn = document.getElementById('buyBtn');
-    if (buyBtn) {
-        buyBtn.addEventListener('click', () => {
-            alert("This would redirect to a purchase page in a real application");
-        });
-    }
+  
+    
     
   function updateBookStatus(bookId, status) {
     fetch('/ShelfControl/update-book', {
@@ -360,6 +377,9 @@ document.addEventListener('DOMContentLoaded', () => {
             suggestionsGrid.appendChild(card);
         });
     });
+        
+   
+
     
 
 });
