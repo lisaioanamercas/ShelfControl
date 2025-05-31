@@ -371,6 +371,10 @@ class BookController{
                 if ($userBookData['STATUS'] == 'to-read') {
                     $toReadBooks[] = $book;
                 }
+
+                if ($userBookData['STATUS'] == 'completed') {
+                    $readBooks[] = $book;
+                }
             }
         }
         
@@ -380,6 +384,7 @@ class BookController{
             'section_title' => $title,
             'ownedBooks' => $ownedBooks,
             'toReadBooks' => $toReadBooks,
+            'readBooks' => $readBooks,
             'empty_message' => "No books found for this $type.",
             'additionalCSS' => [
                 '/ShelfControl/views/css/lib.css',

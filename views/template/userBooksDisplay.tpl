@@ -2,7 +2,7 @@
 <section class="book-section section">
     <div class="container">
         <div class="book-section__header">
-            <h2 class="book-section__title">{$section_title}</h2>
+            <h2 class="book-section__title"><?php echo $section_title; ?> (<?php echo count($books); ?>)</h2>
         </div>
 
         <div class="book-section__content">

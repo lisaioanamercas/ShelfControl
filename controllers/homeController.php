@@ -38,12 +38,14 @@ class HomeController {
         $currentlyReading = $bookModel->getCurrentlyReadingBooks($userId);
         $toReadBooks = $bookModel->getToReadBooksLimited($userId, 7);
         $ownedBooks = $bookModel->getOwnedBooksLimited($userId, 7);
-        
+        $readBooks = $bookModel->getReadBooksLimited($userId, 7);
+
         // Render the home page with book data
         $data = [
             'currentlyReading' => $currentlyReading,
             'toReadBooks' => $toReadBooks,
-            'ownedBooks' => $ownedBooks
+            'ownedBooks' => $ownedBooks,
+            'readBooks' => $readBooks
         ];
         
         $view = new BaseView();

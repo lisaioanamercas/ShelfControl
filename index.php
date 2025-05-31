@@ -136,6 +136,10 @@ elseif ($request == '/library') {
     $userBooksController = new \App\Controllers\UserBooksController();
     $userBooksController->ownedBooks();
 }
+elseif ($request == '/read') {
+    $userBooksController = new \App\Controllers\UserBooksController();
+    $userBooksController->readBooks();
+}
 elseif ($request == '/news') {
     $newsController->index();
 }
