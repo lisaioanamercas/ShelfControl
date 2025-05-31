@@ -247,9 +247,135 @@ document.addEventListener('DOMContentLoaded', () => {
             updateBookOwned(bookId, !isOwned);
         });
     }
+
+    // Group reading option in the status dropdown
+const groupReadingOption = document.querySelector('.group-reading');
+if (groupReadingOption) {
+    groupReadingOption.addEventListener('click', (e) => {
+        e.stopPropagation(); // Prevent parent event handlers from executing
+        
+        // Get the book ID
+        const bookId = document.querySelector('.owned-btn').getAttribute('data-book-id');
+        if (!bookId) {
+            console.error('Could not determine book ID');
+            return;
+        }
+        
+        // Fetch user's groups
+        fetch('/ShelfControl/user-groups')
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    if (data.groups.length === 0) {
+                        alert("You don't belong to any reading groups. Create or join a group first.");
+                    } else {
+                        showGroupSelectionPopup(data.groups, bookId);
+                    }
+                } else {
+                    alert(`Error: ${data.error}`);
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching groups:', error);
+                alert('Failed to load your reading groups.');
+            });
+    });
+}
+
+function showGroupSelectionPopup(groups, bookId) {
+    // Create a modal popup
+    const modalOverlay = document.createElement('div');
+    modalOverlay.className = 'modal-overlay';
+    modalOverlay.style.display = 'flex';
     
-  
+    const modalHtml = `
+        <div class="modal-container">
+            <div class="modal-header">
+                <h2>Select a Reading Group</h2>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Select a group to start reading this book with:</p>
+                <div class="group-select-list">
+                    ${groups.map(group => `
+                        <div class="group-select-item" data-group-id="${group.GROUP_ID}">
+                            <div class="group-select-info">
+                                <span class="group-select-name">${group.GROUP_NAME}</span>
+                                <span class="group-select-meta">${group.MEMBER_COUNT} members</span>
+                            </div>
+                            <button class="select-group-btn">Select</button>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        </div>
+    `;
     
+    modalOverlay.innerHTML = modalHtml;
+    document.body.appendChild(modalOverlay);
+    
+    // Close button functionality
+    const closeBtn = modalOverlay.querySelector('.modal-close');
+    closeBtn.addEventListener('click', () => {
+        modalOverlay.remove();
+    });
+    
+    // Close on outside click
+    modalOverlay.addEventListener('click', (e) => {
+        if (e.target === modalOverlay) {
+            modalOverlay.remove();
+        }
+    });
+    
+    // Group selection
+    const selectButtons = modalOverlay.querySelectorAll('.select-group-btn');
+    selectButtons.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const groupItem = e.target.closest('.group-select-item');
+            const groupId = groupItem.getAttribute('data-group-id');
+            startGroupReading(groupId, bookId, modalOverlay);
+        });
+    });
+}
+
+function startGroupReading(groupId, bookId, modalOverlay) {
+    fetch('/ShelfControl/start-group-reading', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: `group_id=${groupId}&book_id=${bookId}`
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('The book has been assigned to all members of the group!');
+            modalOverlay.remove();
+            
+            // Update UI to show reading status
+            if (currentStatus) {
+                currentStatus.textContent = 'reading';
+            }
+            if (statusOptions) {
+                statusOptions.classList.remove('active');
+            }
+            if (readingProgress) {
+                readingProgress.classList.add('active');
+            }
+            
+            // Reload page to update UI
+            setTimeout(() => {
+                window.location.reload();
+            }, 1000);
+        } else {
+            alert(`Error: ${data.message}`);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred while starting group reading.');
+    });
+}
     
   function updateBookStatus(bookId, status) {
     fetch('/ShelfControl/update-book', {

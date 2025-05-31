@@ -17,6 +17,8 @@
                         <div class="status-option" data-status="reading">reading</div>
                         <div class="status-option" data-status="completed">completed</div>
                         <div class="status-option" data-status="dnf">dnf</div>
+                        <div class="status-option group-reading" data-status="group-reading">group reading</div>
+ 
                     </div>
                 </div>
                 

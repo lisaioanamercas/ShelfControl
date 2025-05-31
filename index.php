@@ -167,3 +167,28 @@ elseif (preg_match('/^\/books\/subpublisher\/(.+)$/', $request, $matches)) {
     $subpublisher = urldecode($matches[1]);
     $bookController->showBooksByAttribute('subpublisher', $subpublisher);
 }
+// Social and Group Reading routes
+elseif ($request == '/social') {
+    $socialController = new \App\Controllers\SocialController();
+    $socialController->index();
+}
+elseif ($request == '/user-groups') {
+    $socialController = new \App\Controllers\SocialController();
+    $socialController->getUserGroups();
+}
+elseif ($request == '/create-group') {
+    $socialController = new \App\Controllers\SocialController();
+    $socialController->createGroup();
+}
+elseif ($request == '/add-member') {
+    $socialController = new \App\Controllers\SocialController();
+    $socialController->addMember();
+}
+elseif ($request == '/search-users') {
+    $socialController = new \App\Controllers\SocialController();
+    $socialController->searchUsers();
+}
+elseif ($request == '/start-group-reading') {
+    $socialController = new \App\Controllers\SocialController();
+    $socialController->startGroupReading();
+}

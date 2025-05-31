@@ -13,7 +13,7 @@
         <!-- ==================== CSS =========================== -->
         <link rel="stylesheet" href="/ShelfControl/views/css/style.css">
         <link rel="stylesheet" href="/ShelfControl/views/css/footer.css">
-        <link rel="stylesheet" href="/ShelfControl/views/css/bookPage/review.css">
+        <link rel="stylesheet" href="/ShelfControl/views/css/bookPage/reviews.css">
 
         <?php if (isset($user['role']) && $user['role'] === 'admin'): ?>
             <link rel="stylesheet" href="/ShelfControl/views/css/admin/admin.css">
@@ -165,15 +165,13 @@
                         </div>
                     </div>
 
+                </div>
                     <!-- Inside the profile content div -->
                     <div class="profile__actions">
-                        <a href="/ShelfControl/social" class="profile__action-btn">
-                            <i class="ri-group-line"></i>
-                            <span>Groups & Friends</span>
-                        </a>
-                        <!-- Other profile buttons... -->
+                        <a href="/ShelfControl/social" class="profile__link">
+                            <i class="ri-group-line"></i> Reading Groups
+                        </a>                   
                     </div>
-                </div>
 
                 <!-- Action buttons -->
                 
