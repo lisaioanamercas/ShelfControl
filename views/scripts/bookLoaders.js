@@ -52,10 +52,10 @@ document.addEventListener('DOMContentLoaded', function() {
         showLoader('read-loader', 'read-content');
         setTimeout(() => hideLoader('read-loader', 'read-content'), 1200);
     }
-    if (document.getElementById('current-reading-loader')) {
-        showLoader('current-reading-loader', 'current-reading-content');
-        setTimeout(() => hideLoader('current-reading-loader', 'current-reading-content'), 1200);
-    }
+    // if (document.getElementById('current-reading-loader')) {
+    //     showLoader('current-reading-loader', 'current-reading-content');
+    //     setTimeout(() => hideLoader('current-reading-loader', 'current-reading-content'), 1200);
+    // }
 
     // UserBooksDisplay
     if (document.getElementById('userbooks-loader')) {
