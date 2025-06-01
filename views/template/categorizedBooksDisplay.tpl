@@ -58,11 +58,8 @@
             <div class="book-section__header">
                 <h2 class="book-section__title">To Read Pile (<?php echo count($toReadBooks); ?>)</h2>
             </div>
-
-            <div class="section-loader" id="books-loader"></div>
-
             
-            <div class="book-section__content" id="books-content" style="display: none;">
+            <div class="book-section__content">
                 <div class="book-grid">
                     <?php foreach ($toReadBooks as $book): ?>
                         <div class="book-item">
@@ -86,11 +83,8 @@
             <div class="book-section__header">
                 <h2 class="book-section__title">Owned Books (<?php echo count($ownedBooks); ?>)</h2>
             </div>
-
-            <div class="section-loader" id="books-loader"></div>
-
             
-            <div class="book-section__content" id="books-content" style="display: none;">
+            <div class="book-section__content">
                 <div class="book-grid">
                     <?php foreach ($ownedBooks as $book): ?>
                         <div class="book-item">
