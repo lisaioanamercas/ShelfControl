@@ -89,9 +89,10 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log('Review submitted');});
     }
      
-    const author = authorElement.innerText;
+    // const author = authorElement.innerText;
+    // console.log('Autor:', author);
+    const author = authorElement.getAttribute('data-author-name');
     console.log('Autor:', author);
-        
         
     const currentTitle = titleElement.innerText;
     console.log('Titlu:', currentTitle);

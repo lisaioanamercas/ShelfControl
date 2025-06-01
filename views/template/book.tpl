@@ -37,7 +37,9 @@
         <!-- Book Info Column -->
         <div class="book-details__info">
             <h1 class="book-title">{$book_title}</h1>
-                <h2 class="book-author">{$book_author}</h2> 
+                <h2 class="book-author" data-author-name="{$book_author}">
+                    <a href="/ShelfControl/books/author/<?php echo urlencode($book_author); ?>" class="metadata-link">{$book_author}</a>
+                </h2> 
             
             <!-- Book metadata -->
             <div class="book-meta">
