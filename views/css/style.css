@@ -388,7 +388,7 @@ img{
     font-size: 1.25rem;
     color: var(--title-color);
     cursor: pointer;
-    transition: color .4;
+    transition: color .4s;
 }
 
 .nav__actions i:hover{
@@ -412,7 +412,7 @@ img{
     background-color: hsla(230, 12%, 96%, .6);
     backdrop-filter: blur(16px);
     padding: 8rem 1.5rem;
-    transition: top.4s;
+    transition: top .4s;
 }
 
 .search__form{
@@ -437,12 +437,18 @@ img{
 }
 
 .search__close{
-    position: absolute;
-    top: 2rem;
+    position: fixed;
+    top: 4rem;
     right: 2rem;
     font-size: 2rem;
     color: var(--title-color);
     cursor: pointer;
+        width: 2.5rem;
+    height: 2.5rem;
+        z-index: 101; /* Ensure it's above other elements */
+    transition: all .3s;
+
+
 }
 
 /* show search */
@@ -479,6 +485,10 @@ img{
     border-radius: 1rem;
     padding: 2rem;
     max-width: 450px;
+    max-height: 80vh; /* Limit height to 90% of viewport height */
+    overflow-y: auto; /* Enable vertical scrolling */
+    padding-top: 3rem; /* Add padding at top to ensure content doesn't go under close button */
+
     width: 100%;
     box-shadow: 0 8px 32px hsla(230, 70%, 20%, .1);
     position: relative;
@@ -650,7 +660,7 @@ img{
 }
 
 .profile__close {
-    position: absolute;
+    position: fixed;
     top: 1rem;
     right: 1rem;
     width: 2.5rem;
@@ -666,7 +676,7 @@ img{
     cursor: pointer;
     transition: all .3s;
     box-shadow: 0 2px 8px hsla(230, 70%, 20%, .1);
-    z-index: 10;
+    z-index: 101;
 }
 
 /* Make sure the icon doesn't interfere with clicking the button */
@@ -680,7 +690,21 @@ img{
     border-color: var(--first-color);
     transform: scale(1.1);
 }
-
+@media screen and (max-width: 500px) {
+    .profile__container {
+        padding: 1rem;
+        padding-top: 4rem;
+        margin: 0.5rem;
+    }
+    
+    .profile__section {
+        padding: 0.75rem;
+    }
+    
+    .profile__stats {
+        gap: 0.5rem;
+    }
+}
 /* SHOW PROFILE */
 .show-profile {
     top: 0;
