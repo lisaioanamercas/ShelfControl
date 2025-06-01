@@ -59,6 +59,8 @@
 <script src="/ShelfControl/views/scripts/darkTheme.js"></script>
 <script src="/ShelfControl/views/scripts/header.js"></script>
 <script src="/ShelfControl/views/scripts/admin.js"></script>
+<script src="/ShelfControl/views/scripts/bookLoaders.js"></script>
+
 
 
 

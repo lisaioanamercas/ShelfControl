@@ -15,10 +15,12 @@
         </div>
         
         <!-- Current reading container -->
-        <!-- Current reading container -->
         <div class="current-reads__container">
             <h3 class="current-reads__title">Current Reads (<?php echo count($currentlyReading); ?>)</h3>
-            <div class="current-reads__books">
+
+            <div class="section-loader" id="current-reading-loader"></div>
+
+            <div class="current-reads__books" id="current-reading-content" style="display: none;">
                 <?php if (empty($currentlyReading)): ?>
                     <p>You're not currently reading any books.</p>
                 <?php else: ?>
@@ -81,8 +83,10 @@
                     <i class="ri-arrow-right-line"></i>
                 </a>
             </div>
+
+            <div class="section-loader" id="toread-loader"></div>
             
-            <div class="book-section__content">
+            <div class="book-section__content" id="toread-content" style="display: none;">
                 <div class="book-grid">
                     <?php if (empty($toReadBooks)): ?>
                         <p>No books in your to-read pile yet.</p>
@@ -111,8 +115,10 @@
                     <i class="ri-arrow-right-line"></i>
                 </a>
             </div>
+
+            <div class="section-loader" id="owned-loader"></div>
             
-            <div class="book-section__content">
+            <div class="book-section__content" id="owned-content" style="display: none;">
                 <div class="book-grid">
                     <?php if (empty($ownedBooks)): ?>
                         <p>No owned books yet.</p>
@@ -141,8 +147,10 @@
                     <i class="ri-arrow-right-line"></i>
                 </a>
             </div>
-            
-            <div class="book-section__content">
+
+            <div class="section-loader" id="read-loader"></div>
+
+            <div class="book-section__content" id="read-content" style="display: none;">
                 <div class="book-grid">
                     <?php if (empty($readBooks)): ?>
                         <p>You haven't read any books yet.</p>
