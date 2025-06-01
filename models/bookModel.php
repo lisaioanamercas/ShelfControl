@@ -427,6 +427,28 @@ class BookModel {
         
         return $books;
     }
+    public function getBooksByTitle($title) {
+        $baseTitle = preg_replace('/(:\s.*)|(\s+\(.*\))|(,\s+Vol\.\s+\d+)|(,\s+Edition\s+\d+)/i', '', $title);
+        $baseTitle = trim($baseTitle);
+        $searchTitle = '%' . strtoupper($baseTitle) . '%';
+
+        $sql = "SELECT b.book_id, b.title, b.cover_url, a.name as author_name 
+                FROM Book b 
+                JOIN Author a ON b.author_id = a.author_id
+                WHERE UPPER(b.title) LIKE :title
+                ORDER BY b.publication_year DESC";
+        
+        $stmt = oci_parse($this->conn, $sql);
+        oci_bind_by_name($stmt, ':title', $searchTitle);
+        oci_execute($stmt);
+        
+        $books = [];
+        while ($row = oci_fetch_assoc($stmt)) {
+            $books[] = $row;
+        }
+        
+        return $books;
+    }
 
     public function getBooksByAuthor($authorName) {
         $sql = "SELECT b.book_id, b.title, b.cover_url, a.name as author_name 
