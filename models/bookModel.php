@@ -252,23 +252,42 @@ class BookModel {
     }
 
     public function updateBookProgress($userId, $bookId, $pagesRead) {
+        // Get the total pages for the book
+        $totalPagesSql = "SELECT pages FROM Book WHERE book_id = :book_id";
+        $totalPagesStmt = oci_parse($this->conn, $totalPagesSql);
+        oci_bind_by_name($totalPagesStmt, ':book_id', $bookId);
+        oci_execute($totalPagesStmt);
+        $bookData = oci_fetch_assoc($totalPagesStmt);
+        $totalPages = $bookData ? intval($bookData['PAGES']) : 0;
+        
         // Check if record exists
         $existingRecord = $this->getUserBookData($userId, $bookId);
         
+        // Determine status based on pages read
+        $newStatus = $existingRecord['STATUS'] ?? 'reading';
+        if ($totalPages > 0 && intval($pagesRead) >= $totalPages) {
+            $newStatus = 'completed';
+            $pagesRead = $totalPages; // Ensure we don't exceed total pages
+        } elseif (intval($pagesRead) > 0) {
+            $newStatus = 'reading';
+        }
+        
         if ($existingRecord) {
             $sql = "UPDATE UserBook 
-                    SET pages_read = :pages_read 
+                    SET pages_read = :pages_read,
+                        status = :status
                     WHERE user_id = :user_id 
                     AND book_id = :book_id";
         } else {
             $sql = "INSERT INTO UserBook (user_id, book_id, pages_read, status) 
-                    VALUES (:user_id, :book_id, :pages_read, 'reading')";
+                    VALUES (:user_id, :book_id, :pages_read, :status)";
         }
         
         $stmt = oci_parse($this->conn, $sql);
         oci_bind_by_name($stmt, ':user_id', $userId);
         oci_bind_by_name($stmt, ':book_id', $bookId);
         oci_bind_by_name($stmt, ':pages_read', $pagesRead);
+        oci_bind_by_name($stmt, ':status', $newStatus);
         
         return oci_execute($stmt);
     }

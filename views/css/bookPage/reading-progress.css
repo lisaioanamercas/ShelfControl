@@ -84,3 +84,44 @@
 .save-progress-btn:hover {
     background-color: hsl(0, 85%, 40%);
 }
+
+/* Book completion notification */
+.completion-notification {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: var(--first-color);
+    color: var(--white-color);
+    border-radius: 8px;
+    padding: 0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    transform: translateY(100px);
+    opacity: 0;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.completion-notification.show {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.completion-content {
+    display: flex;
+    align-items: center;
+    padding: 15px 20px;
+    gap: 10px;
+}
+
+.completion-content i {
+    font-size: 24px;
+}
+
+.completion-content p {
+    margin: 0;
+    font-weight: var(--font-medium);
+}
+
+.dark-theme .completion-notification {
+    background-color: var(--dark-first-color);
+}

@@ -203,7 +203,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
     
-    // Update reading progress
+    // Update reading progress - modificat mai pont
     const saveProgressBtn = document.getElementById('saveProgressBtn');
     if (saveProgressBtn) {
         saveProgressBtn.addEventListener('click', () => {
@@ -223,7 +223,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             
             // Calculate percentage
-            const percentage = Math.round((currentPage / total) * 100);
+            const percentage = Math.min(Math.round((currentPage / total) * 100), 100);
             
             // Update UI
             progressFill.style.width = `${percentage}%`;
@@ -231,6 +231,14 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // Send progress update to server
             updateBookProgress(bookId, currentPage);
+            
+            // If user has completed the book, maybe reload after a delay 
+            if (currentPage >= total) {
+                setTimeout(() => {
+                    // Optional: reload the page after showing notification
+                    window.location.reload();
+                }, 60);
+            }
         });
     }
     
@@ -339,72 +347,76 @@ function showGroupSelectionPopup(groups, bookId) {
     });
 }
 
-function startGroupReading(groupId, bookId, modalOverlay) {
-    fetch('/ShelfControl/start-group-reading', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: `group_id=${groupId}&book_id=${bookId}`
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            alert('The book has been assigned to all members of the group!');
-            modalOverlay.remove();
-            
-            // Update UI to show reading status
-            if (currentStatus) {
-                currentStatus.textContent = 'reading';
+    function startGroupReading(groupId, bookId, modalOverlay) {
+        fetch('/ShelfControl/start-group-reading', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: `group_id=${groupId}&book_id=${bookId}`
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('The book has been assigned to all members of the group!');
+                modalOverlay.remove();
+                
+                // Update UI to show reading status
+                if (currentStatus) {
+                    currentStatus.textContent = 'reading';
+                }
+                if (statusOptions) {
+                    statusOptions.classList.remove('active');
+                }
+                if (readingProgress) {
+                    readingProgress.classList.add('active');
+                }
+                
+                // Reload page to update UI
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1000);
+            } else {
+                alert(`Error: ${data.message}`);
             }
-            if (statusOptions) {
-                statusOptions.classList.remove('active');
-            }
-            if (readingProgress) {
-                readingProgress.classList.add('active');
-            }
-            
-            // Reload page to update UI
-            setTimeout(() => {
-                window.location.reload();
-            }, 1000);
-        } else {
-            alert(`Error: ${data.message}`);
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('An error occurred while starting group reading.');
-    });
-}
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while starting group reading.');
+        });
+    }
     
-  function updateBookStatus(bookId, status) {
-    fetch('/ShelfControl/update-book', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-        }, 
-        body: `action=status&book_id=${bookId}&status=${status}`
-    })
-    .then(response => response.text())
-    .then(text => {
-        console.log('Server response:', text);
-        try {
-            const data = JSON.parse(text);
-            if (!data.success) {
-                console.error('Error updating status:', data.message);
-            }/* if (bookId.toString() !== data.book_id.toString()) {
-                     window.location.href = data.redirect_url;
-            }*/
+    function updateBookStatus(bookId, status) {
+        fetch('/ShelfControl/update-book', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            }, 
+            body: `action=status&book_id=${bookId}&status=${status}`
+        })
+        .then(response => response.text())
+        .then(text => {
+            console.log('Server response:', text);
+            try {
+                const data = JSON.parse(text);
+                if (!data.success) {
+                    console.error('Error updating status:', data.message);
+                }/* if (bookId.toString() !== data.book_id.toString()) {
+                        window.location.href = data.redirect_url;
+                }*/
 
-        } catch (e) {
-            console.error('Invalid JSON:', text);
-        }
-    });
-}
+            } catch (e) {
+                console.error('Invalid JSON:', text);
+            }
+        });
+    }
 
 
     function updateBookProgress(bookId, pagesRead) {
+        // Get the total pages
+        const totalPagesElem = document.getElementById('totalPages');
+        const totalPages = parseInt(totalPagesElem.textContent);
+
         fetch('/ShelfControl/update-book', {
             method: 'POST',
             headers: {
@@ -414,11 +426,54 @@ function startGroupReading(groupId, bookId, modalOverlay) {
         })
         .then(response => response.json())
         .then(data => {
-            if (!data.success) {
+            if (data.success) {
+                // Check if book is now completed (pages read equals total pages)
+                if (parseInt(pagesRead) >= totalPages) {
+                    // Update the status display
+                    const currentStatus = document.getElementById('currentStatus');
+                    if (currentStatus) {
+                        currentStatus.textContent = 'completed';
+                    }
+                    
+                    // Hide the reading progress section
+                    const readingProgress = document.getElementById('readingProgress');
+                    if (readingProgress) {
+                        readingProgress.classList.remove('active');
+                    }
+                    
+                    // Show completion message
+                    showCompletionMessage();
+                }
+            } else {
                 console.error('Error updating progress:', data.message);
             }
         })
         .catch(error => console.error('Error:', error));
+    }
+
+    // Add this new function to show a completion message
+    function showCompletionMessage() {
+        const notification = document.createElement('div');
+        notification.className = 'completion-notification';
+        notification.innerHTML = `
+            <div class="completion-content">
+                <i class="ri-check-double-line"></i>
+                <p>Congratulations! You've completed this book!</p>
+            </div>
+        `;
+        
+        document.body.appendChild(notification);
+        
+        // Add animation class after a short delay
+        setTimeout(() => {
+            notification.classList.add('show');
+        }, 100);
+        
+        // Remove after a few seconds
+        setTimeout(() => {
+            notification.classList.remove('show');
+            setTimeout(() => notification.remove(), 500);
+        }, 3000);
     }
     
     function updateBookOwned(bookId, isOwned) {
