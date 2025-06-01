@@ -165,16 +165,34 @@
                         </div>
                     </div>
 
-                </div>
-                    <!-- Inside the profile content div -->
-                    <div class="profile__actions">
-                        <a href="/ShelfControl/social" class="profile__link">
-                            <i class="ri-group-line"></i> Reading Groups
-                        </a>                   
+                    <!-- Export options -->
+                    <div class="profile__section">
+                        <h4 class="profile__section-title">
+                            <i class="ri-file-download-line"></i>
+                            Export Statistics
+                        </h4>
+                        <div class="export-buttons">
+                            <a href="/ShelfControl/export/stats/csv" class="export-btn">
+                                <i class="ri-file-text-line"></i> CSV
+                            </a>
+                            <a href="/ShelfControl/export/stats/docbook" class="export-btn">
+                                <i class="ri-file-list-line"></i> DocBook
+                            </a>
+                        </div>
                     </div>
 
-                <!-- Action buttons -->
-                
+                    <div class="profile__section">
+                        <h4 class="profile__section-title">
+                            <i class="ri-group-line"></i>
+                            Reading Groups
+                        </h4>
+                        <div class="profile__actions">
+                            <a href="/ShelfControl/social" class="export-btn">
+                                View My Groups
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 

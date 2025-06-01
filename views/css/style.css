@@ -1896,3 +1896,34 @@ img{
 .landing-page .hero__image.animate {
     opacity: 1;
 }
+
+/* Export buttons */
+.export-buttons {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.export-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: var(--first-color);
+    color: var(--white-color);
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-size: var(--smaller-font-size);
+    transition: background-color 0.3s;
+}
+
+/* .export-btn:hover {
+    background-color: var(--first-color-alt);
+} */
+
+.dark-theme .export-btn {
+    background-color: var(--dark-first-color);
+}
+
+.dark-theme .export-btn:hover {
+    background-color: var(--dark-first-color-alt);
+}

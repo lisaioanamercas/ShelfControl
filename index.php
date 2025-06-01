@@ -198,6 +198,13 @@ elseif ($request == '/start-group-reading') {
     $socialController->startGroupReading();
 }
 elseif ($request == '/rss') {
-   
     $newsController->getNews();
+}
+elseif ($request == '/export/stats/csv') {
+    $exportController = new \App\Controllers\ExportController();
+    $exportController->exportStatsCSV();
+}
+elseif ($request == '/export/stats/docbook') {
+    $exportController = new \App\Controllers\ExportController();
+    $exportController->exportStatsDocBook();
 }
