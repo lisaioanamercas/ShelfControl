@@ -48,6 +48,10 @@
                     <label class="form-label" for="isbn">ISBN</label>
                     <input type="text" id="isbn" name="isbn" class="form-input">
                 </div>
+                    <div class="form-group">
+                    <label class="form-label" for="genre">Genre</label>
+                    <input type="text" id="genre" name="genre" class="form-input" placeholder="Fiction, Science Fiction, etc.">
+                </div>
             </div>
 
             <div class="form-row">

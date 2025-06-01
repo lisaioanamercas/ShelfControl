@@ -171,6 +171,11 @@ elseif (preg_match('/^\/books\/subpublisher\/(.+)$/', $request, $matches)) {
     $subpublisher = urldecode($matches[1]);
     $bookController->showBooksByAttribute('subpublisher', $subpublisher);
 }
+elseif (preg_match('/^\/books\/genre\/(.+)$/', $request, $matches)) {
+    $bookController = new \App\Controllers\BookController();
+    $genre = urldecode($matches[1]);
+    $bookController->showBooksByAttribute('genre', $genre);
+}
 // Social and Group Reading routes
 elseif ($request == '/social') {
     $socialController = new \App\Controllers\SocialController();

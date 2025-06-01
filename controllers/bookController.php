@@ -353,6 +353,10 @@ class BookController{
                 $books = $bookModel->getBooksBySubPublisher($value);
                 $title = "Books from $value";
                 break;
+            case 'genre':
+                $books = $bookModel->getBooksByGenre($value);
+                $title = "Books in '$value' genre";
+                break;
         }
         
         // Categorize books by status

@@ -43,6 +43,8 @@ class AdminController {
         $subpublisher = $_POST['subpublisher'] ?? '';
         $coverUrl = $_POST['cover_url'] ?? ''; // New field for cover URL
         $summary = $_POST['summary'] ?? ''; // Add this line to capture the description
+        $genre = $_POST['genre'] ?? ''; // Add this line to capture genre
+
         
         // Convert publication year to integer if it's not empty
         $publicationYear = !empty($publication) ? (int)$publication : null;
@@ -67,8 +69,9 @@ class AdminController {
                     'isbn' => $isbn,
                     'publishing_house' => $publisher,
                     'sub_publisher' => $subpublisher,
-                    'cover' => $coverUrl, // Add cover URL here
-                    'summary' => $summary, // Add this line to include the description
+                    'cover' => $coverUrl, 
+                    'summary' => $summary,
+                    'genre' => $genre, 
                     'source' => 'MANUAL'
                 ]
             ]);

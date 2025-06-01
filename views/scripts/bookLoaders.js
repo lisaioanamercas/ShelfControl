@@ -35,7 +35,20 @@ document.addEventListener('DOMContentLoaded', function() {
         const content = document.getElementById(contentId);
         if (loader && content) {
             loader.classList.remove('active');
-            content.style.display = '';
+            // This next line is critical - it hides the loader element!
+            loader.style.display = 'none'; 
+            content.style.display = 'block';
+            
+            // Fix for book grid layouts
+            const bookGrid = content.querySelector('.book-grid');
+            if (bookGrid) {
+                bookGrid.style.display = 'grid';
+            }
+            
+            // Handle current reading section specially
+            if (contentId === 'current-reading-content') {
+                content.style.display = 'grid';
+            }
         }
     }
 

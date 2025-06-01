@@ -58,6 +58,12 @@
                     <span class="book-meta__value">{$book_isbn}</span>
                 </div>
                 <div class="book-meta__item">
+                    <span class="book-meta__label">Genre:</span>
+                    <span class="book-meta__value">
+                        <a href="/ShelfControl/books/genre/<?php echo urlencode($book_genre); ?>" class="metadata-link">{$book_genre}</a>
+                    </span>
+                </div>
+                <div class="book-meta__item">
                     <span class="book-meta__label">Publisher:</span>
                     <span class="book-meta__value">
                         <a href="/ShelfControl/books/publisher/<?php echo urlencode($book_publisher); ?>" class="metadata-link">{$book_publisher}</a>

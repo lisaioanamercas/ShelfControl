@@ -483,6 +483,26 @@ class BookModel {
         
         return $books;
     }
+
+    public function getBooksByGenre($genre) {
+        $sql = "SELECT b.book_id, b.title, b.cover_url, a.name as author_name 
+                FROM Book b 
+                JOIN Author a ON b.author_id = a.author_id
+                WHERE UPPER(b.genre) LIKE UPPER(:genre)";
+        
+        $stmt = oci_parse($this->conn, $sql);
+        $searchGenre = "%$genre%"; // Add wildcards to match partial genres
+        oci_bind_by_name($stmt, ':genre', $searchGenre);
+        oci_execute($stmt);
+        
+        $books = [];
+        while ($row = oci_fetch_assoc($stmt)) {
+            $books[] = $row;
+        }
+    
+        return $books;
+    }
+
     public function addReview($userId, $bookId, $stars,$reviewText)
     {
         $sql = "INSERT INTO review(user_id, book_id,text,stars)
