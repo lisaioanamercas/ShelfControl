@@ -1445,17 +1445,17 @@ img{
 }
 
 /* Book Section Loading Animation */
-.section-loader {
+/* .section-loader {
     display: none;
     width: 40px;
     height: 40px;
     border: 4px solid var(--border-color);
     border-top: 4px solid var(--first-color); /* This creates the red segment */
-    border-radius: 50%;
+    /* border-radius: 50%;
     animation: spin 1s linear infinite;
     margin: 2rem auto;
     position: relative; /* Add this for better positioning */
-}
+/* }
 
 .section-loader.active {
     display: block;
@@ -1464,4 +1464,4 @@ img{
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
-}
+} */

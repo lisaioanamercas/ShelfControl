@@ -5,12 +5,12 @@
             <h2 class="book-section__title"><?php echo $section_title; ?> (<?php echo count($books); ?>)</h2>
         </div>
 
-        <div class="section-loader" id="books-loader"></div>
+        <div class="section-loader" id="userbooks-loader"></div>
 
-        <div class="book-section__content" id="books-content" style="display: none;">
+        <div class="book-section__content" id="userbooks-content" style="display: none;">
             <div class="book-grid">
                 <?php if (empty($books)): ?>
-                    <p>{$empty_message}</p>
+                    <p><?php echo $empty_message; ?></p>
                 <?php else: ?>
                     <?php foreach ($books as $book): ?>
                         <div class="book-item">

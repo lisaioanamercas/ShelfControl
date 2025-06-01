@@ -20,7 +20,7 @@
 
             <div class="section-loader" id="current-reading-loader"></div>
 
-            <div class="current-reads__books" id="current-reading-content" style="display: none;">
+            <div class="current-reads__books" id="current-reading-content" style="display: none;">                
                 <?php if (empty($currentlyReading)): ?>
                     <p>You're not currently reading any books.</p>
                 <?php else: ?>
