@@ -3,7 +3,13 @@ document.addEventListener("DOMContentLoaded", function () {
     const params = new URLSearchParams(window.location.search);
     const query = params.get("query") || "love,history,science"; 
     loadBooks(query);
+
+
+
+    
 });
+
+
 
 document.getElementById("apply-filter-btn").addEventListener("click", function() {
     const author = document.getElementById("filter-author").value.trim();
@@ -58,6 +64,7 @@ function loadBooks(query) {
             if (data.items) {
                 window.allBooks = data.items;
                 renderBooks(data.items);
+                extractAndPopulateGenres(data.items);
             } else {
                 container.innerHTML = "<p>Nu s-au găsit cărți.</p>";
             }
@@ -66,6 +73,28 @@ function loadBooks(query) {
             container.innerHTML = "<p>Eroare la încărcarea cărților.</p>";
         });
 }
+function extractAndPopulateGenres(books) {
+    const genreSet = new Set();
+    
+    books.forEach(book => {
+        const categories = book.volumeInfo.categories;
+        if (categories && Array.isArray(categories)) {
+            categories.forEach(category => genreSet.add(category));
+        }
+    });
+
+    const genreList = document.getElementById("genre-list");
+    if (genreList) {
+        genreList.innerHTML = ""; 
+        genreSet.forEach(genre => {
+            const option = document.createElement("option");
+            option.value = genre;
+            option.textContent = genre;
+            genreList.appendChild(option);
+        });
+    }
+}
+
 
 function renderBooks(books) {
     const container = document.getElementById("books-container");
@@ -213,5 +242,15 @@ function extractISBN(identifiers) {
   return isbn ? isbn.identifier : "";
 }
 
+document.addEventListener("DOMContentLoaded", function() {
+    const genres = ["Nu sunt genuri corespunzătoare cu filtrele"];
 
+    if (genreList) {
+        genres.forEach(genre => {
+            const option = document.createElement('option');
+            option.value = genre;
+            genreList.appendChild(option);
+        });
+    }
+});
 

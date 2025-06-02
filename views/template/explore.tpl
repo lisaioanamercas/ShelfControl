@@ -7,7 +7,13 @@
             </p>
         <div class="library-filter">
             <input type="text" id="filter-author" class="library-filter__input" placeholder="Filtrează după autor">
-            <input type="text" id="filter-genre" class="library-filter__input" placeholder="Filtrează după gen">
+            <div style="position:relative;">
+                <input type="text" id="filter-genre" class="library-filter__input" placeholder="Filtrează după gen" autocomplete="off" list="genre-list">
+                <datalist id="genre-list">
+                 <!--aici vin filtrele -->
+                </datalist>
+                <div id="genre-suggestions" class="dropdown-content" style="display:none; position:absolute; width:100%; z-index:10;"></div>
+            </div>
             <button id="apply-filter-btn" class="library-filter__btn">Aplică filtre</button>
         </div>
     </div>
