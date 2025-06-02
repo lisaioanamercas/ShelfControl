@@ -167,23 +167,27 @@ function closeModal() {
 function addNews(newsItem) {
     showLoader();
     
-    // Simulate API call
-    setTimeout(() => {
-        const newNews = {
-            id: Date.now(),
-            type: newsItem.type,
-            title: newsItem.title,
-            description: newsItem.description,
-            author: newsItem.author || 'Anonymous',
-            date: new Date().toISOString().split('T')[0],
-            link: newsItem.link || null
-        };
-
-        newsData.unshift(newNews);
+    fetch('/ShelfControl/news/add', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(newsItem)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            fetchNews(); 
+            closeModal();
+        } else {
+            alert(data.message || 'Failed to add news');
+        }
         hideLoader();
-        renderNews();
-        closeModal();
-    }, 1000);
+    })
+    .catch(() => {
+        alert('Error adding news');
+        hideLoader();
+    });
 }
 
 // Event listeners

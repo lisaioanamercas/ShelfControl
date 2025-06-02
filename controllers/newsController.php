@@ -48,12 +48,36 @@ class NewsController
                  $content = $content->load();
                 
                 echo "<description><![CDATA[{$content}]]></description>";
-                echo "<link>localhost//ShelfControl/news/book-details?id={$item['RELATED_ID']}</link>";
+                echo "<link>{$item['RELATED_LINK']}</link>";
                 echo "<pubDate>" . date(DATE_RSS, strtotime($item['PUBLISHED_AT'])) . "</pubDate>";
                 echo "</item>";
             }
 
             echo "</channel></rss>";
+            exit;
+    }
+    public function addNewsPost()
+    {
+           $data = json_decode(file_get_contents('php://input'), true);
+
+            $type = $data['type'] ?? '';
+            $title = $data['title'] ?? '';
+            $description = $data['description'] ?? '';
+            $author = $data['author'] ?? '';
+            $link = $data['link'] ?? null;
+
+            require_once __DIR__ . '/../models/dbConnection.php';
+            $newsModel = new \App\Models\NewsModel($conn);
+
+            // Adaptează la structura ta de model
+            $result = $newsModel->addNews($type, $title, $description, $link);
+
+            if ($result) {
+                echo json_encode(['success' => true]);
+            } else {
+                http_response_code(500);
+                echo json_encode(['success' => false, 'message' => 'Failed to add news']);
+            }
             exit;
     }
 }

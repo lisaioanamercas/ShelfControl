@@ -23,14 +23,14 @@ class NewsModel
         return $news;
 
     }
-    public function addNews($type, $title, $content, $relatedId)
+    public function addNews($type, $title, $content, $relatedLink)
     {
-        $sql = "INSERT INTO rssfeed (TYPE, TITLE, CONTENT, RELATED_ID, PUBLISHED_AT) VALUES (:type, :title, :content, :relatedId, SYSDATE)";
+        $sql = "INSERT INTO rssfeed (TYPE, TITLE, CONTENT, RELATED_LINK, PUBLISHED_AT) VALUES (:type, :title, :content, :relatedLink, SYSDATE)";
         $stmt = oci_parse($this->conn, $sql);
         oci_bind_by_name($stmt, ':type', $type);
         oci_bind_by_name($stmt, ':title', $title);
         oci_bind_by_name($stmt, ':content', $content);
-        oci_bind_by_name($stmt, ':relatedId', $relatedId);
+        oci_bind_by_name($stmt, ':relatedLink', $relatedLink);
         return oci_execute($stmt);
     }
     

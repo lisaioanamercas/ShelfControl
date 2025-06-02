@@ -209,6 +209,15 @@ elseif ($request == '/export/stats/csv') {
     $exportController = new \App\Controllers\ExportController();
     $exportController->exportStatsCSV();
 }
+elseif($request =='/news/add')
+{
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        $newsController->addNewsPost();
+    } else {
+        http_response_code(405); 
+        echo "This endpoint only accepts POST requests.";
+    }
+}
 elseif ($request == '/export/stats/docbook') {
     $exportController = new \App\Controllers\ExportController();
     $exportController->exportStatsDocBook();

@@ -118,6 +118,15 @@ class UserModel{
             'want_to_read' => $want['WANT_TO_READ'] ?? 0
         ];
     }
+    public function getUsernameById($userId)
+    {
+        $sql = "SELECT username FROM users WHERE user_id = :user_id";
+        $stmt = oci_parse($this->conn, $sql);
+        oci_bind_by_name($stmt, ':user_id', $userId);
+        oci_execute($stmt);
+        $row = oci_fetch_assoc($stmt);
+        return $row ? $row['USERNAME'] : null;
+    }
 
 }
 

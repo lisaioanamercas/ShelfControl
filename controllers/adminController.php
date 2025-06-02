@@ -83,9 +83,14 @@ class AdminController {
             // Use the BookModel to import the book
             $bookModel = new BookModel($conn);
             $result = $bookModel->importBooksFromJson($bookData);
+            $bookId=$bookModel->getBookidByTitle($title);
             
             if ($result) {
-                // Success
+                
+                 $newsModel = new \App\Models\NewsModel($conn);
+                 $newsTitle = "The book '$title' has been added.";
+                 $link = "/ShelfControl/book-details?id={$bookId}";
+                 $newsModel->addNews('New Book', $newsTitle, $summary, $bookId);
                 echo json_encode(['success' => true, 'message' => 'Book added successfully']);
             } else {
                 // Error

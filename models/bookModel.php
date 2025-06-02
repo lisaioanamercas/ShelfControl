@@ -587,4 +587,13 @@ class BookModel {
         
         return $reviews;
     }
+    public function getBookTitleById($bookId) {
+            $sql = "SELECT TITLE FROM BOOK WHERE BOOK_ID = :book_id";
+            $stmt = oci_parse($this->conn, $sql);
+            oci_bind_by_name($stmt, ":book_id", $bookId);
+            oci_execute($stmt);
+            $row = oci_fetch_assoc($stmt);
+            return $row ? $row['TITLE'] : null;
+    }
+
 }

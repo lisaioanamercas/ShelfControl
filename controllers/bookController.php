@@ -415,8 +415,11 @@ class BookController{
         $decoded = $this->jwt->validateJWT($_COOKIE['jwt']);
         $email = $decoded->data->email;
         
+        
         require_once __DIR__ . '/../models/dbConnection.php';
         $userModel = new \App\Models\UserModel($conn);
+       
+
         $userId = $userModel->getUserIdByEmail($email);
         
         $bookId = $_POST['book_id'] ?? null;
@@ -445,8 +448,17 @@ class BookController{
         ////////////////////////////aici se adauga review-ul in baza de date+stiri
       
         $result = $bookModel->addReview($userId, $bookId, $stars,$reviewText);
+        $username= $userModel->getUsernameById($userId);
+
+        if (!$result) {
+            http_response_code(500); 
+            echo json_encode(['error' => 'Failed to add review']);
+            exit;
+        }
         $newsModel = new \App\Models\NewsModel($conn);
-        $newsModel->addNews('review', 'New Review Added ', $reviewText, $bookId);
+        $newsTitle = "User <strong>$username</strong> added a new review for the book <strong>{$bookModel->getBookTitleById($bookId)}</strong>.";
+        $link = "/ShelfControl/book-details?id={$bookId}";
+        $newsModel->addNews('review', $newsTitle, $reviewText, $link);
         
 
         if ($result) {
