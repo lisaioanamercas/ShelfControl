@@ -222,3 +222,7 @@ elseif ($request == '/export/stats/docbook') {
     $exportController = new \App\Controllers\ExportController();
     $exportController->exportStatsDocBook();
 }
+elseif($request=='/api/libraries')
+{
+    $exploreController->getLibraries();
+}

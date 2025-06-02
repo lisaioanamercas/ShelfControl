@@ -127,6 +127,16 @@ class UserModel{
         $row = oci_fetch_assoc($stmt);
         return $row ? $row['USERNAME'] : null;
     }
+    public function getCityByEmail($userEmail)
+    {
+        $sql = "SELECT city FROM users WHERE email = :email";
+        $stmt = oci_parse($this->conn, $sql);
+        oci_bind_by_name($stmt, ':email', $userEmail);
+        oci_execute($stmt);
+        $row = oci_fetch_assoc($stmt);
+        return $row ? $row['CITY'] : null;
+    }
+
 
 }
 

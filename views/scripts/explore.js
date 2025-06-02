@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
     
     const params = new URLSearchParams(window.location.search);
-    const query = params.get("query") || "love,history,science"; 
+    const query = params.get("query") ||"love,literature,peace,history"; 
     loadBooks(query);
 
 
@@ -19,7 +19,7 @@ document.getElementById("apply-filter-btn").addEventListener("click", function()
     let queryParts = [];
 
     const params = new URLSearchParams(window.location.search);
-    const queryFromUrl = params.get("query") || "*"; 
+    const queryFromUrl = params.get("query") || "love,literature"; // Default query if none provided
     
 
     if (author) {
@@ -63,10 +63,66 @@ function loadBooks(query) {
         .then(data => {
             if (data.items) {
                 window.allBooks = data.items;
-                renderBooks(data.items);
-                extractAndPopulateGenres(data.items);
+
+                const firstBookTitle = data.items[0].volumeInfo.title?.toLowerCase() || "";
+                const normalizedQuery = query.toLowerCase();
+
+            /*   if (!firstBookTitle.includes(normalizedQuery)&&normalizedQuery!="") {
+                       fetch('/ShelfControl/api/libraries')
+                        .then(res => res.json())
+                        .then(libraries => {
+                            // Afișează bibliotecile în container
+                            container.innerHTML = "<h3>Biblioteci recomandate:</h3>";
+                            if (libraries.length === 0) {
+                                container.innerHTML += "<p>Nu s-au găsit biblioteci.</p>";
+                            } else {
+                               console.log("Biblioteci găsite:", libraries);
+                                libraries.forEach(lib => {
+                                    container.innerHTML += `
+                                        <div class="library-card">
+                                            <h4>${lib.name}</h4>
+                                            <p>${lib.address}</p>
+                                        </div>
+                                    `;
+                                });
+                            }
+                        })
+                        .catch(() => {
+                            container.innerHTML = "<p>Eroare la încărcarea bibliotecilor.</p>";
+                        });
+                    return;
+                }*/
+               /* else{*/
+                
+                      renderBooks(data.items);
+                      extractAndPopulateGenres(data.items);
+               /* }*/
+
+                
             } else {
                 container.innerHTML = "<p>Nu s-au găsit cărți.</p>";
+                 fetch('/ShelfControl/api/libraries')
+                        .then(res => res.json())
+                        .then(libraries => {
+                            // Afișează bibliotecile în container
+                            container.innerHTML = "<h3>Biblioteci recomandate:</h3>";
+                            if (libraries.length === 0) {
+                                container.innerHTML += "<p>Nu s-au găsit biblioteci.</p>";
+                            } else {
+                               console.log("Biblioteci găsite:", libraries);
+                                libraries.forEach(lib => {
+                                    container.innerHTML += `
+                                        <div class="library-card">
+                                            <h4>${lib.name}</h4>
+                                            <p>${lib.address}</p>
+                                        </div>
+                                    `;
+                                });
+                            }
+                        })
+                        .catch(() => {
+                            container.innerHTML = "<p>Eroare la încărcarea bibliotecilor.</p>";
+                        });
             }
         })
         .catch(() => {

@@ -89,6 +89,62 @@ class ExploreController{
    }
     
 }
+    public function getLibraries(){
+    
+
+            $jwt = new BaseController();
+            
+            require __DIR__ . '/../models/dbConnection.php';
+
+            $decoded = $jwt->validateJWT($_COOKIE['jwt']);
+            $userEmail = $decoded->data->email;
+
+            $userModel = new UserModel($conn);
+          //  $city=$userModel->getCityByEmail($userEmail);
+          $city='Iasi';
+
+
+    $query = '[out:json][timeout:25];
+area["name"="Iași"]["boundary"="administrative"]["admin_level"~"^(8|6)$"]->.searchArea;
+(
+  node["shop"="books"](area.searchArea);
+  way["shop"="books"](area.searchArea);
+  relation["shop"="books"](area.searchArea);
+);
+out body;
+>;
+out skel qt;'
+;
+
+    $url = "https://overpass-api.de/api/interpreter?data=" . urlencode($query);
+    $response = file_get_contents($url);
+
+    if ($response === FALSE) {
+        return json_encode(["error" => "API request failed"]);
+    }
+
+    $data = json_decode($response, true);
+    $libraries = [];
+
+    if (isset($data['elements'])) {
+        foreach ($data['elements'] as $element) {
+            
+
+           $name = $element['tags']['name'] ?? 'Bibliotecă fără nume';
+            $street = $element['tags']['addr:street'] ?? 'Stradă necunoscută';
+
+            $libraries[] = [
+                'name' => $name,
+                'address' => $street
+            ];
+        }
+    }
+
+       header('Content-Type: application/json; charset=utf-8');
+
+        echo json_encode($libraries, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+
+    }
 }
 
 
