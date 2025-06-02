@@ -14,9 +14,7 @@ document.getElementById("apply-filter-btn").addEventListener("click", function()
 
     const params = new URLSearchParams(window.location.search);
     const queryFromUrl = params.get("query") || "*"; 
-    if (queryFromUrl && queryFromUrl !== "*") {
-        queryParts.push(queryFromUrl);
-    }
+    
 
     if (author) {
         queryParts.push(`inauthor:${author}`);
@@ -29,8 +27,26 @@ document.getElementById("apply-filter-btn").addEventListener("click", function()
     
     let query = queryParts.length > 0 ? queryParts.join('+') : '*';
 
-    loadBooks(query);
+    loadBooksByFilters(query);
 });
+function loadBooksByFilters(filterQuery) {
+    const container = document.getElementById("books-container");
+    container.innerHTML = "<p>Se încarcă cărțile...</p>";
+
+    fetch(`https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(filterQuery)}&maxResults=40`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.items) {
+                window.allBooks = data.items;
+                renderBooks(data.items);
+            } else {
+                container.innerHTML = "<p>Nu s-au găsit cărți.</p>";
+            }
+        })
+        .catch(() => {
+            container.innerHTML = "<p>Eroare la încărcarea cărților.</p>";
+        });
+}
 
 function loadBooks(query) {
     const container = document.getElementById("books-container");
