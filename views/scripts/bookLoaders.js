@@ -55,15 +55,15 @@ document.addEventListener('DOMContentLoaded', function() {
     // Home page
     if (document.getElementById('toread-loader')) {
         showLoader('toread-loader', 'toread-content');
-        setTimeout(() => hideLoader('toread-loader', 'toread-content'), 1200);
+        setTimeout(() => hideLoader('toread-loader', 'toread-content'), 10);
     }
     if (document.getElementById('owned-loader')) {
         showLoader('owned-loader', 'owned-content');
-        setTimeout(() => hideLoader('owned-loader', 'owned-content'), 1200);
+        setTimeout(() => hideLoader('owned-loader', 'owned-content'), 10);
     }
     if (document.getElementById('read-loader')) {
         showLoader('read-loader', 'read-content');
-        setTimeout(() => hideLoader('read-loader', 'read-content'), 1200);
+        setTimeout(() => hideLoader('read-loader', 'read-content'), 10);
     }
     // if (document.getElementById('current-reading-loader')) {
     //     showLoader('current-reading-loader', 'current-reading-content');
