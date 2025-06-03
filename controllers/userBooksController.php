@@ -82,6 +82,7 @@ class UserBooksController {
             'empty_message' => 'No books found in the database.',
             'additionalCSS' => [
                 '/ShelfControl/views/css/lib.css',
+                '/ShelfControl/views/css/fullLibrary.css'
             ],
             'additionalScripts' => [
                 '/ShelfControl/views/scripts/books.js'

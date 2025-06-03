@@ -23,7 +23,9 @@ class ExploreController{
             'additionalCSS' => [
                 '/ShelfControl/views/css/lib.css', 
                 '/ShelfControl/views/css/dark-theme-explore.css',
-                '/ShelfControl/views/css/bookPage/reviews.css'
+                '/ShelfControl/views/css/bookPage/reviews.css',
+                '/ShelfControl/views/css/fullLibrary.css'
+
             ],
             'additionalScripts' => [
                 '/ShelfControl/views/scripts/explore.js',
