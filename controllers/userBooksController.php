@@ -33,7 +33,13 @@ class UserBooksController {
             'section_title' => $title,
             'books' => $books,
             'empty_message' => $emptyMessage,
-            // 'additionalCSS' => ['/ShelfControl/views/css/style.css']
+            'showSearchForm' => true,
+            'additionalCSS' => [
+                '/ShelfControl/views/css/searchdb.css'
+            ],
+            'additionalScripts' => [
+                '/ShelfControl/views/scripts/searchdb.js'
+            ]
         ]);
     }
 

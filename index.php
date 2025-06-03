@@ -226,3 +226,7 @@ elseif($request=='/api/libraries')
 {
     $exploreController->getLibraries();
 }
+elseif ($request == '/searchdb') {
+    $searchController = new \App\Controllers\SearchController();
+    $searchController->searchDatabase();
+}
