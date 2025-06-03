@@ -36,7 +36,7 @@
 }
 
 .dark-theme .nav__menu {
-    background-color: var(--dark-card-color);
+    background-color: var(--dark-background);
     box-shadow: 0 -8px 32px hsla(0, 0%, 0%, .3);
 }
 
