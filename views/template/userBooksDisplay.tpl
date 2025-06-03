@@ -7,19 +7,6 @@
 
         <div class="section-loader" id="userbooks-loader"></div>
 
-        <?php if (isset($showSearchForm) && $showSearchForm): ?>
-            <div class="search-db-container">
-                <form id="db-search-form" class="db-search-form">
-                    <input type="text" id="db-search-input" class="db-search-input" placeholder="Search books..." required>
-                    <button type="submit" class="db-search-btn">
-                        <i class="ri-search-line"></i>
-                    </button>
-                </form>
-            </div>
-            <div id="search-results-container" class="search-results-container" style="display: none;"></div>
-        <?php endif; ?>
-
-
 
         <div class="book-section__content" id="userbooks-content" style="display: none;">
             <div class="book-grid">
