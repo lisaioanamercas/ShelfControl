@@ -12,12 +12,12 @@
                     <i class="ri-bar-chart-line"></i> Library Statistics
                 </h2>
                 <div class="reading-stats__boxes">
-                    <div class="stats-box">
+                    <div class="stats-box" onclick="scrollToSection('discover')" style="cursor: pointer;">
                         <h3 class="stats-box__number"><?php echo count($undiscoveredBooks); ?></h3>
                         <p class="stats-box__text">BOOKS TO<br>DISCOVER</p>
                     </div>
                     
-                    <div class="stats-box">
+                    <div class="stats-box" onclick="scrollToSection('all-books')" style="cursor: pointer;">
                         <h3 class="stats-box__number"><?php echo count($allBooks); ?></h3>
                         <p class="stats-box__text">TOTAL<br>BOOKS</p>
                     </div>

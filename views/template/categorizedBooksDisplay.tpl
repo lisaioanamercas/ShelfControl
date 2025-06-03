@@ -12,22 +12,22 @@
                     <i class="ri-bar-chart-line"></i> Statistics
                 </h2>
                 <div class="reading-stats__boxes">
-                    <div class="stats-box">
+                    <div class="stats-box" onclick="scrollToSection('toread')" style="cursor: pointer;">
                         <h3 class="stats-box__number"><?php echo isset($toReadBooks) ? count($toReadBooks) : 0; ?></h3>
                         <p class="stats-box__text">WANT TO<br>READ</p>
                     </div>
                     
-                    <div class="stats-box">
+                    <div class="stats-box" onclick="scrollToSection('owned')" style="cursor: pointer;">
                         <h3 class="stats-box__number"><?php echo isset($ownedBooks) ? count($ownedBooks) : 0; ?></h3>
                         <p class="stats-box__text">OWNED<br>BOOKS</p>
                     </div>
                     
-                    <div class="stats-box">
+                    <div class="stats-box" onclick="scrollToSection('read')" style="cursor: pointer;">
                         <h3 class="stats-box__number"><?php echo isset($readBooks) ? count($readBooks) : 0; ?></h3>
                         <p class="stats-box__text">BOOKS<br>READ</p>
                     </div>
                     
-                    <div class="stats-box">
+                    <div class="stats-box" style="cursor: pointer;">
                         <h3 class="stats-box__number"><?php 
                             $total = 
                                 (isset($toReadBooks) ? count($toReadBooks) : 0) + 

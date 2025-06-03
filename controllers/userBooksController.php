@@ -85,7 +85,8 @@ class UserBooksController {
                 '/ShelfControl/views/css/fullLibrary.css'
             ],
             'additionalScripts' => [
-                '/ShelfControl/views/scripts/books.js'
+                '/ShelfControl/views/scripts/books.js',
+                '/ShelfControl/views/scripts/stats-scroll.js'
             ]
         ]);
     }

@@ -399,7 +399,9 @@ class BookController{
             'additionalCSS' => [
                 '/ShelfControl/views/css/lib.css',
                 '/ShelfControl/views/css/style.css'
-
+            ],
+            'additionalScripts' => [
+                '/ShelfControl/views/scripts/stats-scroll.js'
             ]
         ]);
     }
