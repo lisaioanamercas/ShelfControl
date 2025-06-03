@@ -6,8 +6,9 @@
     <title>Login - ShelfControl</title>
     <link href="https://fonts.googleapis.com/css2?family=Montagu+Slab:opsz,wght@16..144,100..700&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="/ShelfControl/views/css/style.css">
+    <link rel="stylesheet" href="/ShelfControl/views/css/base.css">
     <link rel="stylesheet" href="/ShelfControl/views/css/login.css">
+
 
 </head>
 <body>

@@ -223,12 +223,10 @@ document.addEventListener('keydown', (e) => {
 // Initial render
 document.addEventListener('DOMContentLoaded', () => {
     showLoader();
-    setTimeout(() => {
-        fetchNews();
-    }, 800);
+    fetchNews();
 
-    // 🔁 Auto-refresh la fiecare 60 de secunde
-    setInterval(() => {
-        fetchNews();
-    }, 60000); // 60000 ms = 1 minut
+    // // 🔁 Auto-refresh la fiecare 60 de secunde
+    // setInterval(() => {
+    //     fetchNews();
+    // }, 60000); // 60000 ms = 1 minut
 });

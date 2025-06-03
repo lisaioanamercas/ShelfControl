@@ -67,6 +67,9 @@ class RegisterController {
          $data = [
         'heading' => 'Register',
         'message' => !empty($error) ? "<span style='color: red;'>{$error}</span>" : '',
+        'additionalCSS' => [
+            '/ShelfControl/views/css/register.css'
+        ]
        ];
 
         $view = new BaseView();
@@ -87,6 +90,9 @@ class RegisterController {
         $data = [
             'heading' => 'Register',
             'message' => '',
+            'additionalCSS' => [
+                '/ShelfControl/views/css/register.css'
+            ]
         ];
 
         $view = new BaseView();

@@ -1,0 +1,158 @@
+/* ======================================= HOME ====================================== */
+.home__swiper{
+    margin: initial;
+}
+
+.home__container{
+    padding-top: 2rem;
+    row-gap: 2.5rem;
+    position: relative;
+}
+
+.home__data{
+    text-align: center;
+}
+
+.home__title{
+    font-size: var(--biggest-font-size);
+    margin-bottom: 1rem;
+}
+
+.home__description{
+    margin-bottom: 2rem;
+}
+
+.home__images{
+    display: grid;
+}
+
+.home__article, .home_img{
+    width: 220px;
+    transition: scale .4s;
+}
+
+.home__article{
+    scale: .8;
+}
+
+/* ======================================= CURRENT READS ====================================== */
+.current-reads__container {
+    background-color: var(--container-color);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    box-shadow: 0 4px 16px hsla(230, 70%, 20%, .1);
+    max-width: 400px;
+    margin-left: auto;
+}
+
+.current-reads__title {
+    color: var(--title-color);
+    font-size: var(--h3-font-size);
+    margin-bottom: 1.5rem;
+}
+
+.current-reads__books {
+    display: grid;
+    gap: 1.5rem;
+}
+
+.current-reads__item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+}
+
+.current-reads__cover {
+    flex-shrink: 0;
+    width: 70px;
+}
+
+.current-reads__img {
+    width: 100%;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.current-reads__info {
+    flex-grow: 1;
+}
+
+.current-reads__book-title {
+    font-size: var(--normal-font-size);
+    margin-bottom: 0.25rem;
+    color: var(--title-color);
+}
+
+.current-reads__author {
+    font-size: var(--small-font-size);
+    color: var(--text-color);
+    margin-bottom: 0.5rem;
+}
+
+.current-reads__progress {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.progress-bar {
+    flex-grow: 1;
+    height: 6px;
+    background-color: var(--border-color);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background-color: var(--progress-color);
+    border-radius: 3px;
+}
+
+.progress-text {
+    font-size: var(--smaller-font-size);
+    font-weight: var(--font-medium);
+    color: var(--progress-color);
+}
+
+/* Dark theme styles for current reads */
+.dark-theme .current-reads__container {
+    background-color: var(--dark-card-color);
+}
+
+.dark-theme .current-reads__book-title {
+    color: var(--white-color);
+}
+
+.dark-theme .progress-bar {
+    background-color: var(--dark-border-color);
+}
+
+/* Responsive styles */
+@media screen and (max-width: 968px) {
+    .home__container {
+        grid-template-columns: 1fr;
+    }
+    
+    .current-reads__container {
+        margin-inline: auto;
+        /* Remove the order: -1 that was putting current reads first */
+    }
+    
+    /* Add specific mobile styles for the home section elements */
+    .home__data {
+        order: -1; /* This moves the title section before current reads on mobile */
+    }
+}
+
+/* Keep the desktop layout the same */
+@media screen and (min-width: 968px) {
+    .home__container {
+        grid-template-columns: 1fr 1fr;
+        align-items: center;
+    }
+    
+    /* No need to specify order here as the natural HTML order works for desktop */
+}

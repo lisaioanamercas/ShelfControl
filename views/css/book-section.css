@@ -1,0 +1,119 @@
+/* Book Sections and Cards Styles */
+
+.book-section {
+    margin-bottom: 3rem;
+}
+
+.book-section__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.book-section__title {
+    font-size: var(--h2-font-size);
+    color: var(--accent-color);
+    font-weight: var(--font-medium);
+}
+
+.book-section__link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    background-color: var(--white-color);
+    color: var(--title-color);
+    transition: background-color .3s, color .3s;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.book-section__link:hover {
+    background-color: var(--first-color);
+    color: var(--white-color);
+}
+
+.book-section__link i {
+    font-size: 1.25rem;
+}
+
+.book-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 1.5rem;
+}
+
+.book-item {
+    position: relative;
+    transition: transform .3s;
+}
+
+.book-item:hover {
+    transform: translateY(-5px);
+}
+
+.book-item__img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Dark theme */
+.dark-theme .book-section__header {
+    border-bottom-color: var(--dark-border-color);
+}
+
+.dark-theme .book-section__title {
+    color: var(--dark-title-color);
+}
+
+.dark-theme .book-section__link {
+    background-color: var(--dark-secondary);
+    color: var(--dark-text-color);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.dark-theme .book-section__link:hover {
+    background-color: var(--dark-highlight);
+}
+
+.dark-theme .book-item__img {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Responsive adjustments */
+@media screen and (min-width: 576px) {
+    .book-grid {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    }
+    
+    .book-item__img {
+        height: 180px;
+    }
+}
+
+@media screen and (min-width: 768px) {
+    .book-grid {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    }
+    
+    .book-item__img {
+        height: 200px;
+    }
+}
+
+@media screen and (min-width: 1150px) {
+    .book-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    }
+    
+    .book-item__img {
+        height: 220px;
+    }
+}

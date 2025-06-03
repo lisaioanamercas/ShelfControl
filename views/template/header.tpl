@@ -11,9 +11,25 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.css">
 
         <!-- ==================== CSS =========================== -->
-        <link rel="stylesheet" href="/ShelfControl/views/css/style.css">
+        <link rel="stylesheet" href="/ShelfControl/views/css/base.css">
+        <link rel="stylesheet" href="/ShelfControl/views/css/header.css">
         <link rel="stylesheet" href="/ShelfControl/views/css/footer.css">
-        <link rel="stylesheet" href="/ShelfControl/views/css/bookPage/reviews.css">
+        
+        <!-- Component CSS -->
+        <link rel="stylesheet" href="/ShelfControl/views/css/components/buttons.css">
+        <link rel="stylesheet" href="/ShelfControl/views/css/components/forms.css">
+        <link rel="stylesheet" href="/ShelfControl/views/css/components/loaders.css">
+        
+        <!-- Common page elements -->
+        <link rel="stylesheet" href="/ShelfControl/views/css/search.css">
+        <link rel="stylesheet" href="/ShelfControl/views/css/profile.css">
+        
+        <!-- Conditional dark theme -->
+        <link rel="stylesheet" href="/ShelfControl/views/css/dark-theme.css">
+        
+        <!-- Responsive rules -->
+        <link rel="stylesheet" href="/ShelfControl/views/css/responsive.css">
+
 
         <?php if (isset($user['role']) && $user['role'] === 'admin'): ?>
             <link rel="stylesheet" href="/ShelfControl/views/css/admin/admin.css">

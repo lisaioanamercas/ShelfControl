@@ -55,6 +55,9 @@ class LoginController
         $data = [
             'heading' => 'Login',
             'message' => !empty($this->error) ? "<span style='color: red;'>{$this->error}</span>" : '',
+            'additionalCSS' => [
+                '/ShelfControl/views/css/login.css'
+            ]
         ];
 
         $this->view->renderTemplate('login', $data);
@@ -70,6 +73,9 @@ class LoginController
         $data = [
             'heading' => 'Login',
             'message' => '',
+            'additionalCSS' => [
+                '/ShelfControl/views/css/login.css'
+            ]
         ];
 
         $this->view->renderTemplate('login', $data);

@@ -14,6 +14,10 @@ class LandingController
             'subheading' => 'Cause you are one book away from a book avalanche',
             'loginUrl' => '/ShelfControl/login',
             'registerUrl' => '/ShelfControl/register',
+            'additionalCSS' => [
+                '/ShelfControl/views/css/landing.css',
+                '/ShelfControl/views/css/components/buttons.css'
+            ]
         ];
         $view = new BaseView();
         $view->renderTemplate('landing', $data);

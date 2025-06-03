@@ -1,0 +1,49 @@
+/* Dark Theme Styles */
+
+/* Dark theme class stylings */
+.dark-theme {
+    background-color: var(--dark-background);
+    color: var(--dark-text-color);
+}
+
+/* Header and navigation in dark theme */
+.dark-theme .header {
+    background-color: var(--dark-background);
+}
+
+.dark-theme .shadow-header {
+    box-shadow: 0 2px 16px hsla(0, 0%, 0%, .3);
+}
+
+.dark-theme .nav__logo {
+    color: var(--dark-first-color);
+}
+
+.dark-theme .nav__link {
+    color: var(--dark-text-color);
+}
+
+.dark-theme .nav__link:hover {
+    color: var(--dark-first-color);
+}
+
+.dark-theme .nav__actions i {
+    color: var(--dark-title-color);
+}
+
+.dark-theme .nav__actions i:hover {
+    color: var(--dark-first-color);
+}
+
+.dark-theme .nav__menu {
+    background-color: var(--dark-card-color);
+    box-shadow: 0 -8px 32px hsla(0, 0%, 0%, .3);
+}
+
+/* Home section in dark theme */
+.dark-theme h1, 
+.dark-theme h2, 
+.dark-theme h3, 
+.dark-theme h4 {
+    color: var(--dark-title-color);
+}

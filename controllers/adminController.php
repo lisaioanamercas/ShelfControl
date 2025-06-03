@@ -119,7 +119,9 @@ class AdminController {
             'empty_message' => 'No books have been added by the admin yet.',
             'currentPage' => 'admin-books',
             'additionalCSS' => [
-                '/ShelfControl/views/css/lib.css'
+                '/ShelfControl/views/css/lib.css',
+                '/ShelfControl/views/css/book-section.css',
+                '/ShelfControl/views/css/admin/admin.css'
             ]
         ]);
     }

@@ -398,7 +398,7 @@ class BookController{
             'empty_message' => "No books found for this $type.",
             'additionalCSS' => [
                 '/ShelfControl/views/css/lib.css',
-                '/ShelfControl/views/css/style.css'
+                '/ShelfControl/views/css/book-section.css'
             ],
             'additionalScripts' => [
                 '/ShelfControl/views/scripts/stats-scroll.js'

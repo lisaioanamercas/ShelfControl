@@ -34,6 +34,10 @@ class UserBooksController {
             'books' => $books,
             'empty_message' => $emptyMessage,
             'showSearchForm' => true,
+            'additionalCSS' => [
+                '/ShelfControl/views/css/lib.css',
+                '/ShelfControl/views/css/book-section.css',
+            ]
         ]);
     }
 
@@ -82,7 +86,9 @@ class UserBooksController {
             'empty_message' => 'No books found in the database.',
             'additionalCSS' => [
                 '/ShelfControl/views/css/lib.css',
-                '/ShelfControl/views/css/fullLibrary.css'
+                '/ShelfControl/views/css/fullLibrary.css',
+                '/ShelfControl/views/css/book-section.css'
+
             ],
             'additionalScripts' => [
                 '/ShelfControl/views/scripts/books.js',

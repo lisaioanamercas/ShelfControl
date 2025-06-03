@@ -45,7 +45,12 @@ class HomeController {
             'currentlyReading' => $currentlyReading,
             'toReadBooks' => $toReadBooks,
             'ownedBooks' => $ownedBooks,
-            'readBooks' => $readBooks
+            'readBooks' => $readBooks,
+            'additionalCSS' => [
+            '/ShelfControl/views/css/home.css',
+            '/ShelfControl/views/css/book-section.css',
+            '/ShelfControl/views/css/progress.css'
+            ]
         ];
         
         $view = new BaseView();
