@@ -314,37 +314,6 @@ class BookModel {
         return oci_execute($stmt);
     }
 
-    public function searchBooks($query) {
-    // Clean the query to prevent SQL injection
-    $searchTerm = '%' . strtoupper($query) . '%';
-    
-    $sql = "SELECT DISTINCT b.book_id, b.title, b.cover_url, b.publication_year, b.genre,
-                  a.name as author_name, ph.name as publisher_name
-           FROM Book b
-           LEFT JOIN Author a ON b.author_id = a.author_id
-           LEFT JOIN PublishingHouse ph ON b.publishing_house_id = ph.publishing_house_id
-           LEFT JOIN SubPublisher sp ON b.sub_publisher_id = sp.sub_publisher_id
-           LEFT JOIN Translator t ON b.translator_id = t.translator_id
-           WHERE UPPER(b.title) LIKE :query
-              OR UPPER(a.name) LIKE :query
-              OR UPPER(ph.name) LIKE :query
-              OR UPPER(sp.name) LIKE :query
-              OR UPPER(b.genre) LIKE :query
-              OR UPPER(t.name) LIKE :query
-              OR UPPER(b.isbn) LIKE :query
-           ORDER BY b.title";
-           
-    $stmt = oci_parse($this->conn, $sql);
-    oci_bind_by_name($stmt, ':query', $searchTerm);
-    oci_execute($stmt);
-    
-    $books = [];
-    while ($row = oci_fetch_assoc($stmt)) {
-        $books[] = $row;
-    }
-    
-    return $books;
-}
  public function importBooksFromJson(string $jsonData): bool {
     $sql = "BEGIN import_book_direct(:v_json_data); END;";
     $stmt = oci_parse($this->conn, $sql);
@@ -594,6 +563,60 @@ class BookModel {
             oci_execute($stmt);
             $row = oci_fetch_assoc($stmt);
             return $row ? $row['TITLE'] : null;
+    }
+
+    public function getBooksByManualOrImport() {
+        try {
+            $sql = "SELECT b.book_id, b.title, b.cover_url, a.name as author_name
+                    FROM Book b
+                    LEFT JOIN Author a ON b.author_id = a.author_id
+                    WHERE b.source_api IN ('MANUAL', 'JSON_IMPORT')
+                    ORDER BY b.title";
+                    
+            $stmt = oci_parse($this->conn, $sql);
+            oci_execute($stmt);
+            
+            $books = [];
+            while ($row = oci_fetch_assoc($stmt)) {
+                $books[] = $row;
+            }
+            
+            oci_free_statement($stmt);
+            return $books;
+        } catch (Exception $e) {
+            error_log('Error in getBooksByManualOrImport: ' . $e->getMessage());
+            return [];
+        }
+    }
+
+    public function getUndiscoveredBooksByManualOrImport($userId) {
+        try {
+            $sql = "SELECT b.book_id, b.title, b.cover_url, a.name as author_name
+                    FROM Book b
+                    LEFT JOIN Author a ON b.author_id = a.author_id
+                    WHERE b.source_api IN ('MANUAL', 'JSON_IMPORT')
+                    AND NOT EXISTS (
+                        SELECT 1 FROM UserBook ub 
+                        WHERE ub.book_id = b.book_id 
+                        AND ub.user_id = :user_id
+                    )
+                    ORDER BY b.title";
+                    
+            $stmt = oci_parse($this->conn, $sql);
+            oci_bind_by_name($stmt, ':user_id', $userId);
+            oci_execute($stmt);
+            
+            $books = [];
+            while ($row = oci_fetch_assoc($stmt)) {
+                $books[] = $row;
+            }
+            
+            oci_free_statement($stmt);
+            return $books;
+        } catch (Exception $e) {
+            error_log('Error in getUndiscoveredBooksByManualOrImport: ' . $e->getMessage());
+            return [];
+        }
     }
 
 }

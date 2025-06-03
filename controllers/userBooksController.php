@@ -60,4 +60,32 @@ class UserBooksController {
         $books = $model->getCurrentlyReadingBooks($this->userId);
         $this->renderBooksPage($books, 'Currently Reading', 'You haven\'t started any books.');
     }
+
+    public function allBooksLibrary() {
+        // Get database connection
+        require_once __DIR__ . '/../models/dbConnection.php';
+        
+        // Get books with 'MANUAL' or 'JSON_IMPORT' sources
+        $bookModel = new BookModel($this->conn);
+        $allBooks = $bookModel->getBooksByManualOrImport();
+        
+        // Get undiscovered books (books the user hasn't interacted with)
+        // that have 'MANUAL' or 'JSON_IMPORT' sources
+        $undiscoveredBooks = $bookModel->getUndiscoveredBooksByManualOrImport($this->userId);
+        
+        // Render template
+        $view = new BaseView();
+        $view->renderTemplate('fullLibrary', [
+            'section_title' => 'Complete Book Library',
+            'allBooks' => $allBooks,
+            'undiscoveredBooks' => $undiscoveredBooks,
+            'empty_message' => 'No books found in the database.',
+            'additionalCSS' => [
+                '/ShelfControl/views/css/lib.css',
+            ],
+            'additionalScripts' => [
+                '/ShelfControl/views/scripts/books.js'
+            ]
+        ]);
+    }
 }

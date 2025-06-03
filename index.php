@@ -151,6 +151,10 @@ elseif ($request == '/admin/books') {
     $adminController = new \App\Controllers\AdminController();
     $adminController->showAdminBooks();
 }
+elseif ($request == '/library-all') {
+    $userBooksController = new \App\Controllers\UserBooksController();
+    $userBooksController->allBooksLibrary();
+}
 elseif (preg_match('/^\/books\/author\/(.+)$/', $request, $matches)) {
     $bookController = new \App\Controllers\BookController();
     $author = urldecode($matches[1]);
