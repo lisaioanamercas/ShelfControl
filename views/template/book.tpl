@@ -6,19 +6,6 @@
                 <img src="{$book_image_url}" alt="{$book_title}" class="book-cover__img">
             </div>
 
-            <!-- BUTOANE PENTRU ADMIN !!! -->
-            <?php if (isset($user['role']) && $user['role'] === 'admin'): ?>
-            <div class="admin-actions">
-                <button class="admin-action__btn delete-book-btn" id="deleteBookBtn" data-book-id="<?php echo $book_id; ?>">
-                    <i class="ri-delete-bin-line"></i> <span>Delete Book</span>
-                </button>
-                <button class="admin-action__btn edit-book-btn" id="editBookBtn" data-book-id="<?php echo $book_id; ?>">
-                    <i class="ri-edit-line"></i> <span>Edit Book</span>
-                </button>
-            </div>
-            <?php endif; ?>
-
-
             <div class="book-actions">
                 <!-- Status dropdown -->
                 <div class="status-dropdown">
@@ -36,27 +23,34 @@
                     </div>
                 </div>
                 
-                <!-- Action buttons -->
-                <div class="book-actions__buttons">
-                    <button class="book-action__btn owned-btn <?php echo $is_owned ? 'active' : ''; ?>" id="ownedBtn" data-book-id="{$book_id}">
-                        <i class="ri-bookmark-line"></i> <span>owned</span>
-                    </button>
-                    <button class="book-action__btn buy-btn" id="buyBtn">
-                        <i class="ri-shopping-cart-line"></i> <span>buy</span>
-                    </button>
-                </div>
+                
             </div>
         </div>
         
-        <!-- Book Info Column -->
-        <div class="book-details__info">
-            <h1 class="book-title">
-                <a href="/ShelfControl/books/edition/<?php echo urlencode($book_title); ?>" class="metadata-link">{$book_title}</a>
-            </h1>
-                <h2 class="book-author" data-author-name="{$book_author}">
-                    <a href="/ShelfControl/books/author/<?php echo urlencode($book_author); ?>" class="metadata-link">{$book_author}</a>
-                </h2> 
-            
+                <!-- Book Info Column -->
+                <div class="book-details__info">
+                    <div class="book-title-header">
+                <h1 class="book-title">
+                    <a href="/ShelfControl/books/edition/<?php echo urlencode($book_title); ?>" class="metadata-link">{$book_title}</a>
+                </h1>
+                
+                <!-- BUTOANE PENTRU ADMIN - Top right position -->
+                <?php if (isset($user['role']) && $user['role'] === 'admin'): ?>
+                    <div class="admin-actions">
+                        <button class="admin-action__btn edit-book-btn" id="editBookBtn" data-book-id="<?php echo $book_id; ?>" title="Edit Book">
+                            <i class="ri-edit-line"></i>
+                        </button>
+                        <button class="admin-action__btn delete-book-btn" id="deleteBookBtn" data-book-id="<?php echo $book_id; ?>" title="Delete Book">
+                            <i class="ri-delete-bin-line"></i>
+                        </button>
+                    </div>
+                <?php endif; ?>
+            </div>
+                        
+                    <h2 class="book-author" data-author-name="{$book_author}">
+                        <a href="/ShelfControl/books/author/<?php echo urlencode($book_author); ?>" class="metadata-link">{$book_author}</a>
+                    </h2> 
+
             <!-- Book metadata -->
             <div class="book-meta">
                 <div class="book-meta__item">

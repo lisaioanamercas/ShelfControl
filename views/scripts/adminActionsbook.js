@@ -43,7 +43,6 @@ if (editBookBtn) {
         
         // Show loading state
         editBookBtn.disabled = true;
-        editBookBtn.textContent = 'Loading...';
         
         let responseText; // Define a variable to store the response text
         
@@ -132,7 +131,6 @@ if (editBookBtn) {
         .finally(() => {
             // Reset button state
             editBookBtn.disabled = false;
-            editBookBtn.textContent = 'Edit';
         });
     });
 }
