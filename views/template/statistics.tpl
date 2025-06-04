@@ -166,89 +166,83 @@
                 </div>
             </div>
         </div>
-
-        <!-- Tab Content: Top Readers -->
-        <div class="stats-tab-content" id="users-tab">
-            <div class="stats-section">
+         <div class="stats-tab-content" id="users-tab">
+              <div class="stats-section">
                 <h2 class="stats-section__title">Top Readers Leaderboard</h2>
-                <div class="leaderboard">
-                    <?php if (!empty($userStats)): ?>
-                        <?php foreach (array_slice($userStats, 0, 10) as $index => $user): ?>
-                            <div class="leaderboard-item" style="animation-delay: <?php echo $index * 0.1; ?>s">
-                                <div class="leaderboard-rank">
-                                    <?php if ($index === 0): ?>
-                                        <i class="ri-trophy-line trophy-gold"></i>
-                                    <?php elseif ($index === 1): ?>
-                                        <i class="ri-trophy-line trophy-silver"></i>
-                                    <?php elseif ($index === 2): ?>
-                                        <i class="ri-trophy-line trophy-bronze"></i>
-                                    <?php else: ?>
-                                        <span class="rank-number"><?php echo $index + 1; ?></span>
-                                    <?php endif; ?>
-                                </div>
-                                <div class="leaderboard-avatar">
-                                    <i class="ri-user-line"></i>
-                                </div>
-                                    <div class="leaderboard-info">
-                                    <h4 class="leaderboard-name">
-                                        <?php 
-                                            // Debug and handle the username
-                                            if (is_array($user) && isset($user['USERNAME'])) {
-                                                echo htmlspecialchars($user['USERNAME']);
-                                            } elseif (is_array($user) && isset($user['username'])) {
-                                                echo htmlspecialchars($user['username']);
-                                            } else {
-                                                echo 'Unknown User';
-                                            }
-                                        ?>
-                                    </h4>
-                                                                        <div class="leaderboard-stats">
-                                        <span class="stat-item">
-                                            <i class="ri-book-read-line"></i>
-                                            <?php 
-                                                if (is_array($user)) {
-                                                    $booksRead = isset($user['BOOKS_READ']) ? (int)$user['BOOKS_READ'] : 
-                                                                (isset($user['books_read']) ? (int)$user['books_read'] : 0);
-                                                    echo $booksRead;
-                                                } else {
-                                                    echo '0';
-                                                }
-                                            ?> read
-                                        </span>
-                                        <span class="stat-item">
-                                            <i class="ri-book-open-line"></i>
-                                            <?php 
-                                                if (is_array($user)) {
-                                                    $currentlyReading = isset($user['CURRENTLY_READING']) ? (int)$user['CURRENTLY_READING'] : 
-                                                                       (isset($user['currently_reading']) ? (int)$user['currently_reading'] : 0);
-                                                    echo $currentlyReading;
-                                                } else {
-                                                    echo '0';
-                                                }
-                                            ?> reading
-                                        </span>
-                                        <span class="stat-item">
-                                            <i class="ri-star-line"></i>
-                                            <?php 
-                                                if (is_array($user)) {
-                                                    $rating = isset($user['AVERAGE_RATING']) ? (float)$user['AVERAGE_RATING'] : 
-                                                             (isset($user['average_rating']) ? (float)$user['average_rating'] : 0);
-                                                    echo number_format($rating, 1);
-                                                } else {
-                                                    echo '0.0';
-                                                }
-                                            ?> avg
-                                        </span>
-                                    </div>
-                                </div>
-                                
-                                <div class="leaderboard-score">
+                        <div class="leaderboard">
+                            <?php if (!empty($userStats)): ?>
+                                    <?php foreach (array_slice($userStats, 0, 10) as $index => $user): ?>
+                                            <div class="leaderboard-item" style="animation-delay: <?php echo $index * 0.1; ?>s">
+                                                <div class="leaderboard-rank">
+                                                       <?php if ($index === 0): ?>
+                                                        <i class="ri-trophy-line trophy-gold"></i>
+                                                    <?php elseif ($index === 1): ?>
+                                                        <i class="ri-trophy-line trophy-silver"></i>
+                                                    <?php elseif ($index === 2): ?>
+                                                        <i class="ri-trophy-line trophy-bronze"></i>
+                                                    <?php endif; ?>
+                                                 </div>
+                                                 <div class="leaderboard-avatar">
+                                                    <i class="ri-user-line"></i>
+                                                </div>
+                                                <div class="leaderboard-info">
+                                                    <h4 class="leaderboard-name">
+                                                        <?php 
+                                                            // Debug and handle the username
+                                                            if (is_array($user) && isset($user['USERNAME'])) {
+                                                                echo htmlspecialchars($user['USERNAME']);
+                                                            } elseif (is_array($user) && isset($user['username'])) {
+                                                                echo htmlspecialchars($user['username']);
+                                                            } else {
+                                                                echo 'Unknown User';
+                                                            }
+                                                        ?>
+                                                    </h4>
+                                                        <span class="stat-item">
+                                                        <i class="ri-book-read-line"></i>
+                                                        <?php 
+                                                            if (is_array($user)) {
+                                                                $booksRead = isset($user['BOOKS_READ']) ? (int)$user['BOOKS_READ'] : 
+                                                                            (isset($user['books_read']) ? (int)$user['books_read'] : 0);
+                                                                echo $booksRead;
+                                                            } else {
+                                                                echo '0';
+                                                            }
+                                                        ?> read
+                                                    </span>
+                                                     <span class="stat-item">
+                                                    <i class="ri-book-open-line"></i>
+                                                    <?php 
+                                                        if (is_array($user)) {
+                                                            $currentlyReading = isset($user['CURRENTLY_READING']) ? (int)$user['CURRENTLY_READING'] : 
+                                                                            (isset($user['currently_reading']) ? (int)$user['currently_reading'] : 0);
+                                                            echo $currentlyReading;
+                                                        } else {
+                                                            echo '0';
+                                                        }
+                                                    ?> reading
+                                                </span>
+                                                        <span class="stat-item">
+                                                    <i class="ri-star-line"></i>
+                                                    <?php 
+                                                        if (is_array($user)) {
+                                                            $rating = isset($user['AVERAGE_RATING']) ? (float)$user['AVERAGE_RATING'] : 
+                                                                    (isset($user['average_rating']) ? (float)$user['average_rating'] : 0);
+                                                            echo number_format($rating, 1);
+                                                        } else {
+                                                            echo '0.0';
+                                                        }
+                                                    ?> avg
+                                                </span>
+                                                   </div>
+                                                </div>
+                                                       <div class="leaderboard-score">
                                     <span class="score-number">
                                         <?php 
                                             if (is_array($user)) {
                                                 // Debug the actual values
-                                                $booksReadRaw = $user['BOOKS_READ'] ?? $user['books_read'] ?? 0;
-                                                $currentlyReadingRaw = $user['CURRENTLY_READING'] ?? $user['currently_reading'] ?? 0;
+                                                $booksReadRaw = $user['BOOKS_READ'] ?? $user['BOOKS_READ'] ?? 0;
+                                                $currentlyReadingRaw = $user['CURRENTLY_READING'] ?? $user['CURRENTLY_READING'] ?? 0;
                                                 
                                                 error_log("DEBUG - Books Read Raw: " . var_export($booksReadRaw, true) . " (type: " . gettype($booksReadRaw) . ")");
                                                 error_log("DEBUG - Currently Reading Raw: " . var_export($currentlyReadingRaw, true) . " (type: " . gettype($currentlyReadingRaw) . ")");
@@ -277,7 +271,9 @@
                                                 
                                                 error_log("DEBUG - Final values: booksRead=$booksRead, currentlyReading=$currentlyReading");
                                                 
-                                                echo $booksRead + $currentlyReading;
+                                                $booksRead = safeNumericConvert($booksReadRaw);
+                                                    $currentlyReading = safeNumericConvert($currentlyReadingRaw);
+                                                   echo $booksRead + $currentlyReading;
                                             } else {
                                                 echo '0';
                                             }
@@ -286,13 +282,13 @@
                                     <span class="score-label">books</span>
                                 </div>
                             </div>
-                        <?php endforeach; ?>
-                    <?php else: ?>
-                        <p class="empty-message">No user statistics available.</p>
-                    <?php endif; ?>
-                </div>
-            </div>
-        </div>
+                                    <?php endforeach; ?>
+                              <?php else: ?>
+                                <p class="empty-message">No user statistics available.</p>
+                            <?php endif; ?>
+                      </div>
+               </div>
+         </div>
 
         <!-- Tab Content: Genre Analytics -->
         <div class="stats-tab-content" id="genres-tab">

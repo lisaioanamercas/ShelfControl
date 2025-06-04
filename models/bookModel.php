@@ -860,7 +860,7 @@ class BookModel {
             $sql = "SELECT urs.*, u.username, u.email 
                     FROM user_reading_stats urs
                     JOIN Users u ON urs.user_id = u.user_id
-                    WHERE urs.user_id = :user_id";
+                 WHERE urs.user_id = :user_id";
             $stmt = oci_parse($this->conn, $sql);
             oci_bind_by_name($stmt, ':user_id', $userId);
         } else {
@@ -898,7 +898,7 @@ class BookModel {
             $row['AVERAGE_RATING'] = (float)floatval($ratingValue);
             
             // Ensure string fields are strings
-            $row['USERNAME'] = (string)($row['USERNAME'] ?? 'Unknown User');
+            $row['USERNAME'] = (string)($row['username'] ?? 'Unknown User');
             $row['EMAIL'] = (string)($row['EMAIL'] ?? '');
             
             $stats[] = $row;

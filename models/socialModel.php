@@ -78,7 +78,7 @@ class SocialModel {
     
     // Assign a book to all members of a group
     public function assignGroupBook($groupId, $bookId) {
-        $sql = "BEGIN assign_group_book(:group_id, :book_id); END;";
+        $sql = "BEGIN GroupReading.assign_book_to_group(:group_id, :book_id); END;";
         $stmt = oci_parse($this->conn, $sql);
         oci_bind_by_name($stmt, ":group_id", $groupId);
         oci_bind_by_name($stmt, ":book_id", $bookId);

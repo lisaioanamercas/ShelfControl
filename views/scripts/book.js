@@ -264,12 +264,13 @@ if (groupReadingOption) {
         e.stopPropagation(); // Prevent parent event handlers from executing
         
         // Get the book ID
-        const bookId = document.querySelector('.owned-btn').getAttribute('data-book-id');
+      /*  const bookId = document.querySelector('.owned-btn').getAttribute('data-book-id');
         if (!bookId) {
             console.error('Could not determine book ID');
             return;
-        }
-        
+        }*/
+        const urlParams = new URLSearchParams(window.location.search);
+        bookId = urlParams.get('id');
         // Fetch user's groups
         fetch('/ShelfControl/user-groups')
             .then(response => response.json())
@@ -278,6 +279,7 @@ if (groupReadingOption) {
                     if (data.groups.length === 0) {
                         alert("You don't belong to any reading groups. Create or join a group first.");
                     } else {
+                        console.log('Groups:', data.groups, 'BookId:', bookId);
                         showGroupSelectionPopup(data.groups, bookId);
                     }
                 } else {
@@ -292,6 +294,7 @@ if (groupReadingOption) {
 }
 
 function showGroupSelectionPopup(groups, bookId) {
+    console.log('Popup function called', groups, bookId);
     // Create a modal popup
     const modalOverlay = document.createElement('div');
     modalOverlay.className = 'modal-overlay';
