@@ -229,7 +229,7 @@ class AdminController {
             if ($result) {
                 $newsModel = new \App\Models\NewsModel($conn);
                 $newsTitle = "The book '$title' has been added.";
-                $newsModel->addNews('New Book', $newsTitle, $summary, $bookId);
+                $newsModel->addNews('Book Launch', $newsTitle, $summary, $bookId);
                 echo json_encode(['success' => true, 'message' => 'Book added successfully']);
             } else {
                 echo json_encode(['success' => false, 'message' => 'Failed to add book']);

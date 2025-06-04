@@ -137,6 +137,52 @@ class UserModel{
         return $row ? $row['CITY'] : null;
     }
 
+//  PARTE DE SGBD !!!!! pentru user ul gigi.becali@gmail.com cu parola cheese
+    public function isDemoUser($email) {
+        return strtolower($email) === 'gigi.becali@gmail.com';
+    }
 
+    public function callPopulateDemoData($userId) {
+        $sql = "BEGIN populate_demo_data(:user_id); END;";
+        $stmt = oci_parse($this->conn, $sql);
+        oci_bind_by_name($stmt, ':user_id', $userId);
+        
+        if (!oci_execute($stmt)) {
+            $error = oci_error($stmt);
+            throw new \Exception("Error populating demo data: " . $error['message']);
+        }
+        
+        return true;
+    }
+
+    public function callCleanupDemoData($userId) {
+        $sql = "BEGIN cleanup_demo_data(:user_id); END;";
+        $stmt = oci_parse($this->conn, $sql);
+        oci_bind_by_name($stmt, ':user_id', $userId);
+        
+        if (!oci_execute($stmt)) {
+            $error = oci_error($stmt);
+            throw new \Exception("Error cleaning up demo data: " . $error['message']);
+        }
+        
+        return true;
+    }
+
+    public function deleteDemoUser($userId) {
+        // First cleanup demo data
+        $this->callCleanupDemoData($userId);
+        
+        // Then delete the user
+        $sql = "DELETE FROM Users WHERE user_id = :user_id";
+        $stmt = oci_parse($this->conn, $sql);
+        oci_bind_by_name($stmt, ':user_id', $userId);
+        
+        if (!oci_execute($stmt)) {
+            $error = oci_error($stmt);
+            throw new \Exception("Error deleting demo user: " . $error['message']);
+        }
+        
+        return true;
+    }
 }
 
