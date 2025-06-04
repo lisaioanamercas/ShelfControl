@@ -134,6 +134,8 @@
     color: var(--title-color);
     margin-bottom: 0.25rem;
     text-align: center;
+    -webkit-line-clamp: 2; /* Limit to 2 lines */
+    line-clamp: 2; /* Limit to 2 lines */
 }
 
 /* Center the author name */
