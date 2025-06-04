@@ -835,5 +835,51 @@ class BookModel {
         }
     }
 
+    //SGBD !!!  --aici folosim views :)
+    public function getBookPopularityStats() {
+        $sql = "SELECT * FROM book_popularity ORDER BY total_readers DESC";
+        $stmt = oci_parse($this->conn, $sql);
+        
+        if (!oci_execute($stmt)) {
+            $error = oci_error($stmt);
+            error_log("Error executing book_popularity query: " . $error['message']);
+            return [];
+        }
+        
+        $stats = [];
+        while ($row = oci_fetch_assoc($stmt)) {
+            $stats[] = $row;
+        }
+        
+        oci_free_statement($stmt);
+        return $stats;
+    }
 
+    public function getUserReadingStats($userId = null) {
+        if ($userId) {
+            $sql = "SELECT * FROM user_reading_stats WHERE user_id = :user_id";
+            $stmt = oci_parse($this->conn, $sql);
+            oci_bind_by_name($stmt, ':user_id', $userId);
+        } else {
+            $sql = "SELECT * FROM user_reading_stats ORDER BY books_read DESC";
+            $stmt = oci_parse($this->conn, $sql);
+        }
+        
+        if (!oci_execute($stmt)) {
+            $error = oci_error($stmt);
+            error_log("Error executing user_reading_stats query: " . $error['message']);
+            return [];
+        }
+        
+        $stats = [];
+        while ($row = oci_fetch_assoc($stmt)) {
+            // Debug: Log what we're getting
+            error_log("User stats row: " . print_r($row, true));
+            $stats[] = $row;
+        }
+        
+        error_log("Total user stats retrieved: " . count($stats));
+        oci_free_statement($stmt);
+        return $stats;
+    }
 }

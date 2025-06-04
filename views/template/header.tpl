@@ -99,6 +99,13 @@
                                 <i class="ri-book-open-line"></i> Full Library
                             </a>
                         </li>
+
+                        <li class="nav__item">
+                            <a href="/ShelfControl/statistics" class="nav__link <?php echo ($currentPage ?? '') === 'statistics' ? 'active-link' : ''; ?>">
+                                <i class="ri-bar-chart-line"></i>
+                                <span>Statistics</span>
+                            </a>
+                        </li>
                     </ul>
                 </div>
                 

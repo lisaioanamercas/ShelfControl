@@ -1,0 +1,482 @@
+/* Statistics page - extending lib.css, fullLibrary.css, and book-section.css */
+
+.statistics {
+    padding: 2rem 0;
+}
+
+.section-title {
+    margin-top: 2rem;
+    font-size: var(--h1-font-size);
+    color: var(--title-color);
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+/* Overview Cards - Reuse reading-stats styles from lib.css */
+.stats-overview {
+    margin-bottom: 3rem;
+}
+
+.overview-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+/* Extend stats-box from lib.css for overview cards */
+.overview-card {
+    background-color: var(--container-color);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    transition: transform 0.3s ease;
+    min-width: 120px;
+    text-align: center;
+    flex: 1;
+}
+
+.overview-card:hover {
+    transform: translateY(-5px);
+}
+
+.overview-card__icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--first-color), hsl(var(--hue), 80%, 60%));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--white-color);
+    font-size: 1.5rem;
+}
+
+/* Reuse stats-box__number and stats-box__text styles */
+.overview-card__number {
+    font-size: 2.5rem;
+    font-weight: var(--font-bold);
+    color: var(--first-color);
+    margin-bottom: 0.25rem;
+}
+
+.overview-card__label {
+    font-size: var(--smaller-font-size);
+    color: var(--text-color);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    line-height: 1.2;
+}
+
+/* Tabs Navigation - Extend book-section header styles */
+.stats-tabs {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    border-bottom: 2px solid var(--border-color);
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.stats-tab {
+    padding: 1rem 1.5rem;
+    border: none;
+    background: none;
+    color: var(--text-color);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: var(--font-medium);
+    border-radius: 0.5rem 0.5rem 0 0;
+}
+
+.stats-tab.active {
+    color: var(--first-color);
+    border-bottom-color: var(--first-color);
+    background-color: var(--container-color);
+}
+
+.stats-tab:hover {
+    color: var(--first-color);
+    background-color: var(--body-color);
+}
+
+/* Tab Content */
+.stats-tab-content {
+    display: none;
+    animation: fadeIn 0.5s ease;
+}
+
+.stats-tab-content.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Books Tab - Reuse lib.css and fullLibrary.css styles */
+.stats-section {
+    margin-bottom: 2rem;
+}
+
+/* Extend book-section__title styles */
+.stats-section__title {
+    font-size: var(--h2-font-size);
+    color: var(--accent-color);
+    font-weight: var(--font-medium);
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border-color);
+    text-align: center;
+}
+
+/* Use existing book-library__container from lib.css and fullLibrary.css */
+.stats-section .book-library__container {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)) !important;
+    gap: 1.5rem !important;
+    max-width: 100% !important;
+    padding: 0 1rem;
+    justify-items: center; /* Center the cards within their grid areas */
+    width: 100%;
+}
+
+/* Ensure book cards have consistent sizing */
+.stats-section .book-card {
+    position: relative;
+    animation: slideUpStats 0.6s ease forwards;
+    opacity: 0;
+    transform: translateY(30px);
+    width: 100%; /* Take full width of grid cell */
+    max-width: 220px; /* But don't exceed this */
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* Make sure the cover has consistent height */
+.stats-section .book-card__cover {
+    height: 240px; /* Fixed height for consistency */
+    overflow: hidden;
+    position: relative;
+}
+
+/* Ensure images fill the cover area properly */
+.stats-section .book-card__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Ensure data section takes remaining space */
+.stats-section .book-card__data {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+}
+
+/* Make actions section consistent */
+.stats-section .book-card__actions {
+    padding: 0 1rem 1rem;
+    margin-top: auto;
+}
+
+/* Responsive adjustments */
+@media screen and (min-width: 576px) {
+    .stats-section .book-library__container {
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)) !important;
+    }
+}
+
+@media screen and (min-width: 768px) {
+    .stats-section .book-library__container {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)) !important;
+    }
+}
+
+@media screen and (min-width: 1024px) {
+    .stats-section .book-library__container {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)) !important;
+    }
+}
+
+@media screen and (min-width: 1200px) {
+    .stats-section .book-library__container {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)) !important;
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+}
+.book-card__rank {
+    position: absolute;
+    top: 0.5rem;
+    left: 0.5rem;
+    background: var(--first-color);
+    color: var(--white-color);
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--small-font-size);
+    font-weight: var(--font-semi-bold);
+    z-index: 10;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Extend book-card__data with statistics */
+.stats-section .book-card__stats {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    margin: 0.5rem 0;
+    padding: 0.5rem 0;
+    border-top: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.book-stat {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    color: var(--text-color);
+    font-size: var(--small-font-size);
+}
+
+.book-stat i {
+    color: var(--first-color);
+    font-size: 0.875rem;
+}
+
+/* Add progress bar to book cards */
+.book-card__progress {
+    margin-top: 0.5rem;
+}
+
+.book-card__progress .progress-bar {
+    width: 100%;
+    height: 3px;
+    background-color: var(--border-color);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.book-card__progress .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--first-color), hsl(var(--hue), 80%, 60%));
+    border-radius: 2px;
+    transition: width 0.8s ease;
+}
+
+@keyframes slideUpStats {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Enhanced hover effects for statistics book cards */
+.stats-section .book-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+}
+
+.stats-section .book-card:hover .book-card__rank {
+    transform: scale(1.1);
+}
+
+/* Leaderboard - Extend reading-stats styles */
+.leaderboard {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.leaderboard-item {
+    display: flex;
+    align-items: center;
+    background-color: var(--container-color);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    animation: slideUpStats 0.6s ease forwards;
+    opacity: 0;
+    transform: translateY(30px);
+}
+
+.leaderboard-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.leaderboard-rank {
+    width: 50px;
+    display: flex;
+    justify-content: center;
+}
+
+.trophy-gold { color: #FFD700; }
+.trophy-silver { color: #C0C0C0; }
+.trophy-bronze { color: #CD7F32; }
+
+.rank-number {
+    font-weight: var(--font-semi-bold);
+    color: var(--text-color);
+}
+
+.leaderboard-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--first-color), hsl(var(--hue), 80%, 60%));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--white-color);
+    margin: 0 1rem;
+}
+
+.leaderboard-info {
+    flex: 1;
+}
+
+.leaderboard-name {
+    font-weight: var(--font-semi-bold);
+    color: var(--title-color);
+    margin-bottom: 0.5rem;
+}
+
+.leaderboard-stats {
+    display: flex;
+    gap: 1rem;
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    color: var(--text-color);
+    font-size: var(--small-font-size);
+}
+
+.stat-item i {
+    color: var(--first-color);
+}
+
+.leaderboard-score {
+    text-align: center;
+}
+
+/* Reuse stats-box__number style */
+.score-number {
+    font-size: 1.5rem;
+    font-weight: var(--font-bold);
+    color: var(--first-color);
+    display: block;
+}
+
+.score-label {
+    font-size: var(--smaller-font-size);
+    color: var(--text-color);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Dark theme - extend existing dark theme styles */
+.dark-theme .overview-card,
+.dark-theme .leaderboard-item {
+    background-color: var(--dark-card-color);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.dark-theme .stats-tabs {
+    border-bottom-color: var(--dark-border-color);
+}
+
+.dark-theme .stats-tab.active {
+    background-color: var(--dark-container-color);
+}
+
+.dark-theme .stats-section .book-card__stats {
+    border-color: var(--dark-border-color);
+}
+
+.dark-theme .book-card__rank {
+    background-color: var(--dark-first-color);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.dark-theme .overview-card__number,
+.dark-theme .score-number {
+    color: var(--dark-first-color);
+}
+
+.dark-theme .overview-card__label,
+.dark-theme .score-label {
+    color: var(--dark-text-color);
+}
+
+/* Responsive - extend existing responsive styles */
+@media screen and (max-width: 768px) {
+    .overview-cards {
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    }
+    
+    .stats-tabs {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .stats-tab {
+        padding: 0.75rem 1rem;
+        border-radius: 0.5rem;
+        border-bottom: none;
+        text-align: center;
+    }
+    
+    .stats-tab.active {
+        border: 2px solid var(--first-color);
+    }
+    
+    .leaderboard-stats {
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+    
+    .book-card__rank {
+        width: 30px;
+        height: 30px;
+        font-size: var(--smaller-font-size);
+    }
+}
+
+@media screen and (max-width: 576px) {
+    .overview-cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .book-stat {
+        font-size: var(--smaller-font-size);
+    }
+    
+    .leaderboard-item {
+        padding: 1rem;
+    }
+    
+    .leaderboard-avatar {
+        width: 40px;
+        height: 40px;
+    }
+}
