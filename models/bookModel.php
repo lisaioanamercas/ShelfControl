@@ -879,19 +879,30 @@ class BookModel {
         
         $stats = [];
         while ($row = oci_fetch_assoc($stmt)) {
-            // Convert ALL numeric fields to proper integers/floats
-            $row['BOOKS_READ'] = (int)($row['BOOKS_READ'] ?? 0);
-            $row['CURRENTLY_READING'] = (int)($row['CURRENTLY_READING'] ?? 0);
-            $row['WANT_TO_READ'] = (int)($row['WANT_TO_READ'] ?? 0);
-            $row['BOOKS_OWNED'] = (int)($row['BOOKS_OWNED'] ?? 0);
-            $row['REVIEW_COUNT'] = (int)($row['REVIEW_COUNT'] ?? 0);
-            $row['AVERAGE_RATING'] = (float)($row['AVERAGE_RATING'] ?? 0);
+            // Handle European number format (comma as decimal separator)
+            foreach (['BOOKS_READ', 'CURRENTLY_READING', 'WANT_TO_READ', 'BOOKS_OWNED', 'REVIEW_COUNT'] as $field) {
+                $value = $row[$field] ?? '0';
+                
+                // Convert European format (comma) to US format (dot) then to integer
+                if (is_string($value)) {
+                    $value = str_replace(',', '.', $value);
+                }
+                $row[$field] = (int)floatval($value);
+            }
+
+            // Handle average rating separately (it's a decimal)
+            $ratingValue = $row['AVERAGE_RATING'] ?? '0';
+            if (is_string($ratingValue)) {
+                $ratingValue = str_replace(',', '.', $ratingValue);
+            }
+            $row['AVERAGE_RATING'] = (float)floatval($ratingValue);
             
             // Ensure string fields are strings
             $row['USERNAME'] = (string)($row['USERNAME'] ?? 'Unknown User');
             $row['EMAIL'] = (string)($row['EMAIL'] ?? '');
             
             $stats[] = $row;
+            error_log("Processed user: " . print_r($row, true));
         }
         
         oci_free_statement($stmt);

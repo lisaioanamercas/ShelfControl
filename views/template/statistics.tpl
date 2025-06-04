@@ -241,15 +241,42 @@
                                         </span>
                                     </div>
                                 </div>
+                                
                                 <div class="leaderboard-score">
                                     <span class="score-number">
                                         <?php 
                                             if (is_array($user)) {
-                                                // Make sure variables are defined before using them
-                                                $booksRead = isset($user['BOOKS_READ']) ? (int)$user['BOOKS_READ'] : 
-                                                            (isset($user['books_read']) ? (int)$user['books_read'] : 0);
-                                                $currentlyReading = isset($user['CURRENTLY_READING']) ? (int)$user['CURRENTLY_READING'] : 
-                                                                   (isset($user['currently_reading']) ? (int)$user['currently_reading'] : 0);
+                                                // Debug the actual values
+                                                $booksReadRaw = $user['BOOKS_READ'] ?? $user['books_read'] ?? 0;
+                                                $currentlyReadingRaw = $user['CURRENTLY_READING'] ?? $user['currently_reading'] ?? 0;
+                                                
+                                                error_log("DEBUG - Books Read Raw: " . var_export($booksReadRaw, true) . " (type: " . gettype($booksReadRaw) . ")");
+                                                error_log("DEBUG - Currently Reading Raw: " . var_export($currentlyReadingRaw, true) . " (type: " . gettype($currentlyReadingRaw) . ")");
+                                                
+                                                // Safe conversion function
+                                                function safeNumericConvert($value) {
+                                                    if (is_numeric($value)) {
+                                                        return (int)$value;
+                                                    }
+                                                    if (is_string($value)) {
+                                                        // Handle European format
+                                                        $cleaned = str_replace(',', '.', $value);
+                                                        if (is_numeric($cleaned)) {
+                                                            return (int)floatval($cleaned);
+                                                        }
+                                                        // Extract only digits if string contains other characters
+                                                        if (preg_match('/\d+/', $value, $matches)) {
+                                                            return (int)$matches[0];
+                                                        }
+                                                    }
+                                                    return 0;
+                                                }
+                                                
+                                                $booksRead = safeNumericConvert($booksReadRaw);
+                                                $currentlyReading = safeNumericConvert($currentlyReadingRaw);
+                                                
+                                                error_log("DEBUG - Final values: booksRead=$booksRead, currentlyReading=$currentlyReading");
+                                                
                                                 echo $booksRead + $currentlyReading;
                                             } else {
                                                 echo '0';
