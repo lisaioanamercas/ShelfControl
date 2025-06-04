@@ -92,8 +92,10 @@ img {
 
 /* Container and grid utilities */
 .container {
-    max-width: 1220px;
+    max-width: 1800px;
+    margin-inline: auto;
     margin-inline: 1.5rem;
+    width: 90%;
 }
 
 .grid {

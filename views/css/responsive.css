@@ -121,3 +121,38 @@
         --smaller-font-size: .813rem;
     }
 }
+
+/* XL and XXL screens */
+@media screen and (min-width: 1600px) {
+    .book-library__container,
+    .book-grid,
+    .suggestions-grid,
+    .similar-books__grid {
+        grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+        max-width: 1800px;
+    }
+    
+    .container {
+        max-width: 1800px;
+    }
+    
+    /* Increase number of columns in the Full Library page */
+    .book-library__container {
+        grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)) !important;
+    }
+}
+
+/* Ultra-wide screens */
+@media screen and (min-width: 2200px) {
+    .book-library__container,
+    .book-grid,
+    .suggestions-grid,
+    .similar-books__grid {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        max-width: 2100px;
+    }
+    
+    .container {
+        max-width: 2100px;
+    }
+}

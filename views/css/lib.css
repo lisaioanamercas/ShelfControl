@@ -26,7 +26,7 @@
 .book-library__container {
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 2rem;
-    max-width: 90%;
+    max-width: 1800px;
     margin: 0 auto;
     justify-content: center;
 }
@@ -366,5 +366,24 @@
 @media screen and (max-width: 576px) {
     .reading-stats__boxes {
         grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Add to lib.css or create a new file for your to-read page */
+@media screen and (min-width: 1400px) {
+    .books-category .book-grid {
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    }
+}
+
+@media screen and (min-width: 1800px) {
+    .books-category .book-grid {
+        grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+    }
+}
+
+@media screen and (min-width: 2400px) {
+    .books-category .book-grid {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
     }
 }
