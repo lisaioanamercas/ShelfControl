@@ -189,7 +189,7 @@
                                 <div class="leaderboard-avatar">
                                     <i class="ri-user-line"></i>
                                 </div>
-                                                                <div class="leaderboard-info">
+                                    <div class="leaderboard-info">
                                     <h4 class="leaderboard-name">
                                         <?php 
                                             // Debug and handle the username
@@ -202,12 +202,14 @@
                                             }
                                         ?>
                                     </h4>
-                                    <div class="leaderboard-stats">
+                                                                        <div class="leaderboard-stats">
                                         <span class="stat-item">
                                             <i class="ri-book-read-line"></i>
                                             <?php 
                                                 if (is_array($user)) {
-                                                    echo $user['BOOKS_READ'] ?? $user['books_read'] ?? '0';
+                                                    $booksRead = isset($user['BOOKS_READ']) ? (int)$user['BOOKS_READ'] : 
+                                                                (isset($user['books_read']) ? (int)$user['books_read'] : 0);
+                                                    echo $booksRead;
                                                 } else {
                                                     echo '0';
                                                 }
@@ -217,7 +219,9 @@
                                             <i class="ri-book-open-line"></i>
                                             <?php 
                                                 if (is_array($user)) {
-                                                    echo $user['CURRENTLY_READING'] ?? $user['currently_reading'] ?? '0';
+                                                    $currentlyReading = isset($user['CURRENTLY_READING']) ? (int)$user['CURRENTLY_READING'] : 
+                                                                       (isset($user['currently_reading']) ? (int)$user['currently_reading'] : 0);
+                                                    echo $currentlyReading;
                                                 } else {
                                                     echo '0';
                                                 }
@@ -227,7 +231,8 @@
                                             <i class="ri-star-line"></i>
                                             <?php 
                                                 if (is_array($user)) {
-                                                    $rating = $user['AVERAGE_RATING'] ?? $user['average_rating'] ?? 0;
+                                                    $rating = isset($user['AVERAGE_RATING']) ? (float)$user['AVERAGE_RATING'] : 
+                                                             (isset($user['average_rating']) ? (float)$user['average_rating'] : 0);
                                                     echo number_format($rating, 1);
                                                 } else {
                                                     echo '0.0';
@@ -240,8 +245,11 @@
                                     <span class="score-number">
                                         <?php 
                                             if (is_array($user)) {
-                                                $booksRead = $user['BOOKS_READ'] ?? $user['books_read'] ?? 0;
-                                                $currentlyReading = $user['CURRENTLY_READING'] ?? $user['currently_reading'] ?? 0;
+                                                // Make sure variables are defined before using them
+                                                $booksRead = isset($user['BOOKS_READ']) ? (int)$user['BOOKS_READ'] : 
+                                                            (isset($user['books_read']) ? (int)$user['books_read'] : 0);
+                                                $currentlyReading = isset($user['CURRENTLY_READING']) ? (int)$user['CURRENTLY_READING'] : 
+                                                                   (isset($user['currently_reading']) ? (int)$user['currently_reading'] : 0);
                                                 echo $booksRead + $currentlyReading;
                                             } else {
                                                 echo '0';

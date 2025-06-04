@@ -857,11 +857,17 @@ class BookModel {
 
     public function getUserReadingStats($userId = null) {
         if ($userId) {
-            $sql = "SELECT * FROM user_reading_stats WHERE user_id = :user_id";
+            $sql = "SELECT urs.*, u.username, u.email 
+                    FROM user_reading_stats urs
+                    JOIN Users u ON urs.user_id = u.user_id
+                    WHERE urs.user_id = :user_id";
             $stmt = oci_parse($this->conn, $sql);
             oci_bind_by_name($stmt, ':user_id', $userId);
         } else {
-            $sql = "SELECT * FROM user_reading_stats ORDER BY books_read DESC";
+            $sql = "SELECT urs.*, u.username, u.email 
+                    FROM user_reading_stats urs
+                    JOIN Users u ON urs.user_id = u.user_id
+                    ORDER BY urs.books_read DESC";
             $stmt = oci_parse($this->conn, $sql);
         }
         
@@ -873,12 +879,21 @@ class BookModel {
         
         $stats = [];
         while ($row = oci_fetch_assoc($stmt)) {
-            // Debug: Log what we're getting
-            error_log("User stats row: " . print_r($row, true));
+            // Convert ALL numeric fields to proper integers/floats
+            $row['BOOKS_READ'] = (int)($row['BOOKS_READ'] ?? 0);
+            $row['CURRENTLY_READING'] = (int)($row['CURRENTLY_READING'] ?? 0);
+            $row['WANT_TO_READ'] = (int)($row['WANT_TO_READ'] ?? 0);
+            $row['BOOKS_OWNED'] = (int)($row['BOOKS_OWNED'] ?? 0);
+            $row['REVIEW_COUNT'] = (int)($row['REVIEW_COUNT'] ?? 0);
+            $row['AVERAGE_RATING'] = (float)($row['AVERAGE_RATING'] ?? 0);
+            
+            // Ensure string fields are strings
+            $row['USERNAME'] = (string)($row['USERNAME'] ?? 'Unknown User');
+            $row['EMAIL'] = (string)($row['EMAIL'] ?? '');
+            
             $stats[] = $row;
         }
         
-        error_log("Total user stats retrieved: " . count($stats));
         oci_free_statement($stmt);
         return $stats;
     }
