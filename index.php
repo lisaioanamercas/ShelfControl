@@ -230,3 +230,19 @@ elseif($request=='/api/libraries')
 {
     $exploreController->getLibraries();
 }
+elseif ($request == '/admin/delete-book') {
+    $adminController = new \App\Controllers\AdminController();
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        $adminController->deleteBook();
+    }
+}
+elseif ($request == '/admin/get-book-details') {
+    $adminController = new \App\Controllers\AdminController();
+    $adminController->getBookDetails();
+}
+elseif ($request == '/admin/update-book') {
+    $adminController = new \App\Controllers\AdminController();
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        $adminController->updateBook();
+    }
+}

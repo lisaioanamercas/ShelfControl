@@ -619,4 +619,48 @@ class BookModel {
         }
     }
 
+    public function deleteBook($bookId) {
+        $sql = "BEGIN delete_book_by_id(:book_id); END;";
+        $stmt = oci_parse($this->conn, $sql);
+        oci_bind_by_name($stmt, ':book_id', $bookId);
+
+        if (!oci_execute($stmt)) {
+            $e = oci_error($stmt);
+            throw new Exception("Deletion failed: " . $e['message']);
+        }
+
+        return true;
+    }
+
+    public function updateBook($bookId, $data) {
+        $sql = "BEGIN update_book(
+                :book_id, :title, :author, :translator, :genre, :pages,
+                :pub_year, :lang, :isbn, :cover_url, :summary, :publisher, :sub_publisher
+                ); END;";
+
+        $stmt = oci_parse($this->conn, $sql);
+
+        oci_bind_by_name($stmt, ':book_id', $bookId);
+        oci_bind_by_name($stmt, ':title', $data['title']);
+        oci_bind_by_name($stmt, ':author', $data['author']);
+        oci_bind_by_name($stmt, ':translator', $data['translator']);
+        oci_bind_by_name($stmt, ':genre', $data['genre']);
+        oci_bind_by_name($stmt, ':pages', $data['pages']);
+        oci_bind_by_name($stmt, ':pub_year', $data['publication_year']);
+        oci_bind_by_name($stmt, ':lang', $data['language']);
+        oci_bind_by_name($stmt, ':isbn', $data['isbn']);
+        oci_bind_by_name($stmt, ':cover_url', $data['cover_url']);
+        oci_bind_by_name($stmt, ':summary', $data['summary']);
+        oci_bind_by_name($stmt, ':publisher', $data['publishing_house']);
+        oci_bind_by_name($stmt, ':sub_publisher', $data['sub_publisher']);
+
+        if (!oci_execute($stmt)) {
+            $e = oci_error($stmt);
+            throw new Exception("Update failed: " . $e['message']);
+        }
+
+        return true;
+    }
+
+
 }

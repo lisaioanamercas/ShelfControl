@@ -486,3 +486,53 @@ textarea {
     border-color: var(--first-color);
     box-shadow: 0 0 0 3px hsla(0, 85%, 46%, 0.15);
 }
+
+
+/* ADMIN ACTIONS -- PENTRU BOOK.tpl */
+.admin-actions {
+    width: 100%;
+    max-width: 300px;
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.admin-action__btn {
+    flex: 1;
+    padding: 0.6rem;
+    border: none;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-size: var(--small-font-size);
+    font-weight: var(--font-medium);
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.delete-book-btn {
+    background-color: hsl(0, 80%, 50%);
+    color: var(--white-color);
+}
+
+.delete-book-btn:hover {
+    background-color: hsl(0, 80%, 40%);
+}
+
+.edit-book-btn {
+    background-color: hsl(230, 80%, 50%);
+    color: var(--white-color);
+}
+
+.edit-book-btn:hover {
+    background-color: hsl(230, 80%, 40%);
+}
+
+/* Dark theme */
+.dark-theme .admin-actions {
+    border-color: var(--dark-border-color);
+}

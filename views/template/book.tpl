@@ -5,6 +5,20 @@
             <div class="book-cover">
                 <img src="{$book_image_url}" alt="{$book_title}" class="book-cover__img">
             </div>
+
+            <!-- BUTOANE PENTRU ADMIN !!! -->
+            <?php if (isset($user['role']) && $user['role'] === 'admin'): ?>
+            <div class="admin-actions">
+                <button class="admin-action__btn delete-book-btn" id="deleteBookBtn" data-book-id="<?php echo $book_id; ?>">
+                    <i class="ri-delete-bin-line"></i> <span>Delete Book</span>
+                </button>
+                <button class="admin-action__btn edit-book-btn" id="editBookBtn" data-book-id="<?php echo $book_id; ?>">
+                    <i class="ri-edit-line"></i> <span>Edit Book</span>
+                </button>
+            </div>
+            <?php endif; ?>
+
+
             <div class="book-actions">
                 <!-- Status dropdown -->
                 <div class="status-dropdown">

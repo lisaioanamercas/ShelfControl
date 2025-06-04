@@ -154,12 +154,14 @@ class BookController{
                 '/ShelfControl/views/css/bookPage/similar-books.css',
                 '/ShelfControl/views/css/bookPage/dark-theme-book.css',
                 '/ShelfControl/views/css/bookPage/reviews.css',
-                '/ShelfControl/views/css/bookPage/librarySugestions.css'
+                '/ShelfControl/views/css/bookPage/librarySugestions.css',
+                '/ShelfControl/views/css/bookPage/admin.css'
 
             ],
             'additionalScripts' => [
                 '/ShelfControl/views/scripts/book.js',
-                '/ShelfControl/views/scripts/review.js'
+                '/ShelfControl/views/scripts/review.js',
+                '/ShelfControl/views/scripts/adminActionsbook.js'
             ]
         ];
                 
