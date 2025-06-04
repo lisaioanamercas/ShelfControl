@@ -855,57 +855,31 @@ class BookModel {
         return $stats;
     }
 
-    public function getUserReadingStats($userId = null) {
-        if ($userId) {
-            $sql = "SELECT urs.*, u.username, u.email 
-                    FROM user_reading_stats urs
-                    JOIN Users u ON urs.user_id = u.user_id
-                 WHERE urs.user_id = :user_id";
-            $stmt = oci_parse($this->conn, $sql);
-            oci_bind_by_name($stmt, ':user_id', $userId);
-        } else {
-            $sql = "SELECT urs.*, u.username, u.email 
-                    FROM user_reading_stats urs
-                    JOIN Users u ON urs.user_id = u.user_id
-                    ORDER BY urs.books_read DESC";
-            $stmt = oci_parse($this->conn, $sql);
-        }
-        
-        if (!oci_execute($stmt)) {
-            $error = oci_error($stmt);
-            error_log("Error executing user_reading_stats query: " . $error['message']);
-            return [];
-        }
-        
-        $stats = [];
-        while ($row = oci_fetch_assoc($stmt)) {
-            // Handle European number format (comma as decimal separator)
-            foreach (['BOOKS_READ', 'CURRENTLY_READING', 'WANT_TO_READ', 'BOOKS_OWNED', 'REVIEW_COUNT'] as $field) {
-                $value = $row[$field] ?? '0';
-                
-                // Convert European format (comma) to US format (dot) then to integer
-                if (is_string($value)) {
-                    $value = str_replace(',', '.', $value);
-                }
-                $row[$field] = (int)floatval($value);
-            }
+        public function getUserReadingStats($limit = 10) {
+            $sql = "
+                SELECT 
+                    user_name AS username,
+                    read AS books_read,
+                    reading AS currently_reading,
+                    avg_pages AS average_rating
+                FROM user_reading_stats
+                ORDER BY books_read DESC, average_rating DESC
+                FETCH FIRST :limit ROWS ONLY
+            ";
 
-            // Handle average rating separately (it's a decimal)
-            $ratingValue = $row['AVERAGE_RATING'] ?? '0';
-            if (is_string($ratingValue)) {
-                $ratingValue = str_replace(',', '.', $ratingValue);
-            }
-            $row['AVERAGE_RATING'] = (float)floatval($ratingValue);
-            
-            // Ensure string fields are strings
-            $row['USERNAME'] = (string)($row['username'] ?? 'Unknown User');
-            $row['EMAIL'] = (string)($row['EMAIL'] ?? '');
-            
-            $stats[] = $row;
-            error_log("Processed user: " . print_r($row, true));
+            $stmt = oci_parse($this->conn, $sql);
+            oci_bind_by_name($stmt, ':limit', $limit);
+            oci_execute($stmt);
+
+               $result = [];
+            while ($row = oci_fetch_assoc($stmt)) {
+            $result[] = [
+                'USERNAME'           => $row['USERNAME'] ?? 'Unknown User',
+                'BOOKS_READ'         => $row['BOOKS_READ'] ?? 0,
+                'CURRENTLY_READING'  => $row['CURRENTLY_READING'] ?? 0,
+                'AVERAGE_RATING'     => $row['AVERAGE_RATING'] ?? 0.0
+            ];
         }
-        
-        oci_free_statement($stmt);
-        return $stats;
-    }
+         return $result;
+        }
 }

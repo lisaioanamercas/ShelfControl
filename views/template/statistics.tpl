@@ -169,8 +169,10 @@
          <div class="stats-tab-content" id="users-tab">
               <div class="stats-section">
                 <h2 class="stats-section__title">Top Readers Leaderboard</h2>
+                <pre><?php var_dump($userStats); ?></pre>
                         <div class="leaderboard">
                             <?php if (!empty($userStats)): ?>
+                           
                                     <?php foreach (array_slice($userStats, 0, 10) as $index => $user): ?>
                                             <div class="leaderboard-item" style="animation-delay: <?php echo $index * 0.1; ?>s">
                                                 <div class="leaderboard-rank">
@@ -202,7 +204,7 @@
                                                         <i class="ri-book-read-line"></i>
                                                         <?php 
                                                             if (is_array($user)) {
-                                                                $booksRead = isset($user['BOOKS_READ']) ? (int)$user['BOOKS_READ'] : 
+                                                                $booksRead = isset($user['books_read']) ? (int)$user['books_read'] : 
                                                                             (isset($user['books_read']) ? (int)$user['books_read'] : 0);
                                                                 echo $booksRead;
                                                             } else {

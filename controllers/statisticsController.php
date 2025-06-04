@@ -47,20 +47,7 @@ class StatisticsController {
             
             $userStats = $bookModel->getUserReadingStats();
 
-            $requiredFields = ['USERNAME', 'BOOKS_READ', 'CURRENTLY_READING', 'AVERAGE_RATING'];
-
-                foreach ($userStats as $i => &$user) {
-                    foreach ($requiredFields as $field) {
-                        if (!isset($user[$field])) {
-                            error_log("userStats[$i] missing field: $field");
-                            // Completează cu valori implicite
-                            if ($field === 'USERNAME') $user[$field] = 'Unknown User5';
-                            elseif ($field === 'AVERAGE_RATING') $user[$field] = 0.0;
-                            else $user[$field] = 0;
-                        }
-                    }
-                }
-                unset($user); 
+        
 
             error_log("User stats retrieved: " . count($userStats) . " items");
             
