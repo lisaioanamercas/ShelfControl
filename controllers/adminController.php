@@ -289,50 +289,143 @@ class AdminController {
         }
     }
 
+    // public function getBookDetails() {
+    //     // Clean any existing output and set JSON header immediately
+    //     while (ob_get_level()) {
+    //         ob_end_clean();
+    //     }
+        
+    //     header('Content-Type: application/json; charset=UTF-8');
+        
+    //     try {
+    //         if (!isset($_GET['id'])) {
+    //             throw new \Exception('No book ID provided');
+    //         }
+            
+    //         $bookId = $_GET['id'];
+    //         error_log("Getting book details for ID: " . $bookId);
+            
+    //         require_once __DIR__ . '/../models/dbConnection.php';
+    //         $conn = getConnection();
+            
+    //         if (!$conn) {
+    //             throw new \Exception('Database connection failed');
+    //         }
+            
+    //         $bookModel = new BookModel($conn);
+    //         $book = $bookModel->getBookById($bookId);
+            
+    //         if (!$book) {
+    //             throw new \Exception('Book not found with ID: ' . $bookId);
+    //         }
+            
+    //         // Ensure all CLOB fields are properly converted to strings
+    //         foreach ($book as $key => $value) {
+    //             if (is_object($value) && method_exists($value, 'read')) {
+    //                 try {
+    //                     $book[$key] = $value->read($value->size());
+    //                 } catch (\Exception $e) {
+    //                     $book[$key] = '';
+    //                 }
+    //             }
+    //             // Convert all values to strings to avoid JSON encoding issues
+    //             if (!is_scalar($value) && !is_null($value)) {
+    //                 $book[$key] = (string)$value;
+    //             }
+    //         }
+            
+    //         // Test JSON encoding before sending
+    //         $jsonTest = json_encode($book);
+    //         if ($jsonTest === false) {
+    //             throw new \Exception('JSON encoding failed: ' . json_last_error_msg());
+    //         }
+            
+    //         $response = ['success' => true, 'book' => $book];
+    //         echo json_encode($response);
+            
+    //     } catch (\Exception $e) {
+    //         error_log("Error in getBookDetails: " . $e->getMessage());
+    //         echo json_encode(['success' => false, 'message' => 'Error: ' . $e->getMessage()]);
+    //     }
+        
+    //     exit; // Important: stop execution here
+    // }
+
     public function getBookDetails() {
-        header('Content-Type: application/json');
+        // Clean any existing output and set JSON header immediately
+        while (ob_get_level()) {
+            ob_end_clean();
+        }
+        
+        // Add error logging
+        error_log("getBookDetails called");
+        
+        header('Content-Type: application/json; charset=UTF-8');
         
         try {
-            // Check if book ID is provided
             if (!isset($_GET['id'])) {
-                echo json_encode(['success' => false, 'message' => 'No book ID provided']);
-                exit;
+                error_log("No book ID provided in GET parameters");
+                throw new \Exception('No book ID provided');
             }
             
             $bookId = $_GET['id'];
+            error_log("Getting book details for ID: " . $bookId);
             
-            // Connect to database
             require_once __DIR__ . '/../models/dbConnection.php';
             $conn = getConnection();
             
             if (!$conn) {
-                echo json_encode(['success' => false, 'message' => 'Database connection failed']);
-                exit;
+                error_log("Database connection failed");
+                throw new \Exception('Database connection failed');
             }
             
-            // Get book details
             $bookModel = new BookModel($conn);
             $book = $bookModel->getBookById($bookId);
             
-            // Make sure CLOB data is properly handled
-            if ($book) {
-                // Handle potential CLOB objects for fields that might be CLOB
-                foreach ($book as $key => $value) {
-                    if (is_object($value) && method_exists($value, 'read')) {
+            error_log("Book data retrieved: " . ($book ? "YES" : "NO"));
+            
+            if (!$book) {
+                error_log("Book not found with ID: " . $bookId);
+                throw new \Exception('Book not found with ID: ' . $bookId);
+            }
+            
+            // Ensure all CLOB fields are properly converted to strings
+            foreach ($book as $key => $value) {
+                if (is_object($value) && method_exists($value, 'read')) {
+                    try {
                         $book[$key] = $value->read($value->size());
+                    } catch (\Exception $e) {
+                        error_log("Error reading CLOB field $key: " . $e->getMessage());
+                        $book[$key] = '';
                     }
                 }
-                
-                echo json_encode(['success' => true, 'book' => $book]);
-            } else {
-                echo json_encode(['success' => false, 'message' => 'Book not found']);
+                // Convert all values to strings to avoid JSON encoding issues
+                if (!is_scalar($value) && !is_null($value)) {
+                    $book[$key] = (string)$value;
+                }
             }
+            
+            // Test JSON encoding before sending
+            $jsonTest = json_encode($book);
+            if ($jsonTest === false) {
+                error_log("JSON encoding failed: " . json_last_error_msg());
+                throw new \Exception('JSON encoding failed: ' . json_last_error_msg());
+            }
+            
+            $response = ['success' => true, 'book' => $book];
+            error_log("About to send response: " . json_encode($response));
+            echo json_encode($response);
+            
         } catch (\Exception $e) {
-            // Log the error
             error_log("Error in getBookDetails: " . $e->getMessage());
             echo json_encode(['success' => false, 'message' => 'Error: ' . $e->getMessage()]);
         }
+        
+        error_log("getBookDetails function ending");
+        exit; // Important: stop execution here
     }
+
+
     public function updateBook() {
         // Similar to addBookPost but update existing book
         

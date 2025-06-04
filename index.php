@@ -236,7 +236,7 @@ elseif ($request == '/admin/delete-book') {
         $adminController->deleteBook();
     }
 }
-elseif ($request == '/admin/get-book-details') {
+elseif (strpos($request, '/admin/get-book-details') === 0) {
     $adminController = new \App\Controllers\AdminController();
     $adminController->getBookDetails();
 }
