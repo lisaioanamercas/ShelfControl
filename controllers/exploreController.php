@@ -90,63 +90,81 @@ class ExploreController{
     exit;
    }
     
-}
-    public function getLibraries(){
-    
-
-            $jwt = new BaseController();
-            
-            require __DIR__ . '/../models/dbConnection.php';
-
-            $decoded = $jwt->validateJWT($_COOKIE['jwt']);
-            $userEmail = $decoded->data->email;
-
-            $userModel = new UserModel($conn);
-          //  $city=$userModel->getCityByEmail($userEmail);
-          $city='Iasi';
-
-
-    $query = '[out:json][timeout:25];
-area["name"="Iași"]["boundary"="administrative"]["admin_level"~"^(8|6)$"]->.searchArea;
-(
-  node["shop"="books"](area.searchArea);
-  way["shop"="books"](area.searchArea);
-  relation["shop"="books"](area.searchArea);
-);
-out body;
->;
-out skel qt;'
-;
-
-    $url = "https://overpass-api.de/api/interpreter?data=" . urlencode($query);
-    $response = file_get_contents($url);
-
-    if ($response === FALSE) {
-        return json_encode(["error" => "API request failed"]);
-    }
-
-    $data = json_decode($response, true);
-    $libraries = [];
-
-    if (isset($data['elements'])) {
-        foreach ($data['elements'] as $element) {
-            
-
-           $name = $element['tags']['name'] ?? 'Bibliotecă fără nume';
-            $street = $element['tags']['addr:street'] ?? 'Stradă necunoscută';
-
-            $libraries[] = [
-                'name' => $name,
-                'address' => $street
-            ];
+}    
+      public function getStreetFromCoords($lat, $lon) {
+        $url = "https://nominatim.openstreetmap.org/reverse?format=json&lat=$lat&lon=$lon&zoom=17&addressdetails=1";
+        $opts = [
+            "http" => [
+                "header" => "User-Agent: MyApp/1.0"
+            ]
+        ];
+        $context = stream_context_create($opts);
+        $result = @file_get_contents($url, false, $context);
+        if ($result === FALSE) {
+            return 'Stradă necunoscută';
         }
-    }
+        $data = json_decode($result, true);
+        return $data['address']['road'] ?? 'Stradă necunoscută';
+}
 
-       header('Content-Type: application/json; charset=utf-8');
+    public function getLibraries() {
+        $jwt = new BaseController();
+        require __DIR__ . '/../models/dbConnection.php';
 
+        $decoded = $jwt->validateJWT($_COOKIE['jwt']);
+        $userEmail = $decoded->data->email;
+        $userModel = new UserModel($conn);
+       $city = $userModel->getCityByEmail($userEmail);
+      //  $city = 'Iași';
+
+        $query = '[out:json][timeout:25];
+            area["name"="' . $city . '"]["boundary"="administrative"]["admin_level"~"^(8|6)$"]->.searchArea;
+            (
+            node["shop"="books"](area.searchArea);
+            way["shop"="books"](area.searchArea);
+            relation["shop"="books"](area.searchArea);
+            );
+            out body;
+            >;
+            out skel qt;';
+
+        $url = "https://overpass-api.de/api/interpreter?data=" . urlencode($query);
+        $response = file_get_contents($url);
+
+        if ($response === FALSE) {
+            header('Content-Type: application/json; charset=utf-8');
+            echo json_encode(["error" => "API request failed"]);
+            exit;
+        }
+
+        $data = json_decode($response, true);
+        $libraries = [];
+
+        if (isset($data['elements'])) {
+            foreach ($data['elements'] as $element) {
+                $name = $element['tags']['name'] ?? 'Bibliotecă fără nume';
+                $street = 'Stradă necunoscută';
+                $lat = $element['lat'] ?? $element['center']['lat'] ?? null;
+                $lon = $element['lon'] ?? $element['center']['lon'] ?? null;
+
+                if ($lat && $lon) {
+                    $street = $this->getStreetFromCoords($lat, $lon);
+                }
+
+                $libraries[] = [
+                    'name' => $name,
+                    'address' => $street
+                ];
+            }
+        }
+        $libraries = array_slice($libraries, 0, 5);
+
+        header('Content-Type: application/json; charset=utf-8');
         echo json_encode($libraries, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
-
     }
+
+
+    
 }
 
 

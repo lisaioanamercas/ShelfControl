@@ -220,12 +220,8 @@
             <div class="library-popup">
                 <button class="close-library-popup" id="closeLibraryPopup">&times;</button>
                 <h3>Biblioteci unde găsești această carte</h3>
-                <ul class="library-list">
-                    <li>Biblioteca Națională a României</li>
-                    <li>Biblioteca Centrală Universitară București</li>
-                    <li>Biblioteca Metropolitană București</li>
-                    <li>Biblioteca Județeană Cluj</li>
-                    <li>Biblioteca Județeană Timiș</li>
+                <ul class="library-list" id="libraryList">
+                        <!---aici vin bilioteci din js--> 
                 </ul>
             </div>
         </div>`

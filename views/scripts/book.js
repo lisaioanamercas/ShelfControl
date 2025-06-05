@@ -6,14 +6,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const readingProgress = document.getElementById('readingProgress');
     const authorElement = document.querySelector('.book-author');
     const titleElement = document.querySelector('.book-title');
+
     const writeReviewBtn = document.getElementById('writeReviewBtn');
     const reviewFormOverlay = document.getElementById('reviewFormOverlay');
     const closeReviewForm = document.getElementById('closeReviewForm');
     const reviewForm = document.getElementById('reviewForm');
 
      const buyBtn = document.getElementById('buyBtn');
+
     const libraryPopupOverlay = document.getElementById('libraryPopupOverlay');
     const closeLibraryPopup = document.getElementById('closeLibraryPopup');
+    const libraryList = document.getElementById('libraryList');
+
 
     if (buyBtn && libraryPopupOverlay) {
         buyBtn.addEventListener('click', () => {
@@ -30,6 +34,37 @@ document.addEventListener('DOMContentLoaded', () => {
             if (e.target === libraryPopupOverlay) {
                 libraryPopupOverlay.style.display = 'none';
             }
+        });
+    }
+    if (libraryList) {
+
+        libraryList.innerHTML = '<li>Se încarcă bibliotecile...</li>';
+        console.log('Incepe fetch-ul pentru biblioteci');
+
+        fetch('/ShelfControl/api/libraries')
+        .then(res => res.json())
+        .then(libraries => {
+            console.log(libraries);
+            libraryList.innerHTML = '';
+            if (libraries.length === 0) {
+                libraryList.innerHTML = '<li>Nu s-au găsit biblioteci.</li>';
+            } else {
+                console.log("Biblioteci găsite:", libraries);
+                libraries.forEach(lib => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `
+                        <div class="library-card">
+                            <h4>${lib.name}</h4>
+                            <p>${lib.address}</p>
+                        </div>
+                    `;
+                    libraryList.appendChild(li);
+                });
+            }
+        })
+        .catch((error) => {
+            console.error('Eroare la încărcarea bibliotecilor:', error);
+            libraryList.innerHTML = '<li>Eroare la încărcarea bibliotecilor.</li>';
         });
     }
 
