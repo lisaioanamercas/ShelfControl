@@ -855,31 +855,71 @@ class BookModel {
         return $stats;
     }
 
-        public function getUserReadingStats($limit = 10) {
-            $sql = "
-                SELECT 
-                    user_name AS username,
-                    read AS books_read,
-                    reading AS currently_reading,
-                    avg_pages AS average_rating
-                FROM user_reading_stats
-                ORDER BY books_read DESC, average_rating DESC
-                FETCH FIRST :limit ROWS ONLY
-            ";
+        // public function getUserReadingStats($limit = 10) {
+        //     $sql = "
+        //         SELECT 
+        //             user_name AS username,
+        //             read AS books_read,
+        //             reading AS currently_reading,
+        //             avg_pages AS average_rating
+        //         FROM user_reading_stats
+        //         ORDER BY books_read DESC, average_rating DESC
+        //         FETCH FIRST :limit ROWS ONLY
+        //     ";
 
-            $stmt = oci_parse($this->conn, $sql);
-            oci_bind_by_name($stmt, ':limit', $limit);
-            oci_execute($stmt);
+        //     $stmt = oci_parse($this->conn, $sql);
+        //     oci_bind_by_name($stmt, ':limit', $limit);
+        //     oci_execute($stmt);
 
-               $result = [];
-            while ($row = oci_fetch_assoc($stmt)) {
+        //        $result = [];
+        //     while ($row = oci_fetch_assoc($stmt)) {
+        //     $result[] = [
+        //         'USERNAME'           => $row['USERNAME'] ?? 'Unknown User',
+        //         'BOOKS_READ'         => $row['BOOKS_READ'] ?? 0,
+        //         'CURRENTLY_READING'  => $row['CURRENTLY_READING'] ?? 0,
+        //         'AVERAGE_RATING'     => $row['AVERAGE_RATING'] ?? 0.0
+        //     ];
+        // }
+        //  return $result;
+        // }
+    public function getUserReadingStats($limit = 10) {
+        $sql = "
+            SELECT
+                USER_NAME AS USERNAME,
+                READ AS BOOKS_READ,
+                READING AS CURRENTLY_READING,
+                AVG_PAGES
+            FROM USER_READING_STATS
+            ORDER BY READ DESC, AVG_PAGES DESC
+            FETCH FIRST :limit ROWS ONLY
+        ";
+        $stmt = oci_parse($this->conn, $sql);
+        oci_bind_by_name($stmt, ':limit', $limit);
+    
+        if (!oci_execute($stmt)) {
+            $error = oci_error($stmt);
+            error_log("Error executing user_reading_stats query: " . $error['message']);
+            return [];
+        }
+        
+        $result = [];
+        while ($row = oci_fetch_assoc($stmt)) {
+            // Debug the raw data from the view
+            error_log("Raw row from view: " . print_r($row, true));
+        
+            // Map to the expected format, using actual view columns
             $result[] = [
-                'USERNAME'           => $row['USERNAME'] ?? 'Unknown User',
-                'BOOKS_READ'         => $row['BOOKS_READ'] ?? 0,
-                'CURRENTLY_READING'  => $row['CURRENTLY_READING'] ?? 0,
-                'AVERAGE_RATING'     => $row['AVERAGE_RATING'] ?? 0.0
+                'USERNAME'           => (string)($row['USERNAME'] ?? 'Unknown User'),
+                'BOOKS_READ'         => (int)($row['BOOKS_READ'] ?? 0),
+                'CURRENTLY_READING'  => (int)($row['CURRENTLY_READING'] ?? 0),
+                'WANT_TO_READ'       => 0, // Not available in your view
+                'AVERAGE_RATING'     => (float)($row['AVG_PAGES'] ?? 0.0), // Using avg_pages as rating
+                'REVIEW_COUNT'       => 0  // Not available in your view
             ];
         }
-         return $result;
-        }
+    
+        error_log("Final processed user stats from view: " . print_r($result, true));
+        oci_free_statement($stmt);
+        return $result;
+    }
 }
