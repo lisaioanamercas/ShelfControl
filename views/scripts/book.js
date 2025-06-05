@@ -60,8 +60,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const rating = document.getElementById('ratingValue').value;
             const reviewText = document.getElementById('reviewContent').value;
-            const bookId = document.querySelector('.owned-btn')?.getAttribute('data-book-id');
-
+                const urlParams = new URLSearchParams(window.location.search);
+                bookId = urlParams.get('id');
              if (!rating || rating < 1) {
                 alert('Selectează un rating.');
                 return;
@@ -75,7 +75,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     body: `book_id=${encodeURIComponent(bookId)}&rating=${encodeURIComponent(rating)}&review_text=${encodeURIComponent(reviewText)}`  })
               .then(response => response.json())
                         .then(data => {
-                            // Afișează mesajul de la server
                             if (data.success) {
                                 alert(data.message || 'Review adăugat cu succes!');
                                 reviewForm.reset();

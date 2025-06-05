@@ -22,6 +22,14 @@
  
                     </div>
                 </div>
+                   <div class="book-actions__buttons">
+                    <button class="book-action__btn owned-btn <?php echo $is_owned ? 'active' : ''; ?>" id="ownedBtn" data-book-id="{$book_id}">
+                        <i class="ri-bookmark-line"></i> <span>owned</span>
+                    </button>
+                    <button class="book-action__btn buy-btn" id="buyBtn">
+                        <i class="ri-shopping-cart-line"></i> <span>buy</span>
+                    </button>
+                </div>
                 
                 
             </div>

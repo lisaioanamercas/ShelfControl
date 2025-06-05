@@ -439,7 +439,7 @@ class BookController{
             echo json_encode(['error' => 'Missing book ID or review text']);
             exit;
         }
-
+         error_log("Book ID: $bookId, Book ID Replace: $bookIdreplace");
 
          if(!is_numeric($bookId)&& !$bookIdreplace) {
              $bookId=$this->saveBookApi($bookModel, $bookId, $userId);
