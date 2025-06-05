@@ -200,10 +200,8 @@ class AdminController {
 
         // If not in edit mode, add new book
         try {
-            // Convert publication year to integer if it's not empty
             $publicationYear = !empty($publication) ? (int)$publication : null;
 
-            // Create book data in JSON format
             $bookData = json_encode([
                 [
                     'title' => $title,
@@ -229,7 +227,8 @@ class AdminController {
             if ($result) {
                 $newsModel = new \App\Models\NewsModel($conn);
                 $newsTitle = "The book '$title' has been added.";
-                $newsModel->addNews('Book Launch', $newsTitle, $summary, $bookId);
+                $link = "/ShelfControl/book-details?id={$bookId}";
+                $newsModel->addNews('Book Launch', $newsTitle, $summary, $link);
                 echo json_encode(['success' => true, 'message' => 'Book added successfully']);
             } else {
                 echo json_encode(['success' => false, 'message' => 'Failed to add book']);
@@ -264,15 +263,17 @@ class AdminController {
     }
 
     public function deleteBook() {
-        header('Content-Type: application/json');
+       header('Content-Type: application/json');
         
-        // Check if book ID is provided
-        if (!isset($_POST['book_id'])) {
-            echo json_encode(['success' => false, 'message' => 'No book ID provided']);
-            exit;
-        }
+         $data = [];
+         parse_str(file_get_contents("php://input"), $data);
+
+        if (!isset($data['book_id'])) {
+        echo json_encode(['success' => false, 'message' => 'No book ID provided']);
+        exit;
+    }
         
-        $bookId = $_POST['book_id'];
+          $bookId = $data['book_id'];
         
         // Connect to database
         require_once __DIR__ . '/../models/dbConnection.php';
@@ -422,7 +423,7 @@ class AdminController {
         }
         
         error_log("getBookDetails function ending");
-        exit; // Important: stop execution here
+        exit; // Important: stop execution here*/
     }
 
 

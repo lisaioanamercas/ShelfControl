@@ -8,7 +8,7 @@ if (deleteBookBtn) {
         
         if (confirm('Are you sure you want to delete this book? This action cannot be undone.')) {
             fetch('/ShelfControl/admin/delete-book', {
-                method: 'POST',
+                method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
                 },

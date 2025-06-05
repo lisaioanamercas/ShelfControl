@@ -67,36 +67,11 @@ function loadBooks(query) {
                 const firstBookTitle = data.items[0].volumeInfo.title?.toLowerCase() || "";
                 const normalizedQuery = query.toLowerCase();
 
-            /*   if (!firstBookTitle.includes(normalizedQuery)&&normalizedQuery!="") {
-                       fetch('/ShelfControl/api/libraries')
-                        .then(res => res.json())
-                        .then(libraries => {
-                            // Afișează bibliotecile în container
-                            container.innerHTML = "<h3>Biblioteci recomandate:</h3>";
-                            if (libraries.length === 0) {
-                                container.innerHTML += "<p>Nu s-au găsit biblioteci.</p>";
-                            } else {
-                               console.log("Biblioteci găsite:", libraries);
-                                libraries.forEach(lib => {
-                                    container.innerHTML += `
-                                        <div class="library-card">
-                                            <h4>${lib.name}</h4>
-                                            <p>${lib.address}</p>
-                                        </div>
-                                    `;
-                                });
-                            }
-                        })
-                        .catch(() => {
-                            container.innerHTML = "<p>Eroare la încărcarea bibliotecilor.</p>";
-                        });
-                    return;
-                }*/
-               /* else{*/
+            
                 
                       renderBooks(data.items);
                       extractAndPopulateGenres(data.items);
-               /* }*/
+       
 
                 
             } else {
@@ -166,7 +141,7 @@ function renderBooks(books) {
         container.innerHTML += `
             <div class="book-card" >
                 <div class="book-card__cover">
-                    <img src="${info.imageLinks?.thumbnail || 'assets/img/default-book.png'}" alt="Book cover" class="book-card__img">
+                    <img src="${info.imageLinks?.thumbnail || 'https://upittpress.org/wp-content/themes/pittspress/images/no_cover_available.png'}" alt="Book cover" class="book-card__img">
                 </div>
                 <a href="/ShelfControl/book-details?id=${book.id}" class="book-card-link">
                 <div class="book-card__data">

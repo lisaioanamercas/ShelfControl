@@ -23,6 +23,7 @@ $landingController = new LandingController();
 $bookController = new BookController();
 $homeController = new HomeController();
 $newsController = new NewsController();
+
 //$saveBookController = new SaveBookController();
 $request = $_SERVER['REQUEST_URI'];
 $request = str_replace('/ShelfControl', '', $_SERVER['REQUEST_URI']);
@@ -232,8 +233,13 @@ elseif($request=='/api/libraries')
 }
 elseif ($request == '/admin/delete-book') {
     $adminController = new \App\Controllers\AdminController();
-    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+
+   /* if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $adminController->deleteBook();
+    }*/
+    if( $_SERVER['REQUEST_METHOD'] == 'DELETE') {
+         $adminController->deleteBook();
     }
 }
 elseif (strpos($request, '/admin/get-book-details') === 0) {
