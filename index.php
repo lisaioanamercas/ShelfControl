@@ -234,10 +234,6 @@ elseif($request=='/api/libraries')
 elseif ($request == '/admin/delete-book') {
     $adminController = new \App\Controllers\AdminController();
 
-
-   /* if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        $adminController->deleteBook();
-    }*/
     if( $_SERVER['REQUEST_METHOD'] == 'DELETE') {
          $adminController->deleteBook();
     }
@@ -248,7 +244,7 @@ elseif (strpos($request, '/admin/get-book-details') === 0) {
 }
 elseif ($request == '/admin/update-book') {
     $adminController = new \App\Controllers\AdminController();
-    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    if ($_SERVER['REQUEST_METHOD'] == 'PUT') {
         $adminController->updateBook();
     }
 }

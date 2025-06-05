@@ -259,10 +259,18 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 // Handle update submission
                 const formData = new FormData(bookForm);
+                const params = new URLSearchParams();
+                for (const [key, value] of formData.entries()) {
+                    params.append(key, value);
+}
+
                 
                 fetch('/ShelfControl/admin/update-book', {
-                    method: 'POST',
-                    body: formData
+                    method: 'PUT',
+                     headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: params.toString()
                 })
                 .then(response => response.json())
                 .then(data => {
