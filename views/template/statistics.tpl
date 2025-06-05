@@ -165,8 +165,6 @@
                                         <i class="ri-trophy-line trophy-silver"></i>
                                     <?php elseif ($index === 2): ?>
                                         <i class="ri-trophy-line trophy-bronze"></i>
-                                    <?php else: ?>
-                                        <span class="rank-number"><?php echo $index + 1; ?></span>
                                     <?php endif; ?>
                                 </div>
 
