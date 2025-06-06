@@ -162,6 +162,22 @@ class ExploreController{
         header('Content-Type: application/json; charset=utf-8');
         echo json_encode($libraries, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
     }
+    public function getBooksFromDb()
+    {
+        $jwt = new BaseController();
+        require __DIR__ . '/../models/dbConnection.php';
+
+        $decoded = $jwt->validateJWT($_COOKIE['jwt']);
+        $userEmail = $decoded->data->email;
+        $userModel = new UserModel($conn);
+        $userId = $userModel->getUserIdByEmail($userEmail);
+
+        $bookModel = new BookModel($conn);
+        $books = $bookModel->getBooksByUserId($userId);
+
+        header('Content-Type: application/json; charset=utf-8');
+        echo json_encode($books, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+    }
 
 
     

@@ -1,26 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // function showLoader(loaderId, contentId) {
-    //     const loader = document.getElementById(loaderId);
-    //     const content = document.getElementById(contentId);
-    //     if (loader && content) {
-    //         loader.style.display = 'block';
-    //         loader.classList.add('active');
-    //         content.style.display = 'none';
-    //     }
-    // }
-
-    // function hideLoader(loaderId, contentId) {
-    //     const loader = document.getElementById(loaderId);
-    //     const content = document.getElementById(contentId);
-    //     if (loader && content) {
-    //         loader.classList.remove('active');
-    //         loader.style.display = 'none';
-    //         content.style.display = 'block';
-    //         const bookGrid = content.querySelector('.book-grid');
-    //         if (bookGrid) bookGrid.style.display = 'grid';
-    //         if (contentId === 'current-reading-content') content.style.display = 'grid';
-    //     }
-    // }
+  
     function showLoader(loaderId, contentId) {
         const loader = document.getElementById(loaderId);
         const content = document.getElementById(contentId);

@@ -27,7 +27,7 @@
         
         <!-- Search Form -->
         <div class="search-container" style="margin-bottom: 2rem;">
-            <form action="/ShelfControl/search/" method="GET" class="library-filter">
+            <form action="/ShelfControl/search" method="GET" class="library-filter">
                 <input type="text" name="query" class="library-filter__input" placeholder="Search by title, author, genre..." required>
                 <button type="submit" class="library-filter__btn">
                     <i class="ri-search-line"></i> Search
