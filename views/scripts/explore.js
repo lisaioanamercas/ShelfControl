@@ -109,9 +109,11 @@ function extractAndPopulateGenres(books) {
             categories.forEach(category => genreSet.add(category));
         }
     });
+     console.log("Genuri extrase:", Array.from(genreSet)); // Debugging line to check extracted genres
 
-    const genreList = document.getElementById("filter-genre");
-    if (genreList) {
+
+  const genreList = document.getElementById("genre-list");    
+  if (genreList) {
         genreList.innerHTML = ""; 
         genreSet.forEach(genre => {
             const option = document.createElement("option");

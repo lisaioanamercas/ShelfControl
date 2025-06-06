@@ -220,6 +220,7 @@ class ExploreController{
                     'publishedDate' => $book['PUBLISHEDDATE'] ?? $book['publishedDate']??' ',
                     'imageLinks' => [
                     'thumbnail' => $book['IMAGELINKS'] ?? $book['imageLinks'],
+                    'categories' => isset($book['CATEGORIES']) ? explode(',', $book['CATEGORIES']) : (isset($book['categories']) ? explode(',', $book['categories']) : []),
                     ]
                 ]
             ];

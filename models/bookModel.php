@@ -922,13 +922,15 @@ class BookModel {
         oci_free_statement($stmt);
         return $result;
     }
+   
+
      public function searchBooks($query)
      {
         $sql = "SELECT b.book_id as id , b.title as title, a.name  as authors ,b.summary  \"description\",
-        b.PUBLICATION_YEAR as publishedDate , b.cover_url as imageLinks
+        b.PUBLICATION_YEAR as publishedDate , b.cover_url as imageLinks, b.genre as categories
                 FROM Book b 
                 JOIN Author a ON b.author_id = a.author_id
-                WHERE UPPER(b.title) LIKE UPPER(:query) and  b.GOOGLE_BOOKS_ID is null
+                WHERE (UPPER(b.title) LIKE UPPER(:query) or UPPER(b.genre) like UPPER(:query) or UPPER(a.name) like UPPER(:query) ) and  b.GOOGLE_BOOKS_ID is null
                 ORDER BY b.title ASC";
         
         $stmt = oci_parse($this->conn, $sql);
