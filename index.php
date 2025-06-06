@@ -81,6 +81,10 @@ elseif (strstr($request,'/explore')) {
         $exploreController->exploreGet();
     }
 } 
+elseif (strstr($request,'/search-books')) {
+     $query = $_GET['query'] ?? '';
+    $exploreController->searchBooks($query);
+}
 elseif (strstr($request ,'/search-users')) {
     $socialController = new \App\Controllers\SocialController();
     $socialController->searchUsers();
@@ -89,15 +93,6 @@ elseif (strstr($request,'/search')) {
     // Route search requests to the explore controller !!!
     $exploreController->exploreGet();
 }
-// elseif ($request == '/update-progress') {
-  
-//     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-//         $homeController->updateProgressPost();
-//     } else {
-//         http_response_code(405); // Method Not Allowed
-//         echo "This endpoint only accepts POST requests.";
-//     }
-// }
 
 elseif (strstr($request,'/book-details')) {
 

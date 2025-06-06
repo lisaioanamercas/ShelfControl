@@ -2,6 +2,7 @@ document.addEventListener("DOMContentLoaded", function () {
     
     const params = new URLSearchParams(window.location.search);
     const query = params.get("query") ||"love,literature,peace,history"; 
+    
     loadBooks(query);
 
 
@@ -58,20 +59,13 @@ function loadBooks(query) {
     const container = document.getElementById("books-container");
     container.innerHTML = "<p>Se încarcă cărțile...</p>";
 
-    fetch(`https://www.googleapis.com/books/v1/volumes?q=intitle:${encodeURIComponent(query)}&maxResults=40`)
+    fetch(`/ShelfControl/search-books?query=${encodeURIComponent(query)}`)
         .then(response => response.json())
         .then(data => {
-            if (data.items) {
-                window.allBooks = data.items;
-
-                const firstBookTitle = data.items[0].volumeInfo.title?.toLowerCase() || "";
-                const normalizedQuery = query.toLowerCase();
-
-            
-                
-                      renderBooks(data.items);
-                      extractAndPopulateGenres(data.items);
-       
+             if (data.books && data.books.length > 0) {
+            window.allBooks = data.books;
+            renderBooks(data.books);
+            extractAndPopulateGenres(data.books);
 
                 
             } else {
@@ -95,13 +89,15 @@ function loadBooks(query) {
                                 });
                             }
                         })
-                        .catch(() => {
+                        .catch((error) => {
                             container.innerHTML = "<p>Eroare la încărcarea bibliotecilor.</p>";
                         });
             }
         })
-        .catch(() => {
+        .catch((error) => {
             container.innerHTML = "<p>Eroare la încărcarea cărților.</p>";
+              console.error("Eroare la încărcarea bibliotecilor:", error);
+
         });
 }
 function extractAndPopulateGenres(books) {
@@ -114,7 +110,7 @@ function extractAndPopulateGenres(books) {
         }
     });
 
-    const genreList = document.getElementById("genre-list");
+    const genreList = document.getElementById("filter-genre");
     if (genreList) {
         genreList.innerHTML = ""; 
         genreSet.forEach(genre => {

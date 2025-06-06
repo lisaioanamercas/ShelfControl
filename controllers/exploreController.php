@@ -162,21 +162,73 @@ class ExploreController{
         header('Content-Type: application/json; charset=utf-8');
         echo json_encode($libraries, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
     }
-    public function getBooksFromDb()
-    {
-        $jwt = new BaseController();
-        require __DIR__ . '/../models/dbConnection.php';
+    public function removeDuplicateBooks($books) {
+        $uniqueBooks = [];
+        $seenTitles = [];
 
-        $decoded = $jwt->validateJWT($_COOKIE['jwt']);
-        $userEmail = $decoded->data->email;
-        $userModel = new UserModel($conn);
-        $userId = $userModel->getUserIdByEmail($userEmail);
+        foreach ($books as $book) {
+            if (!in_array($book['title'], $seenTitles)) {
+                $uniqueBooks[] = $book;
+                $seenTitles[] = $book['title'];
+            }
+        }
 
+        return $uniqueBooks;
+    }
+     
+    public function searchBooks($query)
+    {  
+        require_once __DIR__ . '/../models/dbConnection.php';
         $bookModel = new BookModel($conn);
-        $books = $bookModel->getBooksByUserId($userId);
+       // echo json_encode($books, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
 
-        header('Content-Type: application/json; charset=utf-8');
-        echo json_encode($books, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+        if(empty($query)) {
+            $query = 'love';
+        }
+        $dbBooks = $bookModel->searchBooks($query);
+        if ($dbBooks === false) {
+            error_log("Database query failed for search: " . $query);
+            http_response_code(500);
+            echo json_encode(['error' => 'Database query failed']);
+            return;
+        }
+        
+        error_log(print_r($dbBooks, true));
+
+    
+        error_log("Search query: " . $query);
+        $googleBooks = [];
+        $googleUrl = 'https://www.googleapis.com/books/v1/volumes?q=' . urlencode("intitle:$query") . '&maxResults=20';
+        $googleResponse = file_get_contents($googleUrl);
+        if ($googleResponse === FALSE) {
+         error_log("Google Books API request failed! URL: $googleUrl");
+}
+        if ($googleResponse) {
+            $googleData = json_decode($googleResponse, true);
+            if (!empty($googleData['items'])) {
+                $googleBooks = $googleData['items'];
+            }
+        }
+        $normalizedDbBooks = [];
+        foreach ($dbBooks as $book) {
+            $normalizedDbBooks[] = [
+                'id' => $book['ID'] ?? $book['id'],
+                'volumeInfo' => [
+                    'title' => $book['TITLE'] ?? $book['title'],
+                    'authors' => isset($book['AUTHORS']) ? explode(',', $book['AUTHORS']) : (isset($book['authors']) ? explode(',', $book['authors']) : []),
+                    'description' => $book['description'] ?? $book['description'],
+                    'publishedDate' => $book['PUBLISHEDDATE'] ?? $book['publishedDate']??' ',
+                    'imageLinks' => [
+                    'thumbnail' => $book['IMAGELINKS'] ?? $book['imageLinks'],
+                    ]
+                ]
+            ];
+        }
+     //   echo $normalizedDbBooks;
+
+       $allBooks = array_merge($normalizedDbBooks, $googleBooks);
+        header('Content-Type: application/json');
+        echo json_encode(['books' =>  $allBooks]);
     }
 
 
