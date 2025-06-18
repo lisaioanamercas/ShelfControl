@@ -10,6 +10,11 @@
 
 </head>
 <body class="landing-page">
+    <!-- Add invisible theme button to prevent JS errors -->
+    <button id="theme-button" style="display: none;" aria-hidden="true">
+        <i class="ri-moon-line"></i>
+    </button>
+
     <!-- ========================= HERO SECTION ============================= -->
     <section class="hero">
         <div class="hero__container container">

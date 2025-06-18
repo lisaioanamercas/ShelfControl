@@ -88,7 +88,7 @@
                             <li class="nav__item">
                                 <a href="/ShelfControl/admin/books" class="nav__link <?php echo ($currentPage ?? '') === 'admin-books' ? 'active-link' : ''; ?>">
                                     <i class="ri-database-2-line"></i>
-                                    <span>Admin Books</span>
+                                    <span>Admin</span>
                                 </a>
                             </li>
                         <?php endif; ?>
@@ -97,13 +97,6 @@
                         <li class="nav__item">
                             <a href="/ShelfControl/library-all" class="nav__link">
                                 <i class="ri-book-open-line"></i> Full Library
-                            </a>
-                        </li>
-
-                        <li class="nav__item">
-                            <a href="/ShelfControl/statistics" class="nav__link <?php echo ($currentPage ?? '') === 'statistics' ? 'active-link' : ''; ?>">
-                                <i class="ri-bar-chart-line"></i>
-                                <span>Statistics</span>
                             </a>
                         </li>
                     </ul>

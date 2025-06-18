@@ -56,4 +56,7 @@ class HomeController {
         $view = new BaseView();
         $view->renderTemplate('home', $data);
     }
+    public function HomePost(){
+        // Handle POST requests for the home page
+    }
 }
