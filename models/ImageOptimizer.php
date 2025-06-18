@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Exception;
+
 class ImageOptimizer
 {
     private $cacheDir;
