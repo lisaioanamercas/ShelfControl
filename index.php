@@ -252,12 +252,3 @@ elseif ($request == '/admin/update-book') {
         $adminController->updateBook();
     }
 }
-// Add these routes with your existing ones
-elseif ($request == '/statistics') {
-    $statisticsController = new \App\Controllers\StatisticsController();
-    $statisticsController->index();
-}
-// elseif ($request == '/book-popularity') {
-//     $statisticsController = new \App\Controllers\StatisticsController();
-//     $statisticsController->bookPopularity();
-// }
