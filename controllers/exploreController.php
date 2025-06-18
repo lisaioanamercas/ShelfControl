@@ -175,6 +175,24 @@ class ExploreController{
 
         return $uniqueBooks;
     }
+    public function applyQueryFilter($query) {
+       
+        if (empty($query)) {
+            return [];
+        }
+
+        $query = strtolower($query);
+        $filteredBooks = [];
+
+        foreach ($this->books as $book) {
+            if (strpos(strtolower($book['title']), $query) !== false || 
+                strpos(strtolower($book['authors']), $query) !== false) {
+                $filteredBooks[] = $book;
+            }
+        }
+
+        return $filteredBooks;
+    }
      
     public function searchBooks($query)
     {  
@@ -192,6 +210,9 @@ class ExploreController{
             echo json_encode(['error' => 'Database query failed']);
             return;
         }
+
+         $query = str_replace('+', ' ', $query);
+
         
         error_log(print_r($dbBooks, true));
 
@@ -209,7 +230,7 @@ class ExploreController{
                 $googleBooks = $googleData['items'];
             }
         }
-        $normalizedDbBooks = [];
+       $normalizedDbBooks = [];
         foreach ($dbBooks as $book) {
             $normalizedDbBooks[] = [
                 'id' => $book['ID'] ?? $book['id'],
@@ -225,7 +246,6 @@ class ExploreController{
                 ]
             ];
         }
-     //   echo $normalizedDbBooks;
 
        $allBooks = array_merge($normalizedDbBooks, $googleBooks);
         header('Content-Type: application/json');

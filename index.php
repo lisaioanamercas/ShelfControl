@@ -85,6 +85,15 @@ elseif (strstr($request,'/search-books')) {
      $query = $_GET['query'] ?? '';
     $exploreController->searchBooks($query);
 }
+elseif($request=='/delete-review')
+{
+    if($_SERVER['REQUEST_METHOD']=='DELETE') {
+        $bookController->deleteReview();
+    } else {
+        http_response_code(405); // Method Not Allowed
+        echo "This endpoint only accepts DELETE requests.";
+    }
+}
 elseif (strstr($request ,'/search-users')) {
     $socialController = new \App\Controllers\SocialController();
     $socialController->searchUsers();

@@ -162,7 +162,7 @@
                 </button>
             <div class="reviews-list" id="reviewsList">
                 <div class="reviews-list">
-        <?php if (!empty($reviews)): ?>
+        <?php if (!empty($reviews)||!empty($getReviewsPerUser)): ?>
             <?php foreach ($reviews as $review): ?>
                 <div class="review-item">
                     <div class="review-header">
@@ -180,6 +180,27 @@
                     </div>
                 </div>
             <?php endforeach; ?>
+             <?php foreach ($getReviewsPerUser as $review): ?>
+                <div class="review-item">
+                    <div class="review-header">
+                        <span class="reviewer-name"><?php echo htmlspecialchars($review['USERNAME'] ?? 'Anonim'); ?></span>
+                        <span class="review-rating">
+                            <?php
+                                $stars = intval($review['STARS']);
+                                for ($i = 0; $i < $stars; $i++) echo '★';
+                                for ($i = 5; $i < $stars; $i++) echo '☆';
+                            ?>
+                            <button class="delete-review-btn"  data-review-id="<?php echo htmlspecialchars($review['REVIEW_ID']); ?>" title="Delete Review">
+                            <i class="ri-delete-bin-line"></i>
+                            </button>
+                        </span>
+                    </div>
+                    <div class="review-content">
+                        <?php echo nl2br(htmlspecialchars($review['TEXT'])); ?>
+                    </div>
+                </div>
+             <?php endforeach; ?>
+
         <?php else: ?>
             <p>Nu există recenzii pentru această carte.</p>
         <?php endif; ?>

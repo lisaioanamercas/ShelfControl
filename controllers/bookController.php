@@ -84,6 +84,28 @@ class BookController{
 
 
     }
+    public function deleteReview()
+    {
+            parse_str(file_get_contents('php://input'), $deleteVars);
+            $reviewId = isset($deleteVars['review_id']) ? intval($deleteVars['review_id']) : null;
+            if (!$reviewId) {
+                header('Content-Type: application/json');
+                echo json_encode(['success' => false, 'message' => 'Missing review ID']);
+                exit;
+            }
+
+            require_once __DIR__ . '/../models/dbConnection.php';
+            $bookModel = new \App\Models\BookModel($conn);
+
+            $success = $bookModel->deleteReviewById($reviewId);
+
+            header('Content-Type: application/json');
+            echo json_encode(['success' => $success]);
+            exit;
+
+
+    }
+    
 
     public function showDetails(){
         //caut ID-ul cartii
@@ -126,9 +148,10 @@ class BookController{
              $bookDetails = $bookModel->getBookById($bookId);
         }
 
-        $reviews = $bookModel->getReviewsByBookId($bookId);
-        
-        $templateData = [
+        $reviews = $bookModel->getReviewsByBookId($bookId,$userId);
+        $getReviewsPerUser= $bookModel->getReviewsPerUser($userId, $bookId);
+        error_log("Reviews: " . print_r($getReviewsPerUser[0]['REVIEW_ID'], true));
+         $templateData = [
             'book_id' => $bookDetails['BOOK_ID'],
             'book_title' => $bookDetails['TITLE'],
             'book_author' => $bookDetails['AUTHOR_NAME'],
@@ -147,6 +170,7 @@ class BookController{
             'reading_status' => $userBookData ? $userBookData['STATUS'] : 'to-read',
             'pages_read' => $userBookData ? $userBookData['PAGES_READ'] : 0,
              'reviews' => $reviews,
+             'getReviewsPerUser' => $getReviewsPerUser,
             'additionalCSS' => [
                 '/ShelfControl/views/css/book.css',
                 '/ShelfControl/views/css/bookPage/book-info.css',
@@ -247,7 +271,7 @@ class BookController{
 
              }
   
-    
+    /////////////////////////DE MODIFICAT
     public function updateBook() {
 
         if (!$this->jwt->verifyLogin()) {

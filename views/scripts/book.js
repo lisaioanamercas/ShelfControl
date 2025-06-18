@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const reviewFormOverlay = document.getElementById('reviewFormOverlay');
     const closeReviewForm = document.getElementById('closeReviewForm');
     const reviewForm = document.getElementById('reviewForm');
+  //  const deleteReviewBtn=document.getElementById('deleteReviewBtn');
 
      const buyBtn = document.getElementById('buyBtn');
 
@@ -36,6 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
     if (libraryList) {
 
         libraryList.innerHTML = '<li>Se încarcă bibliotecile...</li>';
@@ -68,7 +70,36 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-
+    
+      document.addEventListener('click', function(e) {
+    const btn = e.target.closest('.delete-review-btn');
+    if (btn) {
+        const reviewId = btn.getAttribute('data-review-id');
+        console.log('Review ID:', reviewId); // DEBUG
+        if (reviewId && confirm('Sigur vrei să ștergi acest review?')) {
+            fetch('/ShelfControl/delete-review', {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `review_id=${encodeURIComponent(reviewId)}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Recenzia a fost ștearsă cu succes!');
+                    btn.closest('.review-item').remove();
+                } else {
+                    alert(data.message || 'A apărut o eroare la ștergerea recenziei.');
+                }
+            })
+            .catch(error => {
+                alert('Eroare la conexiune!');
+            });
+        }
+    }
+});
+    
      
      if (writeReviewBtn && reviewFormOverlay) {
         writeReviewBtn.addEventListener('click', () => {
@@ -114,6 +145,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 alert(data.message || 'Review adăugat cu succes!');
                                 reviewForm.reset();
                                 reviewFormOverlay.classList.remove('active');
+                                window.location.reload();
                             } else {
                                 alert(data.message || 'A apărut o eroare!');
                             }
@@ -123,8 +155,6 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log('Review submitted');});
     }
      
-    // const author = authorElement.innerText;
-    // console.log('Autor:', author);
     const author = authorElement.getAttribute('data-author-name');
     console.log('Autor:', author);
         
@@ -134,7 +164,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const bookSummary = document.getElementById('bookSummary');
     const readMoreBtn = document.getElementById('readMoreBtn');
     
-    //chestie relativ useless dar face sa arate bine
     if (bookSummary && readMoreBtn) {
         // Get short and full description paragraphs
         const shortDescP = bookSummary.querySelector('p:first-child');

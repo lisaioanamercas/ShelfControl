@@ -513,7 +513,7 @@ class BookModel {
 
     public function insertIntoUserBook($userId, $bookId) {
         $sql = "INSERT INTO UserBook (user_id, book_id,status) VALUES (:user_id, :book_id,:status)";
-        $status = 'Put status here'; // Default status
+        $status = 'to-read'; 
         $stmt = oci_parse($this->conn, $sql);
         oci_bind_by_name($stmt, ':user_id', $userId);
         oci_bind_by_name($stmt, ':book_id', $bookId);
@@ -694,15 +694,17 @@ class BookModel {
         }
     }
 
-    public function getReviewsByBookId($bookId) {
-        $sql = "SELECT  r.text, r.stars, u.username 
+
+    public function getReviewsByBookId($bookId,$userId) {
+        $sql = "SELECT r.review_id, r.text, r.stars, u.username 
                 FROM review r 
                 JOIN users u ON r.user_id = u.user_id 
-                WHERE r.book_id = :book_id 
+                WHERE r.book_id = :book_id AND r.user_id != :user_id
                 ORDER BY r.review_id DESC";
         
         $stmt = oci_parse($this->conn, $sql);
         oci_bind_by_name($stmt, ':book_id', $bookId);
+        oci_bind_by_name($stmt, ':user_id', $userId);
         oci_execute($stmt);
         
         $reviews = [];
@@ -718,6 +720,50 @@ class BookModel {
         
         return $reviews;
     }
+
+    public function getReviewsPerUser($userId,$bookId)
+    {
+          $sql = "SELECT r.review_id, r.text, r.stars, u.username 
+                FROM review r 
+                JOIN users u ON r.user_id = u.user_id 
+                WHERE r.book_id = :book_id  and r.user_id = :user_id
+                ORDER BY r.review_id DESC";
+           
+        $reviews = [];
+        $stmt = oci_parse($this->conn, $sql);
+        oci_bind_by_name($stmt, ':book_id', $bookId);
+        oci_bind_by_name($stmt, ':user_id', $userId);
+        oci_execute($stmt);
+         while ($row = oci_fetch_assoc($stmt)) {
+             if (isset($row['TEXT']) && is_object($row['TEXT'])) {
+            $row['TEXT'] = $row['TEXT']->read($row['TEXT']->size());
+        }
+            if (isset($row['USERNAME']) && is_object($row['USERNAME'])) {
+                $row['USERNAME'] = $row['USERNAME']->read($row['USERNAME']->size());
+            }
+            if (isset($row['REVIEW_ID']) && is_object($row['REVIEW_ID'])) {
+                $row['REVIEW_ID'] = $row['REVIEW_ID']->read($row['REVIEW_ID']->size());
+            }
+        $reviews[] = $row;
+        }
+        return $reviews;
+
+
+    }
+    public function deleteReviewById($reviewId) {
+        $sql = "DELETE FROM review WHERE review_id = :review_id";
+        $stmt = oci_parse($this->conn, $sql);
+        oci_bind_by_name($stmt, ':review_id', $reviewId);
+        
+        if (!oci_execute($stmt)) {
+            $e = oci_error($stmt);
+            throw new Exception("Deletion failed: " . $e['message']);
+        }
+        
+        return true;
+    }
+
+
     public function getBookTitleById($bookId) {
             $sql = "SELECT TITLE FROM BOOK WHERE BOOK_ID = :book_id";
             $stmt = oci_parse($this->conn, $sql);
@@ -941,7 +987,6 @@ class BookModel {
         $books = [];
         while ($row = oci_fetch_assoc($stmt)) {
             $row['description'] = $row['description']->load();
-
             $books[] = $row;
         }
         

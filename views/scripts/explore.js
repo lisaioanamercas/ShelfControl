@@ -39,7 +39,7 @@ document.getElementById("apply-filter-btn").addEventListener("click", function()
 function loadBooksByFilters(filterQuery) {
     const container = document.getElementById("books-container");
     container.innerHTML = "<p>Se încarcă cărțile...</p>";
-
+    console.log("Filtru aplicat:", filterQuery); // Debugging line to check the filter query
     fetch(`https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(filterQuery)}&maxResults=40`)
         .then(response => response.json())
         .then(data => {
