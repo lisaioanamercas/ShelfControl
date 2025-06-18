@@ -96,7 +96,8 @@
                         <!-- Add this to your navigation menu -->
                         <li class="nav__item">
                             <a href="/ShelfControl/library-all" class="nav__link">
-                                <i class="ri-book-open-line"></i> Full Library
+                                <i class="ri-book-open-line"></i>
+                                <span>Full Library</span>
                             </a>
                         </li>
                     </ul>
