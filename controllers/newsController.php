@@ -44,8 +44,10 @@ class NewsController
                 echo "<guid>{$item['FEED_ID']}</guid>";
                 echo "<type>{$item['TYPE']}</type>";
                 echo "<title><![CDATA[{$item['TITLE']}]]></title>";
-                $content = $item['CONTENT'];
-                 $content = $content->load();
+                $content = $item['CONTENT']?? '';
+                if (is_object($content) && method_exists($content, 'load')) {
+                    $content = $content->load();
+                }
                 
                 echo "<description><![CDATA[{$content}]]></description>";
                 echo "<link>{$item['RELATED_LINK']}</link>";

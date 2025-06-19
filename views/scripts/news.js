@@ -47,7 +47,6 @@ const modalClose = document.getElementById('modal-close');
 const newsForm = document.getElementById('news-form');
 
 
-// Get news type icon
 function fetchNews() {
 
     showLoader();

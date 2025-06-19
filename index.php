@@ -7,6 +7,8 @@ use App\Controllers\BookController;
 use App\Controllers\HomeController;
 use App\Controllers\SaveBookController;
 use App\Controllers\NewsController;
+use App\Controllers\BaseController;
+
 
 require_once __DIR__ . '/vendor/autoload.php';
 
@@ -24,6 +26,8 @@ $bookController = new BookController();
 $homeController = new HomeController();
 $newsController = new NewsController();
 $controller = new LandingController();
+$jwt = new BaseController();
+$isLoggedIn = $jwt->verifyLogin();
 
 $request = $_SERVER['REQUEST_URI'];
 $request = str_replace('/ShelfControl', '', $_SERVER['REQUEST_URI']);
@@ -56,7 +60,9 @@ if ($request == '/') {
     }
 
 } 
-elseif ($request == '/home') {
+elseif ($isLoggedIn){
+
+    if ($request == '/home') {
 
     if($_SERVER['REQUEST_METHOD']=='POST')
     {
@@ -67,7 +73,7 @@ elseif ($request == '/home') {
       $homeController->homeGet();
     }
 
-}
+    }
 elseif($request=='/logout')
 {
     $loginController->logout();
@@ -347,4 +353,8 @@ elseif ($request == '/admin/update-book') {
         http_response_code(405); 
         echo "This endpoint only accepts GET requests.";
     }
+}
+}else{
+    header('Location: /ShelfControl/');
+    exit;
 }
