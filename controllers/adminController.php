@@ -182,68 +182,6 @@ class AdminController {
         }
     }
 
-    // public function getBookDetails() {
-    //     // Clean any existing output and set JSON header immediately
-    //     while (ob_get_level()) {
-    //         ob_end_clean();
-    //     }
-        
-    //     header('Content-Type: application/json; charset=UTF-8');
-        
-    //     try {
-    //         if (!isset($_GET['id'])) {
-    //             throw new \Exception('No book ID provided');
-    //         }
-            
-    //         $bookId = $_GET['id'];
-    //         error_log("Getting book details for ID: " . $bookId);
-            
-    //         require_once __DIR__ . '/../models/dbConnection.php';
-    //         $conn = getConnection();
-            
-    //         if (!$conn) {
-    //             throw new \Exception('Database connection failed');
-    //         }
-            
-    //         $bookModel = new BookModel($conn);
-    //         $book = $bookModel->getBookById($bookId);
-            
-    //         if (!$book) {
-    //             throw new \Exception('Book not found with ID: ' . $bookId);
-    //         }
-            
-    //         // Ensure all CLOB fields are properly converted to strings
-    //         foreach ($book as $key => $value) {
-    //             if (is_object($value) && method_exists($value, 'read')) {
-    //                 try {
-    //                     $book[$key] = $value->read($value->size());
-    //                 } catch (\Exception $e) {
-    //                     $book[$key] = '';
-    //                 }
-    //             }
-    //             // Convert all values to strings to avoid JSON encoding issues
-    //             if (!is_scalar($value) && !is_null($value)) {
-    //                 $book[$key] = (string)$value;
-    //             }
-    //         }
-            
-    //         // Test JSON encoding before sending
-    //         $jsonTest = json_encode($book);
-    //         if ($jsonTest === false) {
-    //             throw new \Exception('JSON encoding failed: ' . json_last_error_msg());
-    //         }
-            
-    //         $response = ['success' => true, 'book' => $book];
-    //         echo json_encode($response);
-            
-    //     } catch (\Exception $e) {
-    //         error_log("Error in getBookDetails: " . $e->getMessage());
-    //         echo json_encode(['success' => false, 'message' => 'Error: ' . $e->getMessage()]);
-    //     }
-        
-    //     exit; // Important: stop execution here
-    // }
-
     public function getBookDetails() {
         // Clean any existing output and set JSON header immediately
         while (ob_get_level()) {

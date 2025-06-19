@@ -23,15 +23,14 @@ $landingController = new LandingController();
 $bookController = new BookController();
 $homeController = new HomeController();
 $newsController = new NewsController();
+$controller = new LandingController();
 
-//$saveBookController = new SaveBookController();
 $request = $_SERVER['REQUEST_URI'];
 $request = str_replace('/ShelfControl', '', $_SERVER['REQUEST_URI']);
 
 
 
 if ($request == '/') {
-    $controller = new LandingController();
     $controller->index();
 
 } elseif ($request == '/login') {
@@ -82,38 +81,56 @@ elseif (strstr($request,'/explore')) {
     }
 } 
 elseif (strstr($request,'/search-books')) {
-     $query = $_GET['query'] ?? '';
-    $exploreController->searchBooks($query);
+    if($_SERVER['REQUEST_METHOD'] == 'GET') {
+        $query = $_GET['query'] ?? '';
+        $exploreController->searchBooks($query);
+    }
 }
 elseif($request=='/delete-review')
 {
     if($_SERVER['REQUEST_METHOD']=='DELETE') {
         $bookController->deleteReview();
     } else {
-        http_response_code(405); // Method Not Allowed
-        echo "This endpoint only accepts DELETE requests.";
+        http_response_code(405); 
     }
 }
 elseif (strstr($request ,'/search-users')) {
-    $socialController = new \App\Controllers\SocialController();
-    $socialController->searchUsers();
+
+    if($_SERVER['REQUEST_METHOD'] == 'GET') {
+         $socialController = new \App\Controllers\SocialController();
+         $socialController->searchUsers();
+    }else {
+        http_response_code(405); 
+    }
+  
 }
 elseif (strstr($request,'/search')) {
-    // Route search requests to the explore controller !!!
-    $exploreController->exploreGet();
+
+    if($_SERVER['REQUEST_METHOD'] == 'GET') {
+        $exploreController->exploreGet();
+    } else {
+        http_response_code(405); 
+        echo "This endpoint only accepts GET requests.";
+    }
+    
 }
 
 elseif (strstr($request,'/book-details')) {
 
-    $bookController->showDetails();
+    if($_SERVER['REQUEST_METHOD'] == 'GET') {
+       $bookController->showDetails();
+    } else {
+        http_response_code(405); 
+        echo "This endpoint only accepts GET requests.";
+    }
+    
 }
-// asta e petru AJAX ca sa dea update la statusul cartii -- nu prea merge inca
 elseif ($request =='/update-book') {
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $bookController->updateBook();
     } else {
-        http_response_code(405); // Method Not Allowed
+        http_response_code(405); 
         echo "This endpoint only accepts POST requests.";
     }
 } 
@@ -122,43 +139,80 @@ else if($request=='/add-review') {
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $bookController->addReview();
     } else {
-        http_response_code(405); // Method Not Allowed
+        http_response_code(405); 
         echo "This endpoint only accepts POST requests.";
     }
 }
-// Admin API endpoints - only for processing form submissions
 elseif ($request == '/admin/add-book') {
     $adminController = new \App\Controllers\AdminController();
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $adminController->addBookPost();
     } else {
-        // Instead of an error, redirect to home page
         header('Location: /ShelfControl/home');
         exit;
     }
 }
 elseif ($request == '/toread') {
-    $userBooksController = new \App\Controllers\UserBooksController();
-    $userBooksController->toReadBooks();
-} 
+    if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+        $userBooksController = new \App\Controllers\UserBooksController();
+        $userBooksController->toReadBooks();
+    } else {
+        header('Location: /ShelfControl/home');
+        exit;
+    }
+}
+
 elseif ($request == '/library') {
-    $userBooksController = new \App\Controllers\UserBooksController();
-    $userBooksController->ownedBooks();
+
+    if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+            $userBooksController = new \App\Controllers\UserBooksController();
+            $userBooksController->ownedBooks();
+    } else {
+        header('Location: /ShelfControl/home');
+        exit;
+    }
+
 }
 elseif ($request == '/read') {
-    $userBooksController = new \App\Controllers\UserBooksController();
-    $userBooksController->readBooks();
+
+    if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+        $userBooksController = new \App\Controllers\UserBooksController();
+        $userBooksController->readBooks();
+    } else {
+        header('Location: /ShelfControl/home');
+        exit;
+    }
+
 }
 elseif ($request == '/news') {
-    $newsController->index();
+
+    if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+         $newsController->index();
+    } else {
+        header('Location: /ShelfControl/home');
+        exit;
+    }
+   
 }
 elseif ($request == '/admin/books') {
-    $adminController = new \App\Controllers\AdminController();
-    $adminController->showAdminBooks();
+    if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+         $adminController = new \App\Controllers\AdminController();
+         $adminController->showAdminBooks();
+    } else {
+        header('Location: /ShelfControl/home');
+        exit;
+    }
+
 }
 elseif ($request == '/library-all') {
-    $userBooksController = new \App\Controllers\UserBooksController();
-    $userBooksController->allBooksLibrary();
+    if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+        $userBooksController = new \App\Controllers\UserBooksController();
+        $userBooksController->allBooksLibrary();
+    } else {
+        header('Location: /ShelfControl/home');
+        exit;
+    }
+   
 }
 elseif (preg_match('/^\/books\/author\/(.+)$/', $request, $matches)) {
     $bookController = new \App\Controllers\BookController();
@@ -190,29 +244,62 @@ elseif (preg_match('/^\/books\/edition\/(.+)$/', $request, $matches)) {
     $edition = urldecode($matches[1]);
     $bookController->showBooksByAttribute('edition', $edition);
 }
-// Social and Group Reading routes
 elseif ($request == '/social') {
-    $socialController = new \App\Controllers\SocialController();
-    $socialController->index();
+    if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+        $socialController = new \App\Controllers\SocialController();
+        $socialController->index();
+    } else {
+        http_response_code(405); 
+        echo "This endpoint only accepts GET requests.";
+    }
 }
 elseif ($request == '/user-groups') {
-    $socialController = new \App\Controllers\SocialController();
-    $socialController->getUserGroups();
+    if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+        $socialController = new \App\Controllers\SocialController();
+        $socialController->getUserGroups();
+    } else {
+        http_response_code(405); 
+        echo "This endpoint only accepts GET requests.";
+    }
 }
 elseif ($request == '/create-group') {
-    $socialController = new \App\Controllers\SocialController();
-    $socialController->createGroup();
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+       $socialController = new \App\Controllers\SocialController();
+       $socialController->createGroup();
+    }else {
+        http_response_code(405); 
+        echo "This endpoint only accepts GET requests.";
+    }
+    
 }
 elseif ($request == '/add-member') {
-    $socialController = new \App\Controllers\SocialController();
-    $socialController->addMember();
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        $socialController = new \App\Controllers\SocialController();
+        $socialController->addMember();
+    }else {
+        http_response_code(405); 
+        echo "This endpoint only accepts POST requests.";
+    }
+
 }
 elseif ($request == '/start-group-reading') {
-    $socialController = new \App\Controllers\SocialController();
-    $socialController->startGroupReading();
+       if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+          $socialController = new \App\Controllers\SocialController();
+          $socialController->startGroupReading();
+    }else {
+        http_response_code(405); 
+        echo "This endpoint only accepts POST requests.";
+    }
+ 
 }
 elseif ($request == '/rss') {
-    $newsController->getNews();
+    if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+        $newsController->getNews();
+    } else {
+        http_response_code(405); 
+        echo "This endpoint only accepts GET requests.";
+    }
+
 }
 elseif ($request == '/export/stats/csv') {
     $exportController = new \App\Controllers\ExportController();
@@ -243,12 +330,21 @@ elseif ($request == '/admin/delete-book') {
     }
 }
 elseif (strpos($request, '/admin/get-book-details') === 0) {
-    $adminController = new \App\Controllers\AdminController();
-    $adminController->getBookDetails();
+    if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+        $adminController = new \App\Controllers\AdminController();
+        $adminController->getBookDetails();
+    } else {
+        http_response_code(405); 
+        echo "This endpoint only accepts GET requests.";
+    }
+   
 }
 elseif ($request == '/admin/update-book') {
     $adminController = new \App\Controllers\AdminController();
     if ($_SERVER['REQUEST_METHOD'] == 'PUT') {
         $adminController->updateBook();
+    }else {
+        http_response_code(405); 
+        echo "This endpoint only accepts GET requests.";
     }
 }
