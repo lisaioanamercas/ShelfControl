@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="ro">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Shelf Control Scholarly HTML Report</title>
+    <link rel="stylesheet" href="https://w3c.github.io/scholarly-html/css/scholarly.min.css">
+
+    <style>
+        body{
+            font-family: Arial,sans-serif;
+        }
+        img{
+            display: block;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            margin-left: auto;
+            margin-right: auto;
+            width: 990px; 
+        }
+        .auth-container {
+            display: flex;
+            gap: 40px; /* spațiu între formulare */
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .login-form, .register-form {
+            width: 350px;
+            padding: 24px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background: #fff;
+        }
+    </style>
+
+    <script src="https://w3c.github.io/scholarly-html/js/scholarly.min.js"></script>
+</head>
+
+
+
+<body >
+
+    <header>
+        <h1>Shelf Control - Scholarly HTML Report</h1>
+    </header>
+
+    <!--1.Introducere-->
+    <section id="introducere" role="doc-introduction">
+        <h2>Introducere</h2>
+
+        <section id="Authors">
+            <h3>Autori</h3>
+            Acest document contine documentația proiectului ShelfControl, realizata de
+            <span typeof="schema:Person" resource="http://orcid.org/0000-0003-1279-3709">
+                <meta property="schema:givenName" content=" Daria">
+                <meta property="schema:familyName" content="Craciun">
+                    <span property="schema:name">Craciun Daria</span>
+                    si
+                <meta property="schema:givenName" content="Ioana-Elisabeta">
+                <meta property="schema:familyName" content="Mercas">
+                    <span property="schema:name">Mercas Ioana Elisabeta</span>
+            </span>
+        </section>
+
+        <section id="Document-conventions">
+            <h3>Conventii</h3>
+            <p>
+                Acest document a fost redactat luand in consideratie prevederile oferite de macheta
+                <a href="#ieee-template" property="sa:roleAction" resource="#note1" rel="footnote"> IEEE System
+                    Requirements
+                    Specification Template</a>
+            </p>
+        </section>
+
+     <section id="intended-audience">
+        <h3>Publicul țintă</h3>
+        <p>
+            Acest document de Specificații pentru Cerințele Software (SRS) pentru aplicația <strong>Shelf Control</strong> este destinat următoarelor categorii de utilizatori:
+        </p>
+        <ol>
+            <li>
+            <h4>Dezvoltatori</h4>
+            <p>
+                Dezvoltatorii implicați în proiectarea, implementarea și mentenanța aplicației Shelf Control vor folosi acest document pentru a înțelege cerințele funcționale și nefuncționale legate de gestionarea colecțiilor de cărți, conturilor de utilizator și integrărilor externe (ex: Google Books API).
+            </p>
+            </li>
+            <li>
+            <h4>Cititori pasionați și colecționari de cărți</h4>
+            <p>
+                Utilizatorii aplicației pot consulta acest document pentru a înțelege funcționalitățile disponibile: organizarea cărților, filtrarea și sortarea acestora, vizualizarea statisticilor de lectură și explorarea opțiunilor de lectură atât din colecțiile proprii, cât și din baza de date extinsă prin Google Books API.
+            </p>
+            </li>
+            <li>
+            <h4>Testeri</h4>
+            <p>
+                Echipa de testare QA se va baza pe acest document pentru a crea și executa teste care să verifice dacă Shelf Control funcționează corect, dacă toate funcționalitățile sunt stabile și dacă experiența utilizatorului este fluentă și lipsită de erori.
+            </p>
+            </li>
+            <li>
+            <h4>Scriitori de documentație</h4>
+            <p>
+                Persoanele responsabile cu realizarea ghidurilor de utilizare vor utiliza acest document pentru a redacta materiale clare și relevante despre modul de folosire a Shelf Control, de la gestionarea colecțiilor de cărți deținute sau dorite, până la navigarea printre titluri și interpretarea statisticilor.
+            </p>
+            </li>
+        </ol>
+    </section>
+
+
+        <section id="purpose">
+            <h3>Scopul</h3>
+            <p>
+                Shelf Control este o aplicație web care ajută utilizatorii să-și organizeze colecțiile de cărți. Oferă funcționalități precum adăugarea, sortarea și filtrarea cărților, generarea de statistici de lectură și descoperirea de titluri noi prin integrarea cu Google Books API.
+            </p>
+            <p>
+                Scopul aplicației este de a crea un spațiu digital intuitiv și personalizat pentru gestionarea lecturilor și urmărirea progresului literar.
+            </p>
+
+            <h2>Obiective<h2>
+                <img src="docImages/obiectives.png" alt="Descriere imagine" style="width: 100%; height: auto;">
+        </section>
+
+    </section>
+
+    <section id="paleta-culori">
+        <h3>Paleta culori</h3>
+        <p>
+            Suntem adeptele unui design cât mai minimalist, motiv pentru care folosim in mod predominant culorile
+            rosu inchis alb pentru a oferi utilizatorilor un mediu cât sofisticata potrivit pentru o experienta memorabila.
+        </p>
+    <img src="docImages/paletaCulori.png" alt="Descriere imagine" style="width: 50%; height: auto;">
+    </section>
+
+    
+
+    <section id="arhitecture">
+        <h2>Arhitectura aplicației</h2>
+        <p>Aplicația este optimizată pentru gestionarea eficientă a colecțiilor de cărți, 
+            folosind funcții PHP dedicate interacțiunii cu baza de date Oracle. 
+            Utilizatorii pot organiza și căuta cărți în colecțiile lor și pot vizualiza statistici detaliate despre lecturile lor.
+             Administratorii au control complet pentru a adăuga, modifica sau elimina cărți din baza de date, 
+             asigurând o gestionare simplă și flexibilă a conținutului.</p>
+        <img src="docImages/DiagramaC4.png" alt="imagine" style="width: 100%; height: auto;">
+         <img src="docImages/c4LastDiagram.png" alt="imagine" style="width: 70%; height: auto;">
+       
+    </section>
+        <section id="implementation-details">
+            <h2>Detalii de implementare</h2>
+            <p>
+                In cadrul dezvoltarii interfetei s-a tinut cont de unele bune practici.
+                In primul rand, paginile sunt proiectate pentru a fi responsive.
+            </p>
+            <section id="database">
+                <h2>Baza de date</h2>
+                <p>
+                    Baza de date folosita este Oracle, o bază de date relațională, datorită modului eficient de 
+                    utilizare si a suportului complex pe care îl oferă.
+                    
+
+                    <h3>Baza de date pentru aplicație</h3>
+                    <img src="docImages/BD.png" alt="diagrama tabele" style="width: 100%; height: auto;">
+               
+                
+                </p>
+            </section>
+
+        </section>
+        <section id="used-technologies">
+            <h2>Tehnologii utilizate</h2>
+            <p>
+                Pentru a implementa aplicatia s-au folosit urmatoarele tehnologii:
+            <ol>
+                <li>HTML</li>
+                <li>CSS</li>
+                <li>JavaScript, Google Books API, Overpass Turbo API</li>
+                <li>PHP</li>
+                <li>Oracle</li>
+            </ol>
+            <section id="security">
+                <h2>Securitate</h2>
+                <p>Pentru a fi procesate, cererile spre server trebuie sa contina in header token-ul de autorizare JWT,
+                    primit in urma logarii.
+                    Aditional, unele endpoint-uri verifica si rolul utilizatorului ce a facut cererea, pentru a permite
+                    doar unele operatiuni.</p>
+            </section>
+        </section>
+    </section>
+
+
+    <section id="features">
+    <h2>Functionalitati</h2>
+    <section id="users-functionalities">
+        <h2>Functionalitățile utilizatorilor</h2>
+        <p>
+            Functionalitățile aplicației diferă în funcție de rolul cu care se va face logarea, respectiv cel de 
+            admin și utilizator.
+        </p>
+        <h2>Funcționalitățile utilizatorilor</h2>
+        <p>
+            În funcție de rolul utilizatorului:
+        </p>
+        <section id="utilizator-functionality">
+            <h3>Functionalitățile utilizatorului</h3>
+            <ul>
+                Din pagina principala putem face, prin intermediul butonului Login/sign-up:
+                <li><b>Crearea unui cont</b></li>
+                <li><b>Logarea în cont</b></li>
+                <img src="docImages/homePage.png" style="width: 100%; height: auto;">
+                Aceasta acțiune ne va duce catre pagina ce conține formularul de logare si cel de sign-up.
+                <div class="auth-container">
+                    <img  src="./docImages/login.png" style="width: 50%; height: auto;">
+                    <img  src="./docImages/register.png" style="width: 50%; height: auto;">
+                </div>
+                <li><b>Pagina de Home a utilizatorului</b></li>
+                <img a  src="./docImages/homeUser.png" style="width: 100%; height: auto;">
+                <li><b>Pagina de explore</b></li>
+                <img a  src="./docImages/explore.png" style="width: 100%; height: auto;">
+                <li><b>Pagina Cartii</b></li>
+                <img a  src="./docImages/bookPageN.png" style="width: 100%; height: auto;">
+                <li><b>Adăugarea unor noi recenzii</b></li>
+                <img src="./docImages/AddReview.png" style="width: 100%; height: auto;">
+                <li><b>Sectiunea toRead</b></li>
+                <img src="./docImages/toRead.png" style="width: 100%; height: auto;">
+                <li><b>Sectiunea de carti deținute</b></li>
+                <img src="./docImages/ownedBooks.png" style="width: 100%; height: auto;">
+                <li><b>Sectiunea de stiri</b></li>
+                <img src="./docImages/news.png" style="width: 100%; height: auto;">
+                <li><b>Sectiunea de statistici</b></li>
+                <img src="./docImages/statistici.png" style="width: 100%; height: auto;">
+                <li><b>Sectiunea de grupuri</b></li>
+                <img src="./docImages/grupuri.png" style="width: 100%; height: auto;">
+            </ul>
+        </section>
+
+        <section id="admin-functionality">
+            <h3>
+                Functionalitatile administratorului:
+            </h3>
+            <ul>
+                <li><b>Adaugarea de cărți</b></li>
+                <img src="./docImages/addBook.png" style="width: 100%; height: auto;">
+                <li><b>Sectiunea de carti adaugate de admin</b></li>
+                <img src="./docImages/adminBooks.png" style="width: 100%; height: auto;">
+                <li><b>Editarea unei carti</b></li>
+                <img src="./docImages/bookEdit.png" style="width: 100%; height: auto;">
+                <li><b>Stergerea unei carti</b></li>
+                <img src="./docImages/deleteBook.png" style="width: 100%; height: auto;">
+                             
+            </ul>
+        </section>
+    </section>
+    <section id="features-description">
+        <h2>Descrierea funcționalităților</h2>
+        
+        <section id="index">
+            <h3>Pagina de landing</h3>
+            <p>
+                Pagina principală de unde utilizatorul poate să se conecteze sau să se înregistreze. Oferă acces rapid la funcțiile de bază și prezintă pe scurt scopul aplicației.
+            </p>
+        </section>
+        
+        <section id="auth">
+            <h3>Login/Sign up</h3>
+            <p>
+                Utilizatorul își poate crea un cont nou sau se poate autentifica folosind datele existente. La autentificare cu succes, sistemul generează un token JWT (JSON Web Token) care este setat automat într-un cookie securizat. Acest token este folosit pentru a identifica utilizatorul la fiecare cerere către server și pentru a proteja accesul la funcționalitățile aplicației. Sistemul validează datele introduse și oferă feedback în caz de eroare.
+            </p>
+        </section>
+        
+        <section id="home">
+            <h3>Pagina Home</h3>
+            <p>
+                După autentificare, utilizatorul ajunge pe pagina principală a contului său, unde poate vedea colecție de cărțile și progesul aferent.
+            </p>
+        </section>
+        
+        <section id="explore">
+            <h3>Pagina Explore</h3>
+            <p>
+                Permite utilizatorului să caute și să descopere cărți noi folosind filtre și integrarea cu Google Books API.
+                Din aceasta pagina, utilizatorul are optiunea de a adauga carti in sectiunea de toRead.
+            </p>
+        </section>
+        
+        <section id="book-page">
+            <h3>Pagina Cărții</h3>
+            <p>
+                Afișează detalii despre o carte selectată, recenzii, rating-uri și opțiuni de adăugare în colecție sau listă de dorințe.
+                Fiecare carte este deschisa prin preluarea id-ului din url. Acest id poate fi atat din baza de date cat si din Google Books API.
+            </p>
+        </section>
+        
+        <section id="reviews">
+            <h3>Adăugare recenzii</h3>
+            <p>
+                Utilizatorii pot adăuga recenzii și rating-uri pentru cărțile citite, contribuind la comunitate.
+                Pentru review-urile personale utilizatorul are optiunea de a le sterge.
+            </p>
+        </section>
+        
+        <section id="to-read">
+            <h3>Sectiunea To Read</h3>
+            <p>
+                Utilizatorul poate marca și gestiona cărțile pe care dorește să le citească în viitor.
+            </p>
+        </section>
+        
+        <section id="owned-books">
+            <h3>Sectiunea de cărți deținute</h3>
+            <p>
+                Permite gestionarea și vizualizarea cărților pe care utilizatorul le are deja în colecție.
+            </p>
+        </section>
+        
+        <section id="news">
+            <h3>Sectiunea de știri</h3>
+            <p>
+                Prezintă noutăți și actualizări relevante din lumea cărților sau despre aplicație. Știrile sunt preluate automat printr-un <b>RSS Feed</b> extern, folosind o funcție AJAX care interoghează periodic sursa și actualizează conținutul fără a fi necesară reîncărcarea paginii. Astfel, utilizatorii au acces rapid la cele mai recente informații direct din aplicație.
+            </p>
+        </section>
+        
+        <section id="stats">
+            <h3>Sectiunea de statistici</h3>
+            <p>
+                Oferă grafice și date despre progresul de lectură, numărul de cărți citite, genuri preferate etc.
+            </p>
+        </section>
+        
+        <section id="groups">
+            <h3>Sectiunea de grupuri</h3>
+            <p>
+                Utilizatorii pot crea sau se pot alătura unor grupuri pentru a discuta despre cărți și a participa la provocări de lectură.
+            </p>
+        </section>
+        
+    </section>
+ 
+
+</body>
+
+</html>
