@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Status dropdown functionality
     const statusBtn = document.getElementById('statusBtn');
     const statusOptions = document.getElementById('statusOptions');
     const currentStatus = document.getElementById('currentStatus');
@@ -11,7 +10,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const reviewFormOverlay = document.getElementById('reviewFormOverlay');
     const closeReviewForm = document.getElementById('closeReviewForm');
     const reviewForm = document.getElementById('reviewForm');
-  //  const deleteReviewBtn=document.getElementById('deleteReviewBtn');
 
      const buyBtn = document.getElementById('buyBtn');
 
@@ -165,19 +163,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const readMoreBtn = document.getElementById('readMoreBtn');
     
     if (bookSummary && readMoreBtn) {
-        // Get short and full description paragraphs
         const shortDescP = bookSummary.querySelector('p:first-child');
         const fullDescP = bookSummary.querySelector('.full-description');
         
         if (shortDescP && fullDescP) {
-            // Add click event listener to the read more link
             readMoreBtn.addEventListener('click', (e) => {
                 e.preventDefault();
                 
-                // Replace the short description with the full description
                 shortDescP.innerHTML = fullDescP.innerHTML;
                 
-                // Hide the read more button
                 readMoreBtn.style.display = 'none';
             });
         }

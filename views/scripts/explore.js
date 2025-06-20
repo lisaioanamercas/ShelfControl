@@ -24,34 +24,61 @@ document.getElementById("apply-filter-btn").addEventListener("click", function()
     
 
     if (author) {
-        queryParts.push(`inauthor:${author}`);
+        queryParts.push(`author=${author}`);
     }
 
     if (genre) {
-        queryParts.push(`subject:${genre}`);
+        queryParts.push(`genre=${genre}`);
     }
 
     
-    let query = queryParts.length > 0 ? queryParts.join('+') : '*';
+   // let query = queryParts.length > 0 ? queryParts.join('+') : '*';
 
-    loadBooksByFilters(query);
+    loadBooksByFilters(queryParts.join('&'));
 });
 function loadBooksByFilters(filterQuery) {
     const container = document.getElementById("books-container");
     container.innerHTML = "<p>Se încarcă cărțile...</p>";
     console.log("Filtru aplicat:", filterQuery); // Debugging line to check the filter query
-    fetch(`https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(filterQuery)}&maxResults=40`)
-        .then(response => response.json())
+    fetch(`/ShelfControl/filter-books?${filterQuery}`)
+       .then(response => response.json())
         .then(data => {
-            if (data.items) {
-                window.allBooks = data.items;
-                renderBooks(data.items);
+             if (data.books && data.books.length > 0) {
+            window.allBooks = data.books;
+            renderBooks(data.books);
+            extractAndPopulateGenres(data.books);
+
+                
             } else {
                 container.innerHTML = "<p>Nu s-au găsit cărți.</p>";
+                 fetch('/ShelfControl/api/libraries')
+                        .then(res => res.json())
+                        .then(libraries => {
+                            // Afișează bibliotecile în container
+                            container.innerHTML = "<h3>Biblioteci recomandate:</h3>";
+                            if (libraries.length === 0) {
+                                container.innerHTML += "<p>Nu s-au găsit biblioteci.</p>";
+                            } else {
+                               console.log("Biblioteci găsite:", libraries);
+                                libraries.forEach(lib => {
+                                    container.innerHTML += `
+                                        <div class="library-card">
+                                            <h4>${lib.name}</h4>
+                                            <p>${lib.address}</p>
+                                        </div>
+                                    `;
+                                });
+                            }
+                        })
+                        .catch((error) => {
+                            container.innerHTML = "<p>Eroare la încărcarea bibliotecilor.</p>";
+                        });
             }
         })
-        .catch(() => {
+        .catch((error) => {
             container.innerHTML = "<p>Eroare la încărcarea cărților.</p>";
+              console.error("Eroare la încărcarea bibliotecilor:", error);
+
         });
 }
 

@@ -215,167 +215,36 @@ class BookModel {
         return $row;
     }
 
-    // public function getBookById($bookId) {
-    //     if (!is_numeric($bookId)) {
-    //         return null;
-    //     }
-        
-    //     $sql = "SELECT b.book_id, b.title, b.cover_url, b.pages, b.publication_year, 
-    //             b.language, b.isbn, b.genre, b.summary, b.source_api,
-    //             a.name AS author_name, 
-    //             ph.name AS publishing_house_name,
-    //             sp.name AS sub_publisher_name,
-    //             t.name AS translator_name
-    //             FROM Book b 
-    //             LEFT JOIN Author a ON b.author_id = a.author_id
-    //             LEFT JOIN PublishingHouse ph ON b.publishing_house_id = ph.publishing_house_id
-    //             LEFT JOIN SubPublisher sp ON b.sub_publisher_id = sp.sub_publisher_id
-    //             LEFT JOIN Translator t ON b.translator_id = t.translator_id
-    //             WHERE b.book_id = :book_id";
-        
-    //     $stmt = oci_parse($this->conn, $sql);
-    //     oci_bind_by_name($stmt, ':book_id', $bookId);
-    //     oci_execute($stmt);
-        
-    //     $row = oci_fetch_assoc($stmt);
-        
-    //     if ($row) {
-    //         // Process all fields that might be CLOBs
-    //         foreach ($row as $key => $value) {
-    //             if (is_object($value) && method_exists($value, 'read')) {
-    //                 try {
-    //                     $row[$key] = $value->read($value->size());
-    //                 } catch (\Exception $e) {
-    //                     $row[$key] = ''; // Set to empty string if reading fails
-    //                 }
-    //             }
-    //         }
-    //     }
+   public function  searchBooksFiltered($author, $genre)
+   {
+         $sql = "SELECT b.book_id as id, b.title as title, a.name as authors, b.summary as \"description\",
+                   b.PUBLICATION_YEAR as publishedDate, b.cover_url as imageLinks, b.genre as categories
+            FROM Book b
+            JOIN Author a ON b.author_id = a.author_id
+            WHERE UPPER(b.genre) LIKE UPPER(:genre)
+              AND UPPER(a.name) LIKE UPPER(:author)
+              AND b.GOOGLE_BOOKS_ID IS NULL
+            ORDER BY b.title ASC";
 
-    //     return $row;
-    // }
+        $stmt = oci_parse($this->conn, $sql);
 
-    // public function getBookById($bookId) {
-    //     error_log("BookModel::getBookById called with ID: " . $bookId);
-        
-    //     if (!is_numeric($bookId)) {
-    //         error_log("Invalid book ID - not numeric: " . $bookId);
-    //         return null;
-    //     }
-        
-    //     $sql = "SELECT b.*, 
-    //             a.name AS author_name, 
-    //             ph.name AS publishing_house_name,
-    //             sp.name AS sub_publisher_name,
-    //             t.name AS translator_name
-    //             FROM Book b 
-    //             LEFT JOIN Author a ON b.author_id = a.author_id
-    //             LEFT JOIN PublishingHouse ph ON b.publishing_house_id = ph.publishing_house_id
-    //             LEFT JOIN SubPublisher sp ON b.sub_publisher_id = sp.sub_publisher_id
-    //             LEFT JOIN Translator t ON b.translator_id = t.translator_id
-    //             WHERE b.book_id = :book_id";
-        
-    //     $stmt = oci_parse($this->conn, $sql);
-    //     oci_bind_by_name($stmt, ':book_id', $bookId);
-    //     $result = oci_execute($stmt);
-        
-    //     if (!$result) {
-    //         $error = oci_error($stmt);
-    //         error_log("Oracle error in getBookById: " . $error['message']);
-    //         return null;
-    //     }
-        
-    //     $row = oci_fetch_assoc($stmt);
-        
-    //     error_log("Query returned: " . ($row ? "data found" : "no data"));
-        
-    //     // Properly handle CLOB data
-    //     if ($row && isset($row['SUMMARY']) && is_object($row['SUMMARY'])) {
-    //         $row['SUMMARY'] = $row['SUMMARY']->read($row['SUMMARY']->size());
-    //     }
+        $author = '%' . $author . '%';
+        $genre = '%' . $genre . '%';
 
-    //     return $row;
-    // }
+        oci_bind_by_name($stmt, ':author', $author);
+        oci_bind_by_name($stmt, ':genre', $genre);
+        oci_execute($stmt);
 
-    // public function getBookById($bookId) {
-    //     error_log("BookModel::getBookById called with ID: " . $bookId);
-    
-    //     if (!is_numeric($bookId)) {
-    //         error_log("Invalid book ID - not numeric: " . $bookId);
-    //         return null;
-    //     }
-    
-    //     $sql = "SELECT b.book_id,
-    //             b.title,
-    //             b.pages,
-    //             b.isbn,
-    //             b.publication_year,
-    //             b.cover_url,
-    //             b.language,
-    //             b.genre,
-    //             b.summary,
-    //             a.name AS author_name,
-    //             ph.name AS publishing_house_name,
-    //             sp.name AS sub_publisher_name,
-    //             t.name AS translator_name
-    //             FROM Book b
-    //             LEFT JOIN Author a ON b.author_id = a.author_id
-    //             LEFT JOIN PublishingHouse ph ON b.publishing_house_id = ph.publishing_house_id
-    //             LEFT JOIN SubPublisher sp ON b.sub_publisher_id = sp.sub_publisher_id
-    //             LEFT JOIN Translator t ON b.translator_id = t.translator_id
-    //             WHERE b.book_id = :book_id";
-    
-    //     $stmt = oci_parse($this->conn, $sql);
-        
-    //     if (!$stmt) {
-    //         $error = oci_error($this->conn);
-    //         error_log("Oracle parse error in getBookById: " . $error['message']);
-    //         return null;
-    //     }
-        
-    //     oci_bind_by_name($stmt, ':book_id', $bookId);
-    //     $result = oci_execute($stmt);
-    
-    //     if (!$result) {
-    //         $error = oci_error($stmt);
-    //         error_log("Oracle execute error in getBookById: " . $error['message']);
-    //         return null;
-    //     }
-    
-    //     $row = oci_fetch_assoc($stmt);
-    
-    //     error_log("Query returned: " . ($row ? "data found" : "no data"));
-        
-    //     if ($row) {
-    //         error_log("Raw row keys: " . implode(', ', array_keys($row)));
-            
-    //         // Properly handle CLOB data
-    //         if (isset($row['SUMMARY']) && is_object($row['SUMMARY'])) {
-    //             try {
-    //                 $summaryContent = $row['SUMMARY']->read($row['SUMMARY']->size());
-    //                 $row['SUMMARY'] = $summaryContent;
-    //                 error_log("SUMMARY CLOB converted, length: " . strlen($summaryContent));
-    //             } catch (Exception $e) {
-    //                 error_log("Error reading SUMMARY CLOB: " . $e->getMessage());
-    //                 $row['SUMMARY'] = '';
-    //             }
-    //         }
-            
-    //         // Ensure all values are properly formatted
-    //         foreach ($row as $key => $value) {
-    //             if (is_null($value)) {
-    //                 $row[$key] = '';
-    //             } else if (is_object($value)) {
-    //                 // Handle any remaining Oracle objects
-    //                 $row[$key] = (string)$value;
-    //             }
-    //             error_log("Field $key: " . (is_string($row[$key]) ? substr($row[$key], 0, 50) : $row[$key]));
-    //         }
-    //     }
-    
-    //     oci_free_statement($stmt);
-    //     return $row;
-    // }
+        $books = [];
+        while ($row = oci_fetch_assoc($stmt)) {
+            if (isset($row['description']) && is_object($row['description'])) {
+                $row['description'] = $row['description']->load();
+            }
+            $books[] = $row;
+        }
+
+        return $books;
+   }
 
     public function getUserBookData($userId, $bookId) {
         $sql = "SELECT * FROM UserBook 
@@ -391,9 +260,7 @@ class BookModel {
         return $row;
     }
 
-    // Methods needed for book status updates
     public function updateBookStatus($userId, $bookId, $status) {
-        // Check if record exists
         $existingRecord = $this->getUserBookData($userId, $bookId);
         
         if ($existingRecord) {
