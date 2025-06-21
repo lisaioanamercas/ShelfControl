@@ -12,26 +12,6 @@ class BookController{
         $this->jwt = new BaseController();
     }
 
-
-    public function test(){
-          if (isset($_GET['id'])) {
-            $bookId = $_GET['id'];
-            $apiUrl = "https://www.googleapis.com/books/v1/volumes/" . $bookId;
-
-            $response = file_get_contents($apiUrl);
-            if ($response) {
-                header('Content-Type: application/json');
-                echo $response;
-            } else {
-                http_response_code(404);
-                echo json_encode(["error" => "Book not found"]);
-            }
-        } else {
-            http_response_code(400);
-            echo json_encode(["error" => "No book ID provided"]);
-        }
-    
-    }
     public function lookInApi($bookId){
         $apiUrl = "https://www.googleapis.com/books/v1/volumes/" . $bookId;
 
@@ -105,10 +85,54 @@ class BookController{
 
 
     }
-    
+    public function getReviews()
+    {
+        $isLoggedIn = $this->jwt->verifyLogin();
+        $userId = null;
+        if ($isLoggedIn) {
+            $decoded = $this->jwt->validateJWT($_COOKIE['jwt']);
+            $email = $decoded->data->email;
+            
+            
+            require_once __DIR__ . '/../models/dbConnection.php';
+            
+            $userModel = new \App\Models\UserModel($conn);
+            $userId = $userModel->getUserIdByEmail($email);
+        
+        }
+        if (!isset($_GET['book_id'])) {
+            header('Content-Type: application/json');
+            echo json_encode(['success' => false, 'message' => 'Missing book ID']);
+            exit;
+        }
+         require_once __DIR__ . '/../models/dbConnection.php';
+        $bookModel = new \App\Models\BookModel($conn);
+
+        $bookId = $_GET['book_id'];
+        $bookIdreplace = $bookModel->findGoogleId($bookId);
+
+
+         if (!is_numeric($bookId)&& !$bookIdreplace) {
+            $this->lookInApi($bookId);
+            exit;
+        }
+        else if ($bookIdreplace) {
+            $bookId= $bookIdreplace;
+        }
+
+       
+        
+        $reviews = $bookModel->getReviewsByBookId($bookId,$userId);
+        $getReviewsPerUser= $bookModel->getReviewsPerUser($userId, $bookId);
+
+
+
+        header('Content-Type: application/json');
+        echo json_encode(['success' => true, 'reviews' => $reviews, 'userReviews' => $getReviewsPerUser]);
+        exit;
+    }
 
     public function showDetails(){
-        //caut ID-ul cartii
         if(!isset($_GET['id']))
         {
             header('Location: /ShelfControl/home');
@@ -117,7 +141,6 @@ class BookController{
 
         $bookId = $_GET['id'];
 
-        //iau ID utilizator curent din JWT
         $isLoggedIn = $this->jwt->verifyLogin();
         $userId = null;
         if ($isLoggedIn) {
@@ -148,8 +171,7 @@ class BookController{
              $bookDetails = $bookModel->getBookById($bookId);
         }
 
-        $reviews = $bookModel->getReviewsByBookId($bookId,$userId);
-        $getReviewsPerUser= $bookModel->getReviewsPerUser($userId, $bookId);
+
         error_log("Reviews: " . print_r($getReviewsPerUser[0]['REVIEW_ID'], true));
          $templateData = [
             'book_id' => $bookDetails['BOOK_ID'],
@@ -169,8 +191,6 @@ class BookController{
             'is_owned' => $userBookData ? ($userBookData['IS_OWNED'] == 'Y') : false,
             'reading_status' => $userBookData ? $userBookData['STATUS'] : 'to-read',
             'pages_read' => $userBookData ? $userBookData['PAGES_READ'] : 0,
-             'reviews' => $reviews,
-             'getReviewsPerUser' => $getReviewsPerUser,
             'additionalCSS' => [
                 '/ShelfControl/views/css/book.css',
                 '/ShelfControl/views/css/bookPage/book-info.css',
@@ -214,17 +234,14 @@ class BookController{
         }
     }
 
-    // Preferăm ISBN_13 dacă există
     if ($isbn13 !== null) {
         return $isbn13;
     }
 
-    // Dacă nu, returnăm ISBN_10 dacă există
     if ($isbn10 !== null) {
         return $isbn10;
     }
 
-    // Dacă nu există niciunul, returnăm null
     return null;
 }
 

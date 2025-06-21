@@ -78,6 +78,14 @@ elseif($request=='/logout')
 {
     $loginController->logout();
 }
+elseif(strstr($request,'/reviews')) {
+    if($_SERVER['REQUEST_METHOD']=='GET') {
+        $bookController->getReviews();
+    } else {
+        http_response_code(405); 
+        echo "This endpoint only accepts GET requests.";
+    }
+}
 elseif(strstr($request,'/filter-book')) {
     if($_SERVER['REQUEST_METHOD']=='GET') {
         $exploreController->filterBookS();
