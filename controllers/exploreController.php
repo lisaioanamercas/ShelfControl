@@ -181,8 +181,9 @@ class ExploreController{
         require_once __DIR__ . '/../models/dbConnection.php';
         $bookModel = new BookModel($conn);
 
-        if(empty($query)) {
-            $query = 'love';
+        if($query== null || $query === '') {
+             $keywords = ['love','classical', 'magic', 'adventure', 'mystery', 'history', 'science', 'fantasy', 'art', 'life', 'dream'];
+             $query = $keywords[array_rand($keywords)];
         }
         $dbBooks = $bookModel->searchBooks($query);
         if ($dbBooks === false) {
@@ -212,21 +213,22 @@ class ExploreController{
             }
         }
        $normalizedDbBooks = [];
-        foreach ($dbBooks as $book) {
-            $normalizedDbBooks[] = [
-                'id' => $book['ID'] ?? $book['id'],
-                'volumeInfo' => [
-                    'title' => $book['TITLE'] ?? $book['title'],
-                    'authors' => isset($book['AUTHORS']) ? explode(',', $book['AUTHORS']) : (isset($book['authors']) ? explode(',', $book['authors']) : []),
-                    'description' => $book['description'] ?? $book['description'],
-                    'publishedDate' => $book['PUBLISHEDDATE'] ?? $book['publishedDate']??' ',
-                    'imageLinks' => [
-                    'thumbnail' => $book['IMAGELINKS'] ?? $book['imageLinks'],
-                    'categories' => isset($book['CATEGORIES']) ? explode(',', $book['CATEGORIES']) : (isset($book['categories']) ? explode(',', $book['categories']) : []),
-                    ]
+       foreach ($dbBooks as $book) {
+        $normalizedDbBooks[] = [
+            'id' => $book['ID'] ?? $book['id'],
+            'volumeInfo' => [
+                'title' => $book['TITLE'] ?? $book['title'],
+                'authors' => isset($book['AUTHORS']) ? explode(',', $book['AUTHORS']) : [],
+                'description' => $book['DESCRIPTION'] ?? '',
+                'publishedDate' => $book['PUBLISHEDDATE'] ?? '',
+                'averageRating' => isset($book['AVERAGERATING']) ? floatval($book['AVERAGERATING']) : (isset($book['averageRating']) ? floatval($book['averageRating']) : null),
+                'imageLinks' => [
+                    'thumbnail' => $book['IMAGELINKS'] ?? '',
+                    'categories' => isset($book['CATEGORIES']) ? explode(',', $book['CATEGORIES']) : [],
                 ]
-            ];
-        }
+            ]
+        ];
+    }
 
        $allBooks = array_merge($normalizedDbBooks, $googleBooks);
         header('Content-Type: application/json');

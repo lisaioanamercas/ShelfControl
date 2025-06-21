@@ -1,7 +1,12 @@
 document.addEventListener("DOMContentLoaded", function () {
     
     const params = new URLSearchParams(window.location.search);
-    const query = params.get("query") ||"love,literature,peace,history"; 
+    query = params.get("query"); 
+
+     if (query==null) {
+        const keywords = ['love', 'literature', 'peace', 'history', 'magic', 'adventure', 'mystery', 'science', 'fantasy', 'art', 'life', 'dream'];
+        query = keywords[Math.floor(Math.random() * keywords.length)];
+    }
     
     loadBooks(query);
 

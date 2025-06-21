@@ -217,14 +217,10 @@ class BookModel {
 
    public function  searchBooksFiltered($author, $genre)
    {
-         $sql = "SELECT b.book_id as id, b.title as title, a.name as authors, b.summary as \"description\",
-                   b.PUBLICATION_YEAR as publishedDate, b.cover_url as imageLinks, b.genre as categories
-            FROM Book b
-            JOIN Author a ON b.author_id = a.author_id
-            WHERE UPPER(b.genre) LIKE UPPER(:genre)
-              AND UPPER(a.name) LIKE UPPER(:author)
-              AND b.GOOGLE_BOOKS_ID IS NULL
-            ORDER BY b.title ASC";
+         $sql = "SELECT * from book_full_view 
+            WHERE UPPER(categories) LIKE UPPER(:genre)
+              AND UPPER(authors) LIKE UPPER(:author)
+            ORDER BY title ASC";
 
         $stmt = oci_parse($this->conn, $sql);
 
@@ -237,8 +233,8 @@ class BookModel {
 
         $books = [];
         while ($row = oci_fetch_assoc($stmt)) {
-            if (isset($row['description']) && is_object($row['description'])) {
-                $row['description'] = $row['description']->load();
+            if (isset($row['DESCRIPTION']) && is_object($row['DESCRIPTION'])) {
+                $row['DESCRIPTION'] = $row['DESCRIPTION']->load();
             }
             $books[] = $row;
         }
@@ -751,12 +747,11 @@ class BookModel {
    
      public function searchBooks($query)
      {
-        $sql = "SELECT b.book_id as id , b.title as title, a.name  as authors ,b.summary  \"description\",
-        b.PUBLICATION_YEAR as publishedDate , b.cover_url as imageLinks, b.genre as categories
-                FROM Book b 
-                JOIN Author a ON b.author_id = a.author_id
-                WHERE (UPPER(b.title) LIKE UPPER(:query) or UPPER(b.genre) like UPPER(:query) or UPPER(a.name) like UPPER(:query) ) and  b.GOOGLE_BOOKS_ID is null
-                ORDER BY b.title ASC";
+        $sql = "SELECT  * FROM book_full_view
+        WHERE (UPPER(title) LIKE UPPER(:query) 
+        OR UPPER(categories) LIKE UPPER(:query) 
+        OR UPPER(authors) LIKE UPPER(:query))
+        ORDER BY title ASC";
         
         $stmt = oci_parse($this->conn, $sql);
         $searchQuery = '%' . $query . '%';
@@ -765,7 +760,7 @@ class BookModel {
         
         $books = [];
         while ($row = oci_fetch_assoc($stmt)) {
-            $row['description'] = $row['description']->load();
+            $row['DESCRIPTION'] = $row['DESCRIPTION']->load();
             $books[] = $row;
         }
         
