@@ -29,7 +29,7 @@
             {$message}
         </div>
 
-        <form class="login-form" method="POST" action="">
+        <form class="login-form" method="POST">
             <div class="form-group">
                 <input type="email" name="email" class="form-input" placeholder="Email address" required>
                 <i class="fas fa-envelope form-icon"></i>

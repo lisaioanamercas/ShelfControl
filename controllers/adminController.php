@@ -9,7 +9,6 @@ use App\Views\BaseView;
 class AdminController {
     
     public function __construct() {
-        // Check if user is logged in and is an admin
         $jwt = new BaseController();
         $isAdmin = false;
         
@@ -20,23 +19,18 @@ class AdminController {
             }
         }
         
-        // Redirect if not admin
         if (!$isAdmin) {
             header('Location: /ShelfControl/home');
             exit;
         }
     }
     
-
-    
     public function addBookPost() {
-        // Process the book submission
         header('Content-Type: application/json');
 
         $editMode = isset($_POST['edit_mode']) && $_POST['edit_mode'] === 'true';
         $bookId = $_POST['book_id'] ?? null;
 
-        // Get the book data
         $title = $_POST['title'] ?? '';
         $author = $_POST['author'] ?? '';
         $translator = $_POST['translator'] ?? '';
@@ -50,18 +44,15 @@ class AdminController {
         $summary = $_POST['summary'] ?? '';
         $genre = $_POST['genre'] ?? '';
 
-        // Validate required fields
         if (empty($title) || empty($author)) {
             echo json_encode(['success' => false, 'message' => 'Title and author are required']);
             exit;
         }
 
-        // Connect to database
         require_once __DIR__ . '/../models/dbConnection.php';
         $conn = getConnection();
         $bookModel = new BookModel($conn);
 
-        // If we're in edit mode, update the existing book
         if ($editMode && $bookId) {
             try {
                 $result = $bookModel->updateBook($bookId, [
@@ -90,7 +81,6 @@ class AdminController {
             return;
         }
 
-        // If not in edit mode, add new book
         try {
             $publicationYear = !empty($publication) ? (int)$publication : null;
 
@@ -112,7 +102,6 @@ class AdminController {
                 ]
             ]);
             
-            // Use the BookModel to import the book
             $result = $bookModel->importBooksFromJson($bookData);
             $bookId = $bookModel->getBookidByTitle($title);
             
@@ -131,15 +120,10 @@ class AdminController {
     }
 
     public function showAdminBooks() {
-        // Connect to database
         require_once __DIR__ . '/../models/dbConnection.php';
         $conn = getConnection();
-        
-        // Get admin-added books
         $bookModel = new BookModel($conn);
         $books = $bookModel->getBooksBySource('MANUAL');
-        
-        // Render the view
         $view = new BaseView();
         $view->renderTemplate('userBooksDisplay', [
             'section_title' => 'Admin-Added Books',
@@ -156,7 +140,6 @@ class AdminController {
 
     public function deleteBook() {
        header('Content-Type: application/json');
-        
          $data = [];
          parse_str(file_get_contents("php://input"), $data);
 
@@ -164,17 +147,11 @@ class AdminController {
         echo json_encode(['success' => false, 'message' => 'No book ID provided']);
         exit;
     }
-        
           $bookId = $data['book_id'];
-        
-        // Connect to database
         require_once __DIR__ . '/../models/dbConnection.php';
         $conn = getConnection();
-        
-        // Delete the book
         $bookModel = new BookModel($conn);
         $result = $bookModel->deleteBook($bookId);
-        
         if ($result) {
             echo json_encode(['success' => true]);
         } else {
@@ -183,44 +160,31 @@ class AdminController {
     }
 
     public function getBookDetails() {
-        // Clean any existing output and set JSON header immediately
         while (ob_get_level()) {
             ob_end_clean();
         }
-        
-        // Add error logging
         error_log("getBookDetails called");
-        
         header('Content-Type: application/json; charset=UTF-8');
-        
         try {
             if (!isset($_GET['id'])) {
                 error_log("No book ID provided in GET parameters");
                 throw new \Exception('No book ID provided');
             }
-            
             $bookId = $_GET['id'];
             error_log("Getting book details for ID: " . $bookId);
-            
             require_once __DIR__ . '/../models/dbConnection.php';
             $conn = getConnection();
-            
             if (!$conn) {
                 error_log("Database connection failed");
                 throw new \Exception('Database connection failed');
             }
-            
             $bookModel = new BookModel($conn);
             $book = $bookModel->getBookById($bookId);
-            
             error_log("Book data retrieved: " . ($book ? "YES" : "NO"));
-            
             if (!$book) {
                 error_log("Book not found with ID: " . $bookId);
                 throw new \Exception('Book not found with ID: ' . $bookId);
             }
-            
-            // Ensure all CLOB fields are properly converted to strings
             foreach ($book as $key => $value) {
                 if (is_object($value) && method_exists($value, 'read')) {
                     try {
@@ -230,36 +194,28 @@ class AdminController {
                         $book[$key] = '';
                     }
                 }
-                // Convert all values to strings to avoid JSON encoding issues
                 if (!is_scalar($value) && !is_null($value)) {
                     $book[$key] = (string)$value;
                 }
             }
-            
-            // Test JSON encoding before sending
             $jsonTest = json_encode($book);
             if ($jsonTest === false) {
                 error_log("JSON encoding failed: " . json_last_error_msg());
                 throw new \Exception('JSON encoding failed: ' . json_last_error_msg());
             }
-            
             $response = ['success' => true, 'book' => $book];
             error_log("About to send response: " . json_encode($response));
             echo json_encode($response);
-            
         } catch (\Exception $e) {
             error_log("Error in getBookDetails: " . $e->getMessage());
             echo json_encode(['success' => false, 'message' => 'Error: ' . $e->getMessage()]);
         }
-        
         error_log("getBookDetails function ending");
-        exit; // Important: stop execution here*/
+        exit;
     }
-
 
     public function updateBook() {
         header('Content-Type: application/json');
-
         $data = [];
         parse_str(file_get_contents("php://input"), $data);
 
@@ -277,11 +233,8 @@ class AdminController {
         $summary = $data['summary'] ?? '';
         $genre = $data['genre'] ?? '';
 
-        // Connect to database
         require_once __DIR__ . '/../models/dbConnection.php';
         $conn = getConnection();
-
-        // Update book
         $bookModel = new BookModel($conn);
         $result = $bookModel->updateBook($bookId, [
             'title' => $title,

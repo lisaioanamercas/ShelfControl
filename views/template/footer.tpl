@@ -36,7 +36,7 @@
                     <ul class="footer__links">
                         <li><a href="/ShelfControl/help" class="footer__link">Help Center</a></li>
                         <li><a href="/ShelfControl/contact" class="footer__link">Contact Us</a></li>
-                        <li><a href="/ShelfControl/about" class="footer__link">About</a></li>
+                        <li><a href="https://dar1acraciun.github.io/documentatie/" class="footer__link">About</a></li>
                     </ul>
                 </div>
             </div>

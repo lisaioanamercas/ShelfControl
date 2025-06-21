@@ -115,7 +115,7 @@ class ExploreController{
         $userEmail = $decoded->data->email;
         $userModel = new UserModel($conn);
        $city = $userModel->getCityByEmail($userEmail);
-      //  $city = 'Iași';
+  
 
         $query = '[out:json][timeout:25];
             area["name"="' . $city . '"]["boundary"="administrative"]["admin_level"~"^(8|6)$"]->.searchArea;

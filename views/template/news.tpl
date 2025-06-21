@@ -1,3 +1,10 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>News Feed</title>
+</head>
+<body>
 <section class="news-feed section" id="review">
     <div class="container">
         <!-- Header -->
@@ -74,3 +81,5 @@
         </form>
     </div>
 </div>
+</body>
+</html>

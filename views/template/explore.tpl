@@ -1,3 +1,10 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Explore</title>
+</head>
+<body>
 <!-- =================== LIBRARY HEADER ================================= -->
 <section class="library-header section" id="library">
     <div class="library-header__container container"> 
@@ -25,3 +32,5 @@
         <!-- Cărțile vor fi generate aici -->
     </div>
 </section>
+</body>
+</html>

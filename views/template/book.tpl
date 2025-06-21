@@ -1,3 +1,11 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Book Details</title>
+    <!-- Poți include aici CSS/icoane suplimentare dacă este nevoie -->
+</head>
+<body>
 <section class="book-details section">
     <div class="book-details__container container grid">
         <!-- Book Cover Column -->
@@ -203,3 +211,5 @@
         </div>`
     </div> 
 </div>
+</body>
+</html>
