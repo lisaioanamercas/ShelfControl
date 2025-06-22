@@ -66,6 +66,34 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
+/* Disabled book link styles for external books */
+.book-card-link-disabled {
+    cursor: default;
+    opacity: 0.8;
+}
+
+.book-card-link-disabled:hover {
+    transform: none;
+}
+
+.book-card-link-disabled .book-card__title {
+    color: var(--text-color-light);
+}
+
+.book-card-link-disabled .book-card__author {
+    color: var(--text-color-light);
+}
+
+/* Info button styling */
+.info-btn {
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.info-btn:hover {
+    background-color: var(--first-color-lighten);
+}
+
 /* Dark theme */
 .dark-theme .book-section__header {
     border-bottom-color: var(--dark-border-color);

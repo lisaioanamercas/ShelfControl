@@ -26,10 +26,8 @@ class ExploreController{
                 '/ShelfControl/views/css/bookPage/reviews.css',
                 '/ShelfControl/views/css/fullLibrary.css',
                 '/ShelfControl/views/css/book-section.css'
-            ],
-            'additionalScripts' => [
-                '/ShelfControl/views/scripts/explore.js',
-                '/ShelfControl/views/scripts/darkTheme.js'
+            ],            'additionalScripts' => [
+                '/ShelfControl/views/scripts/explore.js'
             ]
         ];
         $view->renderTemplate('explore',$data);

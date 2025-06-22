@@ -4,6 +4,38 @@
     border-top: 1px solid var(--border-color);
     padding-top: 2rem;
     margin-top: 2rem;
+    width: 100%;
+    max-width: 100%;
+}
+
+.book-reviews,
+.book-review-section {
+    grid-column: 1 / -1;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-inline: 0 !important;
+    padding-inline: 0 !important;
+}
+
+.book-reviews .container,
+.book-review-section .container,
+.book-review-section {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-inline: 0 !important;
+    padding-inline: 0 !important;
+}
+
+.book-reviews .reviews-list,
+.book-review-section .reviews-list {
+    width: 100% !important;
+    max-width: 100% !important;
+}
+
+.book-reviews .review-item,
+.book-review-section .review-item {
+    width: 100% !important;
+    max-width: 100% !important;
 }
 
 .book-reviews__title {
@@ -34,22 +66,41 @@
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0;
+    padding: 0;
 }
 
 .review-item {
-    padding: 1.5rem;
+    padding: 2rem;
     border: 1px solid var(--border-color);
     border-radius: 8px;
     background-color: var(--container-color);
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box;
+    margin: 0;
 }
 
 .review-header {
     display: flex;
-    justify-content: space-between;
-    margin-bottom: 1rem;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    gap: 1rem;
 }
 
 .reviewer-info {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex: 1;
+    min-width: 200px;
+}
+
+.reviewer-name-rating {
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -85,6 +136,9 @@
 .review-content {
     color: var(--text-color);
     line-height: 1.6;
+    font-size: var(--normal-font-size);
+    max-width: 100%;
+    margin-top: 0.5rem;
 }
 
 /* Review Form Overlay */
@@ -271,6 +325,27 @@
     transition: background-color 0.3s;
 } */
 
+/* Delete button styling for user reviews */
+.delete-review-btn {
+    background: none;
+    border: none;
+    color: var(--text-color-light);
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 4px;
+    transition: color 0.3s, background-color 0.3s;
+    margin-left: auto;
+}
+
+.delete-review-btn:hover {
+    color: var(--first-color);
+    background-color: var(--container-color);
+}
+
+.delete-review-btn i {
+    font-size: 1.25rem;
+}
+
 /* Dark Theme Styles */
 .dark-theme .review-item {
     background-color: var(--dark-card-color);
@@ -289,6 +364,36 @@
 
 .dark-theme .close-review-form {
     color: var(--dark-text-color);
+}
+
+/* Responsive improvements for review cards */
+@media screen and (min-width: 768px) {
+    .review-item {
+        padding: 2.5rem;
+    }
+    
+    .reviewer-avatar {
+        width: 50px;
+        height: 50px;
+        font-size: var(--h3-font-size);
+    }
+    
+    .review-content {
+        font-size: var(--normal-font-size);
+        margin-top: 1rem;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .review-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
+    }
+    
+    .review-rating {
+        align-self: flex-start;
+    }
 }
 
 @media screen and (min-width: 768px) {

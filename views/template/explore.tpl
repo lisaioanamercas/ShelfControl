@@ -23,6 +23,7 @@
 <!-- =================== BOOK LIBRARY ================================= -->
 <section class="book-library section">
     <h2 class="book-library__title" style="display: none;">Book Collection</h2>
+    
     <div class="book-library__container container grid" id="books-container">
         <!-- Cărțile vor fi generate aici -->
     </div>

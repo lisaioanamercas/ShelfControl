@@ -225,14 +225,16 @@ function renderReviews(reviews, userReviews) {
 
     if (!reviewsList) return;
 
-    let html = '';
-
-    if (userReviews && userReviews.length > 0) {
+    let html = '';    if (userReviews && userReviews.length > 0) {
         html += userReviews.map(userReview => `
             <div class="review-item user-review">
                 <div class="review-header">
-                    <span class="reviewer-name">${userReview.USERNAME}</span>
-                    <span class="review-rating">${renderStars(parseInt(userReview.STARS))}</span>
+                    <div class="reviewer-info">
+                        <div class="reviewer-name-rating">
+                            <span class="reviewer-name">${userReview.USERNAME}</span>
+                            <span class="review-rating">${renderStars(parseInt(userReview.STARS))}</span>
+                        </div>
+                    </div>
                     <button class="delete-review-btn" data-review-id="${userReview.REVIEW_ID}"> 
                      <i class="ri-delete-bin-line">
                      </i></button>
@@ -246,14 +248,16 @@ function renderReviews(reviews, userReviews) {
 
     const otherReviews = reviews?.filter(r => {
         return !userReviews?.some(ur => ur.REVIEW_ID === r.REVIEW_ID);
-    });
-
-    if (otherReviews && otherReviews.length > 0) {
+    });    if (otherReviews && otherReviews.length > 0) {
         html += otherReviews.map(review => `
             <div class="review-item">
                 <div class="review-header">
-                    <span class="reviewer-name">${review.USERNAME || 'Anonim'}</span>
-                    <span class="review-rating">${renderStars(parseInt(review.STARS))}</span>
+                    <div class="reviewer-info">
+                        <div class="reviewer-name-rating">
+                            <span class="reviewer-name">${review.USERNAME || 'Anonim'}</span>
+                            <span class="review-rating">${renderStars(parseInt(review.STARS))}</span>
+                        </div>
+                    </div>
                 </div>
                 <div class="review-content">
                      ${review.TEXT ? review.TEXT : ' '}
