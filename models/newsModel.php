@@ -11,25 +11,19 @@ class NewsModel
         $this->conn = $dbConnection;
     }
 
+    // Fix this method to return ALL news for RSS
     public function getAllNews()
     {
-            $sql= "SELECT * FROM (
-            SELECT rssfeed.*, ROWNUM AS rn
-            FROM (
-                SELECT * FROM rssfeed ORDER BY published_at DESC
-            ) rssfeed
-            WHERE ROWNUM <= 15
-        )
-";         
-            $stmt = oci_parse($this->conn, $sql);
+        $sql = "SELECT * FROM rssfeed ORDER BY published_at DESC";         
+        $stmt = oci_parse($this->conn, $sql);
         oci_execute($stmt);
         $news = [];
         while ($row = oci_fetch_assoc($stmt)) {
             $news[] = $row;
         }
         return $news;
-
     }
+
     public function addNews($type, $title, $content, $relatedLink)
     {
         $sql = "INSERT INTO rssfeed (TYPE, TITLE, CONTENT, RELATED_LINK, PUBLISHED_AT) VALUES (:type, :title, :content, :relatedLink, SYSDATE)";
@@ -40,5 +34,4 @@ class NewsModel
         oci_bind_by_name($stmt, ':relatedLink', $relatedLink);
         return oci_execute($stmt);
     }
-    
 }

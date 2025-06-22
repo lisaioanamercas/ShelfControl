@@ -21,10 +21,9 @@ class NewsController
         $view = new BaseView();
         $view->renderTemplate('news', $data);
     }
+
     public function getNews()
     {
-       
-      
          require_once __DIR__ . '/../models/newsModel.php';
          require_once __DIR__ . '/../models/dbConnection.php';
 
@@ -57,7 +56,8 @@ class NewsController
 
             echo "</channel></rss>";
             exit;
-    }
+    }    
+
     public function addNewsPost()
     {
            $data = json_decode(file_get_contents('php://input'), true);
@@ -71,7 +71,6 @@ class NewsController
             require_once __DIR__ . '/../models/dbConnection.php';
             $newsModel = new \App\Models\NewsModel($conn);
 
-            // Adaptează la structura ta de model
             $result = $newsModel->addNews($type, $title, $description, $link);
 
             if ($result) {

@@ -213,7 +213,14 @@ elseif ($request == '/news') {
         header('Location: /ShelfControl/home');
         exit;
     }
-   
+}
+elseif ($request == '/recent-news') {
+    if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+        $newsController->getRecentNews();
+    } else {
+        http_response_code(405); 
+        echo "This endpoint only accepts GET requests.";
+    }
 }
 elseif ($request == '/admin/books') {
     if ($_SERVER['REQUEST_METHOD'] == 'GET') {
