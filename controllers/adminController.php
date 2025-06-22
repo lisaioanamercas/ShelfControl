@@ -6,7 +6,7 @@ use App\Models\BookModel;
 use App\Models\UserModel;
 use App\Views\BaseView;
 
-class AdminController {
+class AdminController { 
     
     public function __construct() {
         $jwt = new BaseController();
