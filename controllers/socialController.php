@@ -175,8 +175,7 @@ class SocialController {
             ]);
         } catch (\Exception $e) {
             error_log("Search users error: " . $e->getMessage() . " in " . $e->getFile() . " on line " . $e->getLine());
-            
-            // Return error as JSON
+    
             echo json_encode([
                 'success' => false,
                 'error' => 'Server error occurred while searching'

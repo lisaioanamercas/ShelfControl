@@ -115,7 +115,7 @@ class ExploreController{
         $userEmail = $decoded->data->email;
         $userModel = new UserModel($conn);
        $city = $userModel->getCityByEmail($userEmail);
-      //  $city = 'Iași';
+  
 
         $query = '[out:json][timeout:25];
             area["name"="' . $city . '"]["boundary"="administrative"]["admin_level"~"^(8|6)$"]->.searchArea;
@@ -175,33 +175,15 @@ class ExploreController{
 
         return $uniqueBooks;
     }
-    public function applyQueryFilter($query) {
-       
-        if (empty($query)) {
-            return [];
-        }
-
-        $query = strtolower($query);
-        $filteredBooks = [];
-
-        foreach ($this->books as $book) {
-            if (strpos(strtolower($book['title']), $query) !== false || 
-                strpos(strtolower($book['authors']), $query) !== false) {
-                $filteredBooks[] = $book;
-            }
-        }
-
-        return $filteredBooks;
-    }
      
     public function searchBooks($query)
     {  
         require_once __DIR__ . '/../models/dbConnection.php';
         $bookModel = new BookModel($conn);
-       // echo json_encode($books, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
 
-        if(empty($query)) {
-            $query = 'love';
+        if($query== null || $query === '') {
+             $keywords = ['love','classical', 'magic', 'adventure', 'mystery', 'history', 'science', 'fantasy', 'art', 'life', 'dream'];
+             $query = $keywords[array_rand($keywords)];
         }
         $dbBooks = $bookModel->searchBooks($query);
         if ($dbBooks === false) {
@@ -231,25 +213,80 @@ class ExploreController{
             }
         }
        $normalizedDbBooks = [];
+       foreach ($dbBooks as $book) {
+        $normalizedDbBooks[] = [
+            'id' => $book['ID'] ?? $book['id'],
+            'volumeInfo' => [
+                'title' => $book['TITLE'] ?? $book['title'],
+                'authors' => isset($book['AUTHORS']) ? explode(',', $book['AUTHORS']) : [],
+                'description' => $book['DESCRIPTION'] ?? '',
+                'publishedDate' => $book['PUBLISHEDDATE'] ?? '',
+                'averageRating' => isset($book['AVERAGERATING']) ? floatval($book['AVERAGERATING']) : (isset($book['averageRating']) ? floatval($book['averageRating']) : null),
+                'imageLinks' => [
+                    'thumbnail' => $book['IMAGELINKS'] ?? '',
+                    'categories' => isset($book['CATEGORIES']) ? explode(',', $book['CATEGORIES']) : [],
+                ]
+            ]
+        ];
+    }
+
+       $allBooks = array_merge($normalizedDbBooks, $googleBooks);
+        header('Content-Type: application/json');
+        echo json_encode(['books' =>  $allBooks]);
+    }
+    public function filterBookS() {
+
+        require_once __DIR__ . '/../models/dbConnection.php';
+        $bookModel = new BookModel($conn);
+
+        $author = $_GET['author'] ?? null;
+        $genre = $_GET['genre'] ?? null;
+
+
+        error_log("Filtering books by author: $author, genre: $genre");
+
+        $dbBooks = $bookModel->searchBooksFiltered($author, $genre);
+        if ($dbBooks === false) {
+            http_response_code(500);
+            echo json_encode(['error' => 'Database query failed']);
+            return;
+        }
+
+        $normalizedDbBooks = [];
         foreach ($dbBooks as $book) {
             $normalizedDbBooks[] = [
                 'id' => $book['ID'] ?? $book['id'],
                 'volumeInfo' => [
                     'title' => $book['TITLE'] ?? $book['title'],
-                    'authors' => isset($book['AUTHORS']) ? explode(',', $book['AUTHORS']) : (isset($book['authors']) ? explode(',', $book['authors']) : []),
-                    'description' => $book['description'] ?? $book['description'],
-                    'publishedDate' => $book['PUBLISHEDDATE'] ?? $book['publishedDate']??' ',
+                    'authors' => isset($book['AUTHORS']) ? explode(',', $book['AUTHORS']) : [],
+                    'description' => $book['DESCRIPTION'] ?? '',
+                    'publishedDate' => $book['PUBLISHEDDATE'] ?? '',
                     'imageLinks' => [
-                    'thumbnail' => $book['IMAGELINKS'] ?? $book['imageLinks'],
-                    'categories' => isset($book['CATEGORIES']) ? explode(',', $book['CATEGORIES']) : (isset($book['categories']) ? explode(',', $book['categories']) : []),
+                        'thumbnail' => $book['IMAGELINKS'] ?? '',
+                        'categories' => isset($book['CATEGORIES']) ? explode(',', $book['CATEGORIES']) : [],
                     ]
                 ]
             ];
         }
 
-       $allBooks = array_merge($normalizedDbBooks, $googleBooks);
+        $googleBooks = [];
+        $googleQuery = [];
+        if ($author) $googleQuery[] = "inauthor:" . $author;
+        if ($genre) $googleQuery[] = "subject:" . $genre;
+        $googleUrl = 'https://www.googleapis.com/books/v1/volumes?q=' . urlencode(implode('+', $googleQuery)) . '&maxResults=20';
+
+        $googleResponse = file_get_contents($googleUrl);
+        if ($googleResponse) {
+            $googleData = json_decode($googleResponse, true);
+            if (!empty($googleData['items'])) {
+                $googleBooks = $googleData['items'];
+            }
+        }
+
+        $allBooks = array_merge($normalizedDbBooks, $googleBooks);
+
         header('Content-Type: application/json');
-        echo json_encode(['books' =>  $allBooks]);
+        echo json_encode(['books' => $allBooks]);
     }
 
 

@@ -1,7 +1,12 @@
 document.addEventListener("DOMContentLoaded", function () {
     
     const params = new URLSearchParams(window.location.search);
-    const query = params.get("query") ||"love,literature,peace,history"; 
+    query = params.get("query"); 
+
+     if (query==null) {
+        const keywords = ['love', 'literature', 'peace', 'history', 'magic', 'adventure', 'mystery', 'science', 'fantasy', 'art', 'life', 'dream'];
+        query = keywords[Math.floor(Math.random() * keywords.length)];
+    }
     
     loadBooks(query);
 
@@ -20,38 +25,65 @@ document.getElementById("apply-filter-btn").addEventListener("click", function()
     let queryParts = [];
 
     const params = new URLSearchParams(window.location.search);
-    const queryFromUrl = params.get("query") || "love,literature"; // Default query if none provided
+
     
 
     if (author) {
-        queryParts.push(`inauthor:${author}`);
+        queryParts.push(`author=${author}`);
     }
 
     if (genre) {
-        queryParts.push(`subject:${genre}`);
+        queryParts.push(`genre=${genre}`);
     }
 
     
-    let query = queryParts.length > 0 ? queryParts.join('+') : '*';
 
-    loadBooksByFilters(query);
+
+    loadBooksByFilters(queryParts.join('&'));
 });
 function loadBooksByFilters(filterQuery) {
     const container = document.getElementById("books-container");
     container.innerHTML = "<p>Se încarcă cărțile...</p>";
-    console.log("Filtru aplicat:", filterQuery); // Debugging line to check the filter query
-    fetch(`https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(filterQuery)}&maxResults=40`)
-        .then(response => response.json())
+    console.log("Filtru aplicat:", filterQuery); 
+    fetch(`/ShelfControl/filter-books?${filterQuery}`)
+       .then(response => response.json())
         .then(data => {
-            if (data.items) {
-                window.allBooks = data.items;
-                renderBooks(data.items);
+             if (data.books && data.books.length > 0) {
+            window.allBooks = data.books;
+            renderBooks(data.books);
+            extractAndPopulateGenres(data.books);
+
+                
             } else {
                 container.innerHTML = "<p>Nu s-au găsit cărți.</p>";
+                 fetch('/ShelfControl/api/libraries')
+                        .then(res => res.json())
+                        .then(libraries => {
+                 
+                            container.innerHTML = "<h3>Biblioteci recomandate:</h3>";
+                            if (libraries.length === 0) {
+                                container.innerHTML += "<p>Nu s-au găsit biblioteci.</p>";
+                            } else {
+                               console.log("Biblioteci găsite:", libraries);
+                                libraries.forEach(lib => {
+                                    container.innerHTML += `
+                                        <div class="library-card">
+                                            <h4>${lib.name}</h4>
+                                            <p>${lib.address}</p>
+                                        </div>
+                                    `;
+                                });
+                            }
+                        })
+                        .catch((error) => {
+                            container.innerHTML = "<p>Eroare la încărcarea bibliotecilor.</p>";
+                        });
             }
         })
-        .catch(() => {
+        .catch((error) => {
             container.innerHTML = "<p>Eroare la încărcarea cărților.</p>";
+              console.error("Eroare la încărcarea bibliotecilor:", error);
+
         });
 }
 
@@ -73,7 +105,7 @@ function loadBooks(query) {
                  fetch('/ShelfControl/api/libraries')
                         .then(res => res.json())
                         .then(libraries => {
-                            // Afișează bibliotecile în container
+                    
                             container.innerHTML = "<h3>Biblioteci recomandate:</h3>";
                             if (libraries.length === 0) {
                                 container.innerHTML += "<p>Nu s-au găsit biblioteci.</p>";
@@ -109,7 +141,7 @@ function extractAndPopulateGenres(books) {
             categories.forEach(category => genreSet.add(category));
         }
     });
-     console.log("Genuri extrase:", Array.from(genreSet)); // Debugging line to check extracted genres
+     console.log("Genuri extrase:", Array.from(genreSet));
 
 
   const genreList = document.getElementById("genre-list");    
@@ -249,13 +281,13 @@ document.addEventListener("click", function(e) {
   }
 });
 
-// Funcție helper pentru extragerea ISBN
+
 function extractISBN(industryIdentifiers) {
   if (!industryIdentifiers || !Array.isArray(industryIdentifiers)) {
     return null;
   }
   
-  // Căutăm ISBN_13 mai întâi, apoi ISBN_10
+
   const isbn13 = industryIdentifiers.find(id => id.type === 'ISBN_13');
   if (isbn13) return isbn13.identifier;
   

@@ -60,16 +60,15 @@ class RegisterController {
                     // PARTE DE SGBD !!!! pentru user ul gigi.becali@gmail.com cu parola cheese
                     if ($userModel->isDemoUser($email)) {
                         try {
-                            // Get the newly created user ID
                             $userId = $userModel->getUserIdByEmail($email);
                             
-                            // Populate demo data
+                         
                             $userModel->callPopulateDemoData($userId);
                             
                             error_log("Demo data populated for user: " . $email);
                         } catch (\Exception $e) {
                             error_log("Error populating demo data: " . $e->getMessage());
-                            // Continue with normal registration even if demo data fails
+                      
                         }
                     }
                       header('Location: /ShelfControl/home');

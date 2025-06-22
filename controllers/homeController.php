@@ -22,25 +22,25 @@ class HomeController {
             exit;
         }
         
-        // Get user data from JWT
+       
         $decoded = $jwt->validateJWT($_COOKIE['jwt']);
         $userEmail = $decoded->data->email;
         
-        // Connect to database
+        
         require_once __DIR__ . '/../models/dbConnection.php';
         
-        // Get user ID from email
+      
         $userModel = new UserModel($conn);
         $userId = $userModel->getUserIdByEmail($userEmail);
         
-        // Get books
+       
         $bookModel = new BookModel($conn);
         $currentlyReading = $bookModel->getCurrentlyReadingBooks($userId);
         $toReadBooks = $bookModel->getToReadBooksLimited($userId, 7);
         $ownedBooks = $bookModel->getOwnedBooksLimited($userId, 7);
         $readBooks = $bookModel->getReadBooksLimited($userId, 7);
 
-        // Render the home page with book data
+    
         $data = [
             'currentlyReading' => $currentlyReading,
             'toReadBooks' => $toReadBooks,

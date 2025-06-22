@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="ro">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Shelf Control - Scholarly HTML Report</title>
+    <link rel="stylesheet" href="https://w3c.github.io/scholarly-html/css/scholarly.min.css">
+
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+        
+        img {
+            display: block;
+            margin: 20px auto;
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .auth-container {
+            display: flex;
+            gap: 40px;
+            justify-content: center;
+            align-items: flex-start;
+            flex-wrap: wrap;
+        }
+
+        .login-form, .register-form {
+            width: 350px;
+            padding: 24px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background: #fff;
+        }
+        
+        .code-block {
+            background: #f4f4f4;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+        }
+        
+        .requirement-box {
+            background: #e8f4f8;
+            border-left: 4px solid #2196F3;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        .warning-box {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        .success-box {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        .color-palette {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        
+        .color-sample {
+            width: 80px;
+            height: 80px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+        
+        .api-endpoint {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            padding: 10px;
+            margin: 10px 0;
+            font-family: monospace;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+        
+        .toc {
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .toc ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        
+        .toc ul ul {
+            padding-left: 20px;
+        }
+        
+        .toc a {
+            text-decoration: none;
+            color: #0066cc;
+        }
+        
+        .toc a:hover {
+            text-decoration: underline;
+        }
+    </style>
+
+    <script src="https://w3c.github.io/scholarly-html/js/scholarly.min.js"></script>
+</head>
+
+<body>
+
+    <header>
+        <h1>Shelf Control - Documentație Completă</h1>
+        <p><em>Sistem de Management pentru Colecții de Cărți</em></p>
+    </header>
+
+    <!-- Cuprins -->
+    <section class="toc">
+        <h2>Cuprins</h2>
+        <ul>
+            <li><a href="#introducere">1. Introducere</a>
+                <ul>
+                    <li><a href="#autori">1.1 Autori</a></li>
+                    <li><a href="#conventii">1.2 Convenții</a></li>
+                    <li><a href="#public-tinta">1.3 Publicul țintă</a></li>
+                    <li><a href="#scop">1.4 Scopul aplicației</a></li>
+                </ul>
+            </li>
+            <li><a href="#cerinte-sistem">2. Cerințe de sistem</a></li>
+            <li><a href="#arhitectura">3. Arhitectura aplicației</a></li>
+            <li><a href="#design">4. Design și UX</a></li>
+            <li><a href="#implementare">5. Detalii de implementare</a></li>
+            <li><a href="#api-documentation">6. Documentația Api</a></li>
+            <li><a href="#functionalitati">7. Funcționalități</a></li>
+            <li><a href="#securitate">8. Securitate</a></li>
+            <li><a href="#troubleshooting">9. Troubleshooting</a></li>
+            <li><a href="#limitari">10. Limitări și restricții</a></li>
+             <li><a href="#referinte">11.Referinte</a></li>
+        </ul>
+    </section>
+
+    <!-- 1. Introducere -->
+    <section id="introducere" role="doc-introduction">
+        <h2>1. Introducere</h2>
+
+        <section id="autori">
+            <h3>1.1 Autori</h3>
+            <p>Acest document conține documentația proiectului ShelfControl, realizată de:</p>
+            <ul>
+                <li><strong>Crăciun Daria</strong></li>
+                <li><strong>Mercaș Ioana Elisabeta</strong></li>
+            </ul>
+        </section>
+
+        <section id="conventii">
+            <h3>1.2 Convenții</h3>
+            <p>
+                Acest document a fost redactat luând în considerare prevederile oferite de macheta
+                <strong>IEEE System Requirements Specification Template</strong> și urmează standardele
+                de documentație tehnică moderne.
+            </p>
+        </section>
+
+        <section id="public-tinta">
+            <h3>1.3 Publicul țintă</h3>
+            <p>
+                Acest document de Specificații pentru Cerințele Software (SRS) pentru aplicația 
+                <strong>Shelf Control</strong> este destinat următoarelor categorii de utilizatori:
+            </p>
+            
+            <h4>Dezvoltatori</h4>
+            <p>
+                Dezvoltatorii implicați în proiectarea, implementarea și mentenanța aplicației Shelf Control 
+                vor folosi acest document pentru a înțelege cerințele funcționale și nefuncționale legate de 
+                gestionarea colecțiilor de cărți, conturilor de utilizator și integrărilor externe.
+            </p>
+            
+            <h4>Cititori pasionați și colecționari de cărți</h4>
+            <p>
+                Utilizatorii aplicației pot consulta acest document pentru a înțelege funcționalitățile 
+                disponibile: organizarea cărților, filtrarea și sortarea acestora, vizualizarea statisticilor 
+                de lectură și explorarea opțiunilor de lectură.
+            </p>
+            
+            <h4>Testeri QA</h4>
+            <p>
+                Echipa de testare QA se va baza pe acest document pentru a crea și executa teste care să 
+                verifice dacă Shelf Control funcționează corect și dacă experiența utilizatorului este fluentă.
+            </p>
+            
+            <h4>Scriitori de documentație</h4>
+            <p>
+                Persoanele responsabile cu realizarea ghidurilor de utilizare vor utiliza acest document 
+                pentru a redacta materiale clare și relevante despre modul de folosire a Shelf Control.
+            </p>
+        </section>
+
+        <section id="scop">
+            <h3>1.4 Scopul aplicației</h3>
+            <p>
+                <strong>Shelf Control</strong> este o aplicație web modernă care ajută utilizatorii să-și 
+                organizeze colecțiile de cărți într-un mod intuitiv și eficient. Aplicația oferă funcționalități 
+                complete pentru gestionarea bibliotecilor personale, de la catalogarea cărților până la 
+                urmărirea progresului de lectură.
+            </p>
+            
+            <h4>Obiective principale:</h4>
+            <ul>
+                <li>Crearea unui spațiu digital intuitiv pentru gestionarea colecțiilor de cărți</li>
+                <li>Oferirea de instrumente avansate de căutare și filtrare</li>
+                <li>Generarea de statistici detaliate despre obiceiurile de lectură</li>
+                <li>Facilitarea descoperirii de noi titluri prin integrarea cu Google Books API</li>
+                <li>Crearea unei comunități de cititori prin funcționalități sociale</li>
+                
+            </ul>
+            <img src="docImages/obiectives.png" alt="Descriere imagine" style="width: 100%; height: auto;">
+        </section>
+    </section>
+
+    <!-- 2. Cerințe de sistem -->
+    <section id="cerinte-sistem">
+        <h2>2. Cerințe de sistem</h2>
+        
+        <div class="requirement-box">
+            <h3>2.1 Cerințe Server</h3>
+            <table>
+                <tr>
+                    <th>Componenta</th>
+                    <th>Versiune minimă</th>
+                    <th>Recomandată</th>
+                </tr>
+                <tr>
+                    <td>PHP</td>
+                    <td>7.4</td>
+                    <td>8.1+</td>
+                </tr>
+                <tr>
+                    <td>Oracle Database</td>
+                    <td>12c</td>
+                    <td>19c+</td>
+                </tr>
+                <tr>
+                    <td>Apache/Nginx</td>
+                    <td>2.4 / 1.18</td>
+                    <td>2.4+ / 1.20+</td>
+                </tr>
+                <tr>
+                    <td>RAM</td>
+                    <td>2GB</td>
+                    <td>4GB+</td>
+                </tr>
+                <tr>
+                    <td>Stocare</td>
+                    <td>10GB</td>
+                    <td>50GB+</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="requirement-box">
+            <h3>2.2 Cerințe Client</h3>
+            <p><strong>Browsere suportate:</strong></p>
+            <ul>
+                <li>Chrome 90+</li>
+                <li>Firefox 88+</li>
+                <li>Safari 14+</li>
+                <li>Edge 90+</li>
+            </ul>
+            <p><strong>JavaScript:</strong> Activat (necesar pentru funcționalități AJAX)</p>
+            <p><strong>Cookies:</strong> Activate (necesare pentru autentificare JWT)</p>
+        </div>
+
+        <div class="requirement-box">
+            <h3>2.3 Servicii externe</h3>
+            <ul>
+                <li><strong>Google Books API:</strong> Cheie API validă pentru căutarea cărților</li>
+                <li><strong>Overpass Turbo API:</strong> Pentru funcționalități de geolocation</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- 3. Arhitectura aplicației -->
+    <section id="arhitectura">
+        <h2>3. Arhitectura aplicației</h2>
+        <p>
+            Aplicația <strong>Shelf Control</strong> utilizează o arhitectură în trei straturi (3-tier) 
+            optimizată pentru gestionarea eficientă a colecțiilor de cărți. Arhitectura se bazează pe 
+            principiile de separare a responsabilităților și modularitate.
+        </p>
+
+        <h3>3.1 Straturi arhitecturale</h3>
+        <ul>
+            <li><strong>Presentation Layer:</strong> HTML5, CSS3, JavaScript (Frontend)</li>
+            <li><strong>Business Logic Layer:</strong> PHP cu funcții dedicate (Backend)</li>
+            <li><strong>Data Access Layer:</strong> Oracle Database cu proceduri stocate</li>
+        </ul>
+
+        <h3>3.2 Componente principale</h3>
+        <ul>
+            <li><strong>Authentication Service:</strong> Gestionarea JWT și sesiuni</li>
+            <li><strong>Book Management Service:</strong> CRUD operații pentru cărți</li>
+            <li><strong>User Management Service:</strong> Gestionarea conturilor și profilurilor</li>
+            <li><strong>External API Integration:</strong> Conectori pentru Google Books și Turbo Pass</li>
+            <li><strong>Statistics Engine:</strong> Generarea rapoartelor</li>
+        </ul>
+
+        <!-- Placeholder pentru diagramele existente -->
+        <div style="text-align: center; margin: 40px 0;">
+            <p><em>Diagrama C4 </em></p>
+              <img src="docImages/DiagramaC4.png" alt="imagine" style="width: 100%; height: auto;">
+             <img src="docImages/c4LastDiagram.png" alt="imagine" style="width: 70%; height: auto;">
+        </div>
+    </section>
+
+    <!-- 4. Design și UX -->
+    <section id="design">
+        <h2>4. Design și UX</h2>
+        
+        <h3>4.1 Principii de design</h3>
+        <p>
+            Designul aplicației se bazează pe principiile <strong>minimalismului modern</strong>, 
+            oferind o experiență utilizator curată și intuitivă, potrivită pentru o aplicație dedicată 
+            cititoilor pasionați.
+        </p>
+
+        <h3>4.2 Paleta de culori</h3>
+        <div class="color-palette">
+            <div class="color-sample" style="background-color: #8B0000;">
+                #8B0000
+                <br>Roșu închis
+            </div>
+            <div class="color-sample" style="background-color: #FFFFFF; color: #333; border: 1px solid #ddd;">
+                #FFFFFF
+                <br>Alb
+            </div>
+            <div class="color-sample" style="background-color: #F5F5F5; color: #333;">
+                #F5F5F5
+                <br>Gri deschis
+            </div>
+            <div class="color-sample" style="background-color: #333333;">
+                #333333
+                <br>Gri închis
+            </div>
+        </div>
+
+        
+
+        <h3>4.3 Responsive Design</h3>
+        <p>Aplicația este optimizată pentru:</p>
+        <ul>
+            <li>Desktop (1200px+)</li>
+            <li>Tablet (768px - 1199px)</li>
+            <li>Mobile (320px - 767px)</li>
+        </ul>
+    </section>
+
+    <!-- 5. Detalii de implementare -->
+    <section id="implementare">
+        <h2>5. Detalii de implementare</h2>
+
+        <h3>5.1 Tehnologii utilizate</h3>
+        <table>
+            <tr>
+                <th>Categorie</th>
+                <th>Tehnologie</th>
+                <th>Versiune</th>
+                <th>Scopul utilizării</th>
+            </tr>
+            <tr>
+                <td>Frontend</td>
+                <td>HTML5</td>
+                <td>-</td>
+                <td>Structura paginilor</td>
+            </tr>
+            <tr>
+                <td>Frontend</td>
+                <td>CSS3</td>
+                <td>-</td>
+                <td>Stilizare și layout responsive</td>
+            </tr>
+            <tr>
+                <td>Frontend</td>
+                <td>JavaScript</td>
+                <td>ES6+</td>
+                <td>Interactivitate și AJAX</td>
+            </tr>
+            <tr>
+                <td>Backend</td>
+                <td>PHP</td>
+                <td>8.1</td>
+                <td>Logica de business și API</td>
+            </tr>
+            <tr>
+                <td>Database</td>
+                <td>Oracle</td>
+                <td>19c</td>
+                <td>Stocarea datelor</td>
+            </tr>
+            <tr>
+                <td>API</td>
+                <td>Google Books API</td>
+                <td>v1</td>
+                <td>Căutarea cărților externe</td>
+            </tr>
+        </table>
+
+        <h3>5.2 Structura bazei de date</h3>
+        <p>
+            Baza de date Oracle a fost aleasă pentru <strong>performanța superioară</strong> în gestionarea 
+            relațiilor complexe și pentru suportul avansat al tranzacțiilor ACID.
+        </p>
+
+
+        <!-- Placeholder pentru diagrama BD existentă -->
+        <div style="text-align: center; margin: 40px 0;">
+            <p><em>Diagrama bazei de date</em></p>
+              <img src="docImages/BD.png" alt="diagrama tabele" style="width: 100%; height: auto;">
+        </div>
+    </section>
+
+   
+    <section id="api-documentation">
+        <h2> Documentația API</h2>
+
+        <h3>6.1 Autentificare</h3>
+        <p>Toate cererile către API necesită un token JWT valid în header:</p>
+        <div class="code-block">
+Authorization: Bearer {jwt_token}
+        </div>
+
+        <h3>6.2 Endpoints principale</h3>
+
+        <h4>Utilizatori</h4>
+        <div class="api-endpoint">
+            <strong>POST</strong> /login
+            <br><strong>Body:</strong> {"email": "user@example.com", "password": "password"}
+            <br><strong>Response:</strong> {"token": "jwt_token", "user": {...}}
+        </div>
+
+        <div class="api-endpoint">
+            <strong>POST</strong> /register
+            <br><strong>Body:</strong> {"email": "user@example.com", "password": "password", "name": "Nume"}
+            <br><strong>Response:</strong> {"message": "User created successfully"}
+        </div>
+
+        <h4>Cărți</h4>
+        <div class="api-endpoint">
+            <strong>GET</strong> /filter-books
+            <br><strong>Query Params:</strong> ?title=titlu&genre=ficțiune
+            <br><strong>Response:</strong> {"books": [...], "total": 150, "pages": 8}
+        </div>
+
+
+
+        <h4>Colecții utilizator</h4>
+        <div class="api-endpoint">
+            <strong>POST</strong> /add-book?{book_id}
+            <br><strong>Body:</strong> {"status": "to_read|owned|read"}
+            <br><strong>Response:</strong> {"message": "Book added to collection"}
+        </div>
+
+       
+        </section>
+
+    <!-- 7. Funcționalități -->
+    <section id="functionalitati">
+        <h2>Funcționalități</h2>
+
+        <h3>7.1 Funcționalități pentru utilizatori</h3>
+        
+        <h4>Autentificare și cont</h4>
+        <ul>
+            <li><strong>Înregistrare:</strong> Creare cont nou cu validare email</li>
+        </ul>
+        <img src="./docImages/register.png" style="width: 50%; height: auto;" alt="Înregistrare">
+
+        <ul>
+            <li><strong>Autentificare:</strong> Login cu JWT token securizat</li>
+        </ul>
+        <img src="./docImages/login.png" style="width: 50%; height: auto;" alt="Autentificare">
+
+
+        
+        <h4>Gestionarea cărților</h4>
+        <ul>
+            <li><strong>Explorare:</strong> Căutare avansată cu Google Books API plus Baza de date</li>
+        </ul>
+        <img src="./docImages/explore.png" style="width: 100%; height: auto;" alt="Explorare">
+
+        <ul>
+            <li><b>Sectiunea toRead</b></li>
+        </ul>
+        <img src="./docImages/toRead.png" style="width: 100%; height: auto;" alt="To Read">
+
+        <ul>
+            <li><b>Sectiunea de carti deținute</b></li>
+        </ul>
+        <img src="./docImages/ownedBooks.png" style="width: 100%; height: auto;" alt="Cărți deținute">
+
+        <ul>
+            <li><b>Pagina de Home a utilizatorului </b></li>
+        </ul>
+        <img src="./docImages/homeUser.png" style="width: 100%; height: auto;" alt="Home User">
+
+        <ul>
+            <li><b>Pagina Cartii</b></li>
+        </ul>
+        <img src="./docImages/bookPageN.png" style="width: 100%; height: auto;" alt="Pagina Cărții">
+            
+   
+        <h4>Interacțiune socială</h4>
+        <ul>
+            <li><strong>Recenzii:</strong> Adăugarea și gestionarea recenziilor personale</li>
+        </ul>
+             <img src="./docImages/AddReview.png" style="width: 100%; height: auto;" alt="add review">
+ 
+          
+        <ul>  
+            <li><strong>Grupuri:</strong> Crearea și alăturarea la grupuri de cititori</li>
+        </ul>
+          
+            <img src="./docImages/grupuri.png" style="width: 100%; height: auto;" alt="Grupuri cititori">
+        <ul>  
+            <li><b>Sectiunea de stiri</b></li>
+        </ul>
+         <img src="./docImages/news.png" style="width: 100%; height: auto;" alt="Știri utilizator">
+        
+
+        <h4>Analiză și statistici</h4>
+        <img src="./docImages/statistici.png" style="width: 100%; height: auto;" alt="Statistici utilizator">
+
+        <h3>7.2 Funcționalități pentru administratori</h3>
+
+        <ul>
+            <li><strong>Moderarea conținutului:</strong> Editarea cartilor</li>
+        </ul>
+        <img src="./docImages/bookEdit.png" style="width: 100%; height: auto;" alt="Editare carte">
+
+        <ul>
+            <li><b>Stergerea unei carti</b></li>
+        </ul>
+        <img src="./docImages/deleteBook.png" style="width: 100%; height: auto;" alt="Ștergere carte">
+
+        <ul>
+            <li><b>Adaugarea de cărți</b></li>
+        </ul>
+        <img src="./docImages/addBook.png" style="width: 100%; height: auto;" alt="Adăugare carte">
+
+        <ul>
+            <li><b>Sectiunea de carti adaugate de admin</b></li>
+        </ul>
+        <img src="./docImages/adminBooks.png" style="width: 100%; height: auto;" alt="Cărți adăugate de admin">
+    </section>
+    <section>
+        <h2>Securitate</h2>
+    <h3>Măsuri de securitate implementate</h3>
+    <h4>Autentificare și autorizare</h4>
+    <ul>
+        <li><strong>JWT Tokens:</strong> Autentificare stateless cu expirare automată</li>
+        <li><strong>Role-based Access:</strong> Separarea permisiunilor utilizator/admin</li>
+        <li><strong>Password Hashing:</strong> Bcrypt cu salt pentru parolele utilizatorilor</li>
+    </ul>
+    <h4>Protecția datelor</h4>
+    <ul>
+    <li><strong>SQL Injection Prevention:</strong> Bind parameters pentru toate query-urile</li>
+</ul>
+    </section>
+
+     <section id="troubleshooting1">
+        <h2> Troubleshooting</h2>
+
+        <div class="warning-box">
+            <h3> Probleme comune și soluții</h3>
+
+            <h4>Erori de autentificare</h4>
+            <table>
+                <tr>
+                    <th>Problemă</th>
+                    <th>Cauză posibilă</th>
+                    <th>Soluție</th>
+                </tr>
+                <tr>
+                    <td>Token-ul JWT a expirat</td>
+                    <td>Sesiunea a depășit timpul limită</td>
+                    <td>Re-autentificați-vă în aplicație</td>
+                </tr>
+                <tr>
+                    <td>Login eșuat cu credențiale corecte</td>
+                    <td>Probleme de conectivitate cu baza de date</td>
+                    <td>Verificați statusul serverului Oracle</td>
+                </tr>
+                <tr>
+                    <td>Cookie-urile nu se salvează</td>
+                    <td>Setări browser restrictive</td>
+                    <td>Activați cookie-urile pentru domeniu</td>
+                </tr>
+            </table>
+
+            <h4>Probleme cu căutarea cărților</h4>
+            <table>
+                <tr>
+                    <th>Problemă</th>
+                    <th>Cauză posibilă</th>
+                    <th>Soluție</th>
+                </tr>
+                <tr>
+                    <td>Rezultate limitate la căutare</td>
+                    <td>Limită API Google Books</td>
+                    <td>Folosiți termeni mai specifici</td>
+                </tr>
+                <tr>
+                    <td>Căutarea nu returnează rezultate</td>
+                    <td>Cheie API invalidă</td>
+                    <td>Verificați configurația API</td>
+                </tr>
+                <tr>
+                    <td>Încărcare lentă a imaginilor</td>
+                    <td>Conexiune internet lentă</td>
+                    <td>Implementați lazy loading</td>
+                </tr>
+            </table>
+
+            <h4>Probleme de performanță</h4>
+            <ul>
+                <li><strong>Încărcare lentă:</strong> Verificați indexarea tabelelor în Oracle</li>
+                <li><strong>Timeout-uri:</strong> Optimizați query-urile complexe</li>
+                <li><strong>Memoria insuficientă:</strong> Creșteți limita PHP memory_limit</li>
+            </ul>
+        </div>
+
+     </section> 
+    <!-- 10. Limitări și restricții -->
+    <section id="limitari">
+        <h2>Limitări și restricții</h2>
+
+        <div class="warning-box">
+            <h3>9.1 Limitări tehnice</h3>
+            <ul>
+                <li><strong>Google Books API:</strong> Maxim 1000 de cereri pe zi per cheie API</li>
+                <li><strong>Dimensiune fișiere:</strong> Upload-ul de imagini limitat la 5MB</li>
+                <li><strong>Concurrent users:</strong> Limitat de configurația serverului Oracle</li>
+                <li><strong>Compatibilitate browser:</strong> Nu suportă Internet Explorer  11</li>
+            </ul>
+
+            <h3>9.2 Limitări funcționale</h3>
+            <ul>
+                <li><strong>Limbă:</strong> Interface disponibilă doar în română</li>
+                <li><strong>Backup:</strong> Backup-ul datelor se face manual</li>
+                <li><strong>Notificări:</strong> Doar notificări în aplicație, fără email/SMS</li>
+                <li><strong>Import/Export:</strong> Nu există funcționalitate de export masiv</li>
+            </ul>
+
+            <h3>9.3 Restricții de conținut</h3>
+            <ul>
+                <li><strong>Recenzii:</strong> Limitate la 2000 de caractere</li>
+                <li><strong>Grupuri:</strong> Maxim 50 de membri per grup</li>
+                <li><strong>Cărți per utilizator:</strong> Maxim 10,000 de cărți în colecție</li>
+                <li><strong>Imagini:</strong> Doar formate JPG, PNG, WebP acceptate</li>
+            </ul>
+        </div>
+
+        <h3>Planuri de dezvoltare viitoare</h3>
+        <div class="success-box">
+            <h4>Funcționalități planificate:</h4>
+            <ul>
+                <li>Aplicație mobilă nativă (iOS/Android)</li>
+                <li>Integrare cu alte API-uri de cărți (OpenLibrary, Goodreads)</li>
+                <li>Sistem de notificări push</li>
+                <li>Export în format CSV/Excel</li>
+                <li>Suport multilingv (engleză, franceză)</li>
+                <li>Sistem de recomandări bazat pe AI</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- 11. Referințe -->
+    <section id="referinte">
+        <h2>Referințe</h2>
+
+        <h3>Standarde și specificații</h3>
+        <ul>
+            <li><strong>IEEE 830-1998:</strong> IEEE Recommended Practice for Software Requirements Specifications</li>
+            <li><strong>RFC 7519:</strong> JSON Web Token (JWT) - <a href="https://tools.ietf.org/html/rfc7519" target="_blank">https://tools.ietf.org/html/rfc7519</a></li>
+            <li><strong>W3C HTML5:</strong> HTML5 Specification - <a href="https://www.w3.org/TR/html52/" target="_blank">https://www.w3.org/TR/html52/</a></li>
+            <li><strong>W3C CSS3:</strong> Cascading Style Sheets Level 3 - <a href="https://www.w3.org/Style/CSS/" target="_blank">https://www.w3.org/Style/CSS/</a></li>
+            <li><strong>OWASP:</strong> Open Web Application Security Project - <a href="https://owasp.org/" target="_blank">https://owasp.org/</a></li>
+        </ul>
+
+        <h3>Documentații tehnice</h3>
+        <ul>
+            <li><strong>PHP Manual:</strong> PHP 8.1 Documentation - <a href="https://www.php.net/manual/en/" target="_blank">https://www.php.net/manual/en/</a></li>
+            <li><strong>Oracle Database:</strong> Oracle 19c Documentation - <a href="https://docs.oracle.com/en/database/oracle/oracle-database/19/" target="_blank">https://docs.oracle.com/en/database/oracle/oracle-database/19/</a></li>
+            <li><strong>Google Books API:</strong> Books API Developer Guide - <a href="https://developers.google.com/books" target="_blank">https://developers.google.com/books</a></li>
+            <li><strong>MDN Web Docs:</strong> JavaScript Reference - <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank">https://developer.mozilla.org/en-US/docs/Web/JavaScript</a></li>
+        </ul>
+
+
+
+        <h3> Inspirații și resurse</h3>
+        <ul>
+            <li><strong>Goodreads:</strong> Platform de referință pentru gestionarea cărților - <a href="https://www.goodreads.com/" target="_blank">https://www.goodreads.com/</a></li>
+            <li><strong>LibraryThing:</strong> Sistem de catalogare personală - <a href="https://www.librarything.com/" target="_blank">https://www.librarything.com/</a></li>
+            <li><strong>StoryGraph:</strong> Alternative modernă pentru tracking cărți - <a href="https://www.thestorygraph.com/" target="_blank">https://www.thestorygraph.com/</a></li>
+      </ul>
+      </section>
+</body>
+</html>

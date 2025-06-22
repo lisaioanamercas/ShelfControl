@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
-    console.log('Admin.js loaded'); // Debug line
+    console.log('Admin.js loaded'); 
     
-    // Modal and form elements
+    
     const adminButton = document.getElementById('admin-button');
     const adminModal = document.getElementById('add-book-modal');
     const modalClose = document.getElementById('modal-close');
@@ -10,18 +10,18 @@ document.addEventListener('DOMContentLoaded', function () {
     const submitBtn = document.getElementById('submit-btn');
     const successMessage = document.getElementById('success-message');
 
-    // Debug logging
+ 
     console.log('Admin button found:', !!adminButton);
     console.log('Admin modal found:', !!adminModal);
 
-    // Cover upload
+ 
     const coverUploadArea = document.getElementById('cover-upload-area');
     const coverUrlInput = document.getElementById('cover-url');
     const coverPreview = document.getElementById('cover-preview');
     const coverImage = document.getElementById('cover-image');
     const removeCoverBtn = document.getElementById('remove-cover-btn');
 
-// Preview cover when URL is entered
+
     if (coverUrlInput) {
         coverUrlInput.addEventListener('blur', function() {
             const url = this.value.trim();
@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
         
-        // Also preview when pressing Enter
+       
         coverUrlInput.addEventListener('keydown', function(e) {
             if (e.key === 'Enter') {
                 e.preventDefault();
@@ -42,30 +42,29 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
     
-    // Function to preview the cover using our proxy
-    // Function to preview the cover - modified to quietly handle errors
+  
     function previewCoverUrl(url) {
-        // Only proceed if we have a URL
+ 
         if (!url) return;
         
-        // Set image source directly without proxy
+     
         coverImage.src = url;
         
-        // Show preview when loaded
+       
         coverImage.onload = function() {
             coverPreview.style.display = 'flex';
         };
         
-        // Silently handle load errors - just don't show preview
+     
         coverImage.onerror = function() {
-            // Still show preview with placeholder or fallback image
+          
             coverImage.src = '/ShelfControl/assets/images/cover-placeholder.jpg'; // Use a placeholder
             coverPreview.style.display = 'flex';
         };
     }
 
     
-    // Remove button handler
+ 
     if (removeCoverBtn) {
         removeCoverBtn.addEventListener('click', function() {
             coverUrlInput.value = '';
@@ -73,8 +72,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Ensure we don't try to preview on page load if no URL
-    // This prevents the initial error
+  
     if (coverUrlInput && coverUrlInput.value) {
         previewCoverUrl(coverUrlInput.value);
     }
@@ -100,7 +98,7 @@ document.addEventListener('DOMContentLoaded', function () {
     console.log('Both admin button and modal found - setting up modal functionality');
 
     if (adminModal) {
-        // Enable transitions after a small delay to prevent flash
+    
         setTimeout(() => {
             adminModal.classList.add('transitions-enabled');
         }, 50);

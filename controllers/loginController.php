@@ -83,7 +83,7 @@ class LoginController
 
     public function logout()
     {
-        // parte de SGBD pentru userul gigi.becali@gmail.com
+     
         if (isset($_COOKIE['jwt'])) {
             try {
                 $jwt = new BaseController();
@@ -93,11 +93,11 @@ class LoginController
                     require_once __DIR__ . '/../models/dbConnection.php';
                     $userModel = new \App\Models\UserModel($conn);
                     
-                    // Check if this is demo user
+                 
                     if ($userModel->isDemoUser($decoded->data->email)) {
                         $userId = $userModel->getUserIdByEmail($decoded->data->email);
                         
-                        // Delete demo user and all associated data
+                      
                         $userModel->deleteDemoUser($userId);
                         
                         error_log("Demo user deleted on logout: " . $decoded->data->email);
@@ -105,7 +105,7 @@ class LoginController
                 }
             } catch (\Exception $e) {
                 error_log("Error handling demo user logout: " . $e->getMessage());
-                // Continue with normal logout even if cleanup fails
+             
             }
         }
      

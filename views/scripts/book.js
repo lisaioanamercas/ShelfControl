@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Status dropdown functionality
     const statusBtn = document.getElementById('statusBtn');
     const statusOptions = document.getElementById('statusOptions');
     const currentStatus = document.getElementById('currentStatus');
@@ -11,15 +10,22 @@ document.addEventListener('DOMContentLoaded', () => {
     const reviewFormOverlay = document.getElementById('reviewFormOverlay');
     const closeReviewForm = document.getElementById('closeReviewForm');
     const reviewForm = document.getElementById('reviewForm');
-  //  const deleteReviewBtn=document.getElementById('deleteReviewBtn');
 
      const buyBtn = document.getElementById('buyBtn');
 
     const libraryPopupOverlay = document.getElementById('libraryPopupOverlay');
     const closeLibraryPopup = document.getElementById('closeLibraryPopup');
     const libraryList = document.getElementById('libraryList');
+     const urlParams = new URLSearchParams(window.location.search);
+     const bookId = urlParams.get('id');
 
-
+ 
+     if (bookId) {
+        fetchReviews(bookId);
+         setInterval(() => {
+        fetchReviews(bookId);
+    }, 60000);
+    }
     if (buyBtn && libraryPopupOverlay) {
         buyBtn.addEventListener('click', () => {
             libraryPopupOverlay.style.display = 'flex';
@@ -126,8 +132,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const rating = document.getElementById('ratingValue').value;
             const reviewText = document.getElementById('reviewContent').value;
-                const urlParams = new URLSearchParams(window.location.search);
-                bookId = urlParams.get('id');
              if (!rating || rating < 1) {
                 alert('Selectează un rating.');
                 return;
@@ -165,80 +169,112 @@ document.addEventListener('DOMContentLoaded', () => {
     const readMoreBtn = document.getElementById('readMoreBtn');
     
     if (bookSummary && readMoreBtn) {
-        // Get short and full description paragraphs
         const shortDescP = bookSummary.querySelector('p:first-child');
         const fullDescP = bookSummary.querySelector('.full-description');
         
         if (shortDescP && fullDescP) {
-            // Add click event listener to the read more link
             readMoreBtn.addEventListener('click', (e) => {
                 e.preventDefault();
                 
-                // Replace the short description with the full description
                 shortDescP.innerHTML = fullDescP.innerHTML;
                 
-                // Hide the read more button
                 readMoreBtn.style.display = 'none';
             });
         }
     }
     
-    // Toggle status dropdown
     if (statusBtn) {
         statusBtn.addEventListener('click', () => {
             statusOptions.classList.toggle('active');
         });
     }
     
-    // Close dropdown when clicking outside
     document.addEventListener('click', (e) => {
         if (statusBtn && !statusBtn.contains(e.target) && !statusOptions.contains(e.target)) {
             statusOptions.classList.remove('active');
         }
     });
     
-
+   function fetchReviews(bookId) {
+    fetch(`/ShelfControl/reviews?book_id=${encodeURIComponent(bookId)}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.success && Array.isArray(data.reviews)) {
+                console.log('Recenzii primite:', data.reviews);
+                renderReviews(data.reviews||[], data.userReviews || []);
+            } else {
+                renderReviews([]);
+            }
+        })
+        .catch(() => {
+            console.error('Eroare la încărcarea recenziilor.');
+            renderReviews([]);
+        });
+}
+function renderStars(stars) {
+    let html = '';
+    for (let i = 0; i < 5; i++) {
+        html += i < stars ? '★' : '☆';
+    }
+    return html;
+}
 
           
-        
-   
+function renderReviews(reviews, userReviews) {
+    const reviewsList = document.getElementById('reviewsList');
 
-    
-    // Select status option -- am renuntat la functia asta ca nu lua id ul bine
-    // const statusOptionElements = document.querySelectorAll('.status-option');
-    // statusOptionElements.forEach(option => {
-    //     option.addEventListener('click', () => {
-    //         const selectedStatus = option.getAttribute('data-status');
-    //         const bookId = document.querySelector('.owned-btn').getAttribute('data-book-id');
-            
-    //         // Update UI
-    //         currentStatus.textContent = selectedStatus;
-    //         statusOptions.classList.remove('active');
-            
-    //         // Show reading progress if status is "reading"
-    //         if (selectedStatus === 'reading') {
-    //             readingProgress.classList.add('active');
-    //         } else {
-    //             readingProgress.classList.remove('active');
-    //         }
-            
-    //         // Send status update to server
-    //         updateBookStatus(bookId, selectedStatus);
-    //     });
-    // });
+    if (!reviewsList) return;
 
-    // Select status option
+    let html = '';
+
+    if (userReviews && userReviews.length > 0) {
+        html += userReviews.map(userReview => `
+            <div class="review-item user-review">
+                <div class="review-header">
+                    <span class="reviewer-name">${userReview.USERNAME}</span>
+                    <span class="review-rating">${renderStars(parseInt(userReview.STARS))}</span>
+                    <button class="delete-review-btn" data-review-id="${userReview.REVIEW_ID}"> 
+                     <i class="ri-delete-bin-line">
+                     </i></button>
+                </div>
+                <div class="review-content">
+                     ${userReview.TEXT ? userReview.TEXT : ' '}
+                </div>
+            </div>
+        `).join('');
+    }
+
+    const otherReviews = reviews?.filter(r => {
+        return !userReviews?.some(ur => ur.REVIEW_ID === r.REVIEW_ID);
+    });
+
+    if (otherReviews && otherReviews.length > 0) {
+        html += otherReviews.map(review => `
+            <div class="review-item">
+                <div class="review-header">
+                    <span class="reviewer-name">${review.USERNAME || 'Anonim'}</span>
+                    <span class="review-rating">${renderStars(parseInt(review.STARS))}</span>
+                </div>
+                <div class="review-content">
+                     ${review.TEXT ? review.TEXT : ' '}
+                </div>
+            </div>
+        `).join('');
+    }
+
+    if (html === '') {
+        html = '<p>Nu există recenzii pentru această carte.</p>';
+    }
+
+    reviewsList.innerHTML = html;
+}
+
     const statusOptionElements = document.querySelectorAll('.status-option');
     statusOptionElements.forEach(option => {
         option.addEventListener('click', () => {
             const selectedStatus = option.getAttribute('data-status');
             
-            // Get book ID from URL first (more reliable)
-            let bookId;
-            const urlParams = new URLSearchParams(window.location.search);
-            bookId = urlParams.get('id');
             
-            // If not in URL, try the button attribute as fallback
             if (!bookId) {
                 const ownedBtn = document.querySelector('.owned-btn');
                 if (ownedBtn) {
@@ -251,11 +287,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
             
-            // Update UI
             currentStatus.textContent = selectedStatus;
             statusOptions.classList.remove('active');
             
-            // Show reading progress if status is "reading"
             if (selectedStatus === 'reading') {
                 readingProgress.classList.add('active');
             } else {
@@ -266,11 +300,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
     
-    // Update reading progress - modificat mai pont
     const saveProgressBtn = document.getElementById('saveProgressBtn');
     if (saveProgressBtn) {
         saveProgressBtn.addEventListener('click', () => {
-            const bookId = saveProgressBtn.getAttribute('data-book-id');
             const currentPageInput = document.getElementById('currentPageInput');
             const totalPages = document.getElementById('totalPages');
             const progressFill = document.getElementById('progressFill');
@@ -279,62 +311,48 @@ document.addEventListener('DOMContentLoaded', () => {
             const currentPage = parseInt(currentPageInput.value);
             const total = parseInt(totalPages.textContent);
             
-            // Validate
             if (isNaN(currentPage) || currentPage < 0 || currentPage > total) {
                 alert('Please enter a valid page number');
                 return;
             }
             
-            // Calculate percentage
             const percentage = Math.min(Math.round((currentPage / total) * 100), 100);
             
-            // Update UI
             progressFill.style.width = `${percentage}%`;
             progressText.textContent = `${percentage}%`;
             
-            // Send progress update to server
+      
             updateBookProgress(bookId, currentPage);
             
-            // If user has completed the book, maybe reload after a delay 
+         
             if (currentPage >= total) {
                 setTimeout(() => {
-                    // Optional: reload the page after showing notification
+                
                     window.location.reload();
                 }, 60);
             }
         });
     }
     
-    // Toggle owned status
+
     const ownedBtn = document.getElementById('ownedBtn');
     if (ownedBtn) {
         ownedBtn.addEventListener('click', () => {
-            const bookId = ownedBtn.getAttribute('data-book-id');
             const isOwned = ownedBtn.classList.contains('active');
             
-            // Toggle active state
+        
             ownedBtn.classList.toggle('active');
             
-            // Update owned status on server
+      
             updateBookOwned(bookId, !isOwned);
         });
     }
 
-    // Group reading option in the status dropdown
 const groupReadingOption = document.querySelector('.group-reading');
 if (groupReadingOption) {
     groupReadingOption.addEventListener('click', (e) => {
         e.stopPropagation(); // Prevent parent event handlers from executing
         
-        // Get the book ID
-      /*  const bookId = document.querySelector('.owned-btn').getAttribute('data-book-id');
-        if (!bookId) {
-            console.error('Could not determine book ID');
-            return;
-        }*/
-        const urlParams = new URLSearchParams(window.location.search);
-        bookId = urlParams.get('id');
-        // Fetch user's groups
         fetch('/ShelfControl/user-groups')
             .then(response => response.json())
             .then(data => {
@@ -358,7 +376,7 @@ if (groupReadingOption) {
 
 function showGroupSelectionPopup(groups, bookId) {
     console.log('Popup function called', groups, bookId);
-    // Create a modal popup
+
     const modalOverlay = document.createElement('div');
     modalOverlay.className = 'modal-overlay';
     modalOverlay.style.display = 'flex';
@@ -389,20 +407,20 @@ function showGroupSelectionPopup(groups, bookId) {
     modalOverlay.innerHTML = modalHtml;
     document.body.appendChild(modalOverlay);
     
-    // Close button functionality
+
     const closeBtn = modalOverlay.querySelector('.modal-close');
     closeBtn.addEventListener('click', () => {
         modalOverlay.remove();
     });
     
-    // Close on outside click
+  
     modalOverlay.addEventListener('click', (e) => {
         if (e.target === modalOverlay) {
             modalOverlay.remove();
         }
     });
     
-    // Group selection
+
     const selectButtons = modalOverlay.querySelectorAll('.select-group-btn');
     selectButtons.forEach(btn => {
         btn.addEventListener('click', (e) => {
@@ -427,7 +445,7 @@ function showGroupSelectionPopup(groups, bookId) {
                 alert('The book has been assigned to all members of the group!');
                 modalOverlay.remove();
                 
-                // Update UI to show reading status
+              
                 if (currentStatus) {
                     currentStatus.textContent = 'reading';
                 }
@@ -438,7 +456,7 @@ function showGroupSelectionPopup(groups, bookId) {
                     readingProgress.classList.add('active');
                 }
                 
-                // Reload page to update UI
+             
                 setTimeout(() => {
                     window.location.reload();
                 }, 1000);
@@ -467,9 +485,7 @@ function showGroupSelectionPopup(groups, bookId) {
                 const data = JSON.parse(text);
                 if (!data.success) {
                     console.error('Error updating status:', data.message);
-                }/* if (bookId.toString() !== data.book_id.toString()) {
-                        window.location.href = data.redirect_url;
-                }*/
+                }
 
             } catch (e) {
                 console.error('Invalid JSON:', text);
@@ -479,7 +495,7 @@ function showGroupSelectionPopup(groups, bookId) {
 
 
     function updateBookProgress(bookId, pagesRead) {
-        // Get the total pages
+     
         const totalPagesElem = document.getElementById('totalPages');
         const totalPages = parseInt(totalPagesElem.textContent);
 
@@ -493,21 +509,19 @@ function showGroupSelectionPopup(groups, bookId) {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                // Check if book is now completed (pages read equals total pages)
+            
                 if (parseInt(pagesRead) >= totalPages) {
-                    // Update the status display
+                  
                     const currentStatus = document.getElementById('currentStatus');
                     if (currentStatus) {
                         currentStatus.textContent = 'completed';
                     }
                     
-                    // Hide the reading progress section
                     const readingProgress = document.getElementById('readingProgress');
                     if (readingProgress) {
                         readingProgress.classList.remove('active');
                     }
                     
-                    // Show completion message
                     showCompletionMessage();
                 }
             } else {
@@ -517,7 +531,7 @@ function showGroupSelectionPopup(groups, bookId) {
         .catch(error => console.error('Error:', error));
     }
 
-    // Add this new function to show a completion message
+  
     function showCompletionMessage() {
         const notification = document.createElement('div');
         notification.className = 'completion-notification';
@@ -530,12 +544,10 @@ function showGroupSelectionPopup(groups, bookId) {
         
         document.body.appendChild(notification);
         
-        // Add animation class after a short delay
         setTimeout(() => {
             notification.classList.add('show');
         }, 100);
         
-        // Remove after a few seconds
         setTimeout(() => {
             notification.classList.remove('show');
             setTimeout(() => notification.remove(), 500);
@@ -554,7 +566,6 @@ function showGroupSelectionPopup(groups, bookId) {
         .then(data => {
             if (!data.success) {
                 console.error('Error updating owned status:', data.message);
-                // Revert UI change if server update failed
                 ownedBtn.classList.toggle('active');
             }
         })
@@ -568,7 +579,6 @@ function showGroupSelectionPopup(groups, bookId) {
             return;
         }
 
-        // Filter books to exclude current title AND ensure they have cover images
         const books = data.items.filter(item =>
             item.volumeInfo.title.toLowerCase() !== currentTitle.toLowerCase() && 
             item.volumeInfo.imageLinks && 
@@ -580,40 +590,12 @@ function showGroupSelectionPopup(groups, bookId) {
             return;
         }
 
-        const seenBooks = new Set();
-        //chestia asta da display la mai multe informatii despre carte, eu am pus doar sa arate pozele
-        // books.forEach(book => {
-        //     const title = book.volumeInfo.title || 'Unknown Title';
-        //     const authors = book.volumeInfo.authors ? book.volumeInfo.authors.join(', ') : 'Unknown Author';
-        //     const uniqueKey = `${title.toLowerCase()}|${authors.toLowerCase()}`;
-
-        //     if (seenBooks.has(uniqueKey)) {
-        //         return; // carte deja adăugată
-        //     }
-        //     seenBooks.add(uniqueKey);
-
-        //     // Since we filtered earlier, we know thumbnail exists
-        //     const thumbnail = book.volumeInfo.imageLinks.thumbnail;
-        //     const link = `https://books.google.com/books?id=${book.id}`;
-
-        //     const card = document.createElement('div');
-        //     card.className = 'suggestion-card';
-        //     card.innerHTML = `
-        //         <a href="${link}" target="_blank">
-        //             <img src="${thumbnail}" alt="${title}" class="suggestion-cover">
-        //             <div class="suggestion-info">
-        //                 <h3 class="suggestion-title">${title}</h3>
-        //                 <p class="suggestion-author">${authors}</p>
-        //             </div>
-        //         </a>
-        //     `;
-        //     suggestionsGrid.appendChild(card);
-        // });
+   
+       
         books.forEach(book => {
             const title = book.volumeInfo.title || 'Unknown Title';
-            // Since we filtered earlier, we know thumbnail exists
             const thumbnail = book.volumeInfo.imageLinks.thumbnail;
-            const link = `https://books.google.com/books?id=${book.id}`;
+        
 
             const card = document.createElement('div');
             card.className = 'similar-book';
@@ -636,7 +618,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const ratingValue = document.getElementById('ratingValue');
 
     if (stars && ratingValue) {
-        // Evidențiază stelele pe mouseover
+      
         stars.forEach(star => {
             star.addEventListener('mouseover', () => {
                 const value = parseInt(star.getAttribute('data-value'));
@@ -650,14 +632,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
             star.addEventListener('click', () => {
                 const value = parseInt(star.getAttribute('data-value'));
-                ratingValue.value = value; // Setează valoarea rating-ului
-                highlightStars(value); // Evidențiază stelele selectate
+                ratingValue.value = value; 
+                highlightStars(value); 
                 console.log(`Rating selected: ${value}`);
             });
         });
     }
 
-    // Funcție pentru evidențierea stelelor
+   
     function highlightStars(rating) {
         stars.forEach((star, index) => {
             if (index < rating) {

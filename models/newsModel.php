@@ -13,7 +13,14 @@ class NewsModel
 
     public function getAllNews()
     {
-            $sql= "SELECT * FROM rssfeed ORDER BY published_at DESC";         
+            $sql= "SELECT * FROM (
+            SELECT rssfeed.*, ROWNUM AS rn
+            FROM (
+                SELECT * FROM rssfeed ORDER BY published_at DESC
+            ) rssfeed
+            WHERE ROWNUM <= 15
+        )
+";         
             $stmt = oci_parse($this->conn, $sql);
         oci_execute($stmt);
         $news = [];

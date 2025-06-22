@@ -1,43 +1,5 @@
-let newsData = [
-    /*{
-        id: 1,
-        type: 'review',
-        title: 'New Review: "Tehnologii Web - UAIC"',
-        description: 'Fa-ma Doamne piatra tare sa rezist la suparareeeeeee ca de la atata durere simt ca nu mai am putereeeeeeeeeeeeeeee',
-        author: 'elisa & daria',
-        date: '2025-05-29',
-        link: '#review-1'
-    },
-    {
-        id: 2,
-        type: 'launch',
-        title: 'New Release: "La capsuni in spania!"',
-        description: 'Un nou ghid facut special pentru studentii de la Informatica in ani terminali (pe cei de anul 1 inca ii lasam sa viseze).',
-        author: 'Administratia romana de shoparle',
-        date: '2025-05-28',
-        link: '#book-launch-1'
-    },
-    {
-        id: 3,
-        type: 'announcement',
-        title: 'Vreau sa ma las de facultate simt ca ma face la psihic',
-        description: 'Daca as avea o masina a timpului m-as intoarce in trecut cand s-a gandit mama sa mai faca un copil si i-as fi spus sa stea cuminte ca nu e chiar flower power situatia la web.',
-        author: 'Eu',
-        date: '2025-05-27',
-        link: null
-    },
-    {
-        id: 4,
-        type: 'ranking',
-        title: 'Ranking cele mai nasoale materii de la facultate',
-        description: 'WEB -- Programare avansata (aici nu in includ pe Irimia <3) -- SGBD -- IP !!! (iubesc arhivele zip) -- Cripto.',
-        author: 'Tot eu',
-        date: '2025-05-26',
-        link: '#rankings'
-    }*/
-];
+let newsData = [];
 
-// DOM elements
 const newsList = document.getElementById('news-list');
 const emptyState = document.getElementById('empty-state');
 const loader = document.getElementById('loader');
@@ -52,12 +14,10 @@ function fetchNews() {
     showLoader();
     fetch('/ShelfControl/rss')
         .then(response => response.text())
-       .then(str => {
+        .then(str => {
             const parser = new DOMParser();
             const xml = parser.parseFromString(str, "application/xml");
-            console.log('Parsed XML:', xml);
             const items = Array.from(xml.getElementsByTagName("item"));
-            console.log(items);
             newsData = items.map(item => ({
                 id: item.getElementsByTagName("guid")[0]?.textContent || Date.now() + Math.random(),
                 type: item.getElementsByTagName("type")[0]?.textContent || 'announcement',
@@ -67,7 +27,6 @@ function fetchNews() {
                 date: item.getElementsByTagName("pubDate")[0]?.textContent || '',
                 link: item.getElementsByTagName("link")[0]?.textContent || ''
 }));
-            console.log(newsData) 
             renderNews();
             hideLoader();
         })
@@ -88,7 +47,7 @@ function getNewsTypeIcon(type) {
     return icons[type] || 'ri-news-line';
 }
 
-// Format date
+
 function formatDate(dateString) {
     const date = new Date(dateString);
     return date.toLocaleDateString('en-US', {
@@ -98,7 +57,6 @@ function formatDate(dateString) {
     });
 }
 
-// Render news cards
 function renderNews() {
     if (newsData.length === 0) {
         newsList.style.display = 'none';
@@ -109,7 +67,6 @@ function renderNews() {
     newsList.style.display = 'grid';
     emptyState.style.display = 'none';
 
-    // Sort news by date (newest first)
     const sortedNews = [...newsData].sort((a, b) => new Date(b.date) - new Date(a.date));
 
     newsList.innerHTML = sortedNews.map(news => `
@@ -138,19 +95,16 @@ function renderNews() {
     `).join('');
 }
 
-// Show loader
 function showLoader() {
     loader.classList.add('active');
     newsList.style.display = 'none';
     emptyState.style.display = 'none';
 }
 
-// Hide loader
 function hideLoader() {
     loader.classList.remove('active');
 }
 
-// Modal functions
 function openModal() {
     modalOverlay.classList.add('active');
     document.body.style.overflow = 'hidden';
@@ -162,7 +116,6 @@ function closeModal() {
     newsForm.reset();
 }
 
-// Add news
 function addNews(newsItem) {
     showLoader();
     
@@ -189,7 +142,6 @@ function addNews(newsItem) {
     });
 }
 
-// Event listeners
 addNewsBtn.addEventListener('click', openModal);
 modalClose.addEventListener('click', closeModal);
 modalOverlay.addEventListener('click', (e) => {
@@ -212,20 +164,17 @@ newsForm.addEventListener('submit', (e) => {
     addNews(newsItem);
 });
 
-// ESC key to close modal
 document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && modalOverlay.classList.contains('active')) {
         closeModal();
     }
 });
 
-// Initial render
 document.addEventListener('DOMContentLoaded', () => {
     showLoader();
     fetchNews();
 
-    // // 🔁 Auto-refresh la fiecare 60 de secunde
-    // setInterval(() => {
-    //     fetchNews();
-    // }, 60000); // 60000 ms = 1 minut
+    setInterval(() => {
+        fetchNews();
+     }, 60000); // 1 minut
 });

@@ -41,7 +41,7 @@ if (editBookBtn) {
             return;
         }
         
-        // Show loading state
+
         editBookBtn.disabled = true;
         
         let responseText; // Define a variable to store the response text
@@ -162,12 +162,12 @@ function fillEditForm(book) {
         setFieldValue('genre', book.GENRE);
         setFieldValue('summary', book.SUMMARY);
         
-        // Handle cover URL
+     
         const coverUrl = book.COVER_URL || '';
         setFieldValue('cover-url', coverUrl);
         
         if (coverUrl) {
-            // Display the cover preview
+           
             const coverPreview = document.getElementById('cover-preview');
             const coverImage = document.getElementById('cover-image');
             if (coverPreview && coverImage) {

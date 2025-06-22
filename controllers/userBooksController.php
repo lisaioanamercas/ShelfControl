@@ -12,7 +12,7 @@ class UserBooksController {
     public function __construct() {
         $this->jwt = new \App\Controllers\BaseController();
 
-        // Check login and setup DB
+       
         if (!$this->jwt->verifyLogin()) {
             header('Location: /ShelfControl/login');
             exit;
@@ -66,18 +66,14 @@ class UserBooksController {
     }
 
     public function allBooksLibrary() {
-        // Get database connection
         require_once __DIR__ . '/../models/dbConnection.php';
         
-        // Get books with 'MANUAL' or 'JSON_IMPORT' sources
         $bookModel = new BookModel($this->conn);
         $allBooks = $bookModel->getBooksByManualOrImport();
         
-        // Get undiscovered books (books the user hasn't interacted with)
-        // that have 'MANUAL' or 'JSON_IMPORT' sources
+       
         $undiscoveredBooks = $bookModel->getUndiscoveredBooksByManualOrImport($this->userId);
         
-        // Render template
         $view = new BaseView();
         $view->renderTemplate('fullLibrary', [
             'section_title' => 'Complete Book Library',

@@ -1,9 +1,9 @@
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Home.js loaded - initializing edit buttons');
     
-    // DIRECT METHOD: Add event listeners using event delegation
+
     document.addEventListener('click', function(event) {
-        // Handle edit button clicks
+
         if (event.target.closest('.edit-progress-btn')) {
             console.log('Edit button clicked');
             const button = event.target.closest('.edit-progress-btn');
@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
         
-        // Handle save button clicks
+       
         if (event.target.closest('.save-btn')) {
             console.log('Save button clicked');
             event.preventDefault();
@@ -28,12 +28,10 @@ document.addEventListener('DOMContentLoaded', function() {
             const input = editor.querySelector('.page-input');
             const pagesRead = input.value;
             
-            // Find the index position
             const allBookItems = Array.from(document.querySelectorAll('.current-reads__item'));
             const bookIndex = allBookItems.indexOf(bookItem);
             
-            // Send AJAX request to update progress
-            // Update the fetch calls in home.js to add the action parameter
+   
             fetch('/ShelfControl/update-book', {
                 method: 'POST',
                 headers: {
@@ -44,15 +42,14 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    // Update UI
+                
                     const totalPages = parseInt(editor.querySelector('.total-pages').textContent);
                     updateBookProgress(bookIndex, pagesRead, totalPages);
                     editor.classList.remove('active');
                     
-                    // Show success message
+                
                     showFinishNotification('Progress updated successfully!');
                     
-                    // If book is completed (100%), reload page after a delay
                     if (parseInt(pagesRead) >= totalPages) {
                         setTimeout(() => {
                             location.reload();
@@ -68,7 +65,7 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
         
-        // Handle finish button clicks
+
         if (event.target.closest('.finish-btn')) {
             console.log('Finish button clicked');
             event.preventDefault();
@@ -79,12 +76,11 @@ document.addEventListener('DOMContentLoaded', function() {
             const totalPages = editor.querySelector('.total-pages').textContent;
             const bookTitle = bookItem.querySelector('.current-reads__book-title').textContent;
             
-            // Find the index position
+    
             const allBookItems = Array.from(document.querySelectorAll('.current-reads__item'));
             const bookIndex = allBookItems.indexOf(bookItem);
             
-            // Send AJAX request to mark as finished
-            // Update the fetch calls in home.js to add the action parameter
+
             fetch('/ShelfControl/update-book', {
                 method: 'POST',
                 headers: {
@@ -95,14 +91,13 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    // Update UI to show 100%
+              
                     updateBookProgress(bookIndex, totalPages, totalPages);
                     editor.classList.remove('active');
-                    
-                    // Show finish notification
+                   
                     showFinishNotification(`"${bookTitle}" marked as finished!`);
                     
-                    // Reload page after a delay
+            
                     setTimeout(() => {
                         location.reload();
                     }, 1500);
@@ -116,7 +111,7 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
         
-        // Close editors when clicking elsewhere
+
         const isEditor = event.target.closest('.progress-editor');
         const isEditButton = event.target.closest('.edit-progress-btn');
         
@@ -131,14 +126,14 @@ document.addEventListener('DOMContentLoaded', function() {
 function toggleEditor(editor) {
     console.log('Toggling editor:', editor.id);
     
-    // Close all other editors
+
     document.querySelectorAll('.progress-editor').forEach(ed => {
         if (ed !== editor) {
             ed.classList.remove('active');
         }
     });
     
-    // Toggle current editor
+ 
     editor.classList.toggle('active');
 }
 
@@ -147,10 +142,9 @@ function updateBookProgress(bookIndex, currentPage, totalPages) {
     const progressBar = bookItem.querySelector('.progress-fill');
     const progressText = bookItem.querySelector('.progress-text');
     
-    // Calculate percentage
+ 
     const percentage = Math.min(Math.round((currentPage / totalPages) * 100), 100);
-    
-    // Update UI
+ 
     progressBar.style.width = `${percentage}%`;
     progressText.textContent = `${percentage}%`;
 }
@@ -169,7 +163,7 @@ function showFinishNotification(bookTitle) {
     
     document.body.appendChild(notification);
     
-    // Remove after 3 seconds
+ 
     setTimeout(() => {
         notification.remove();
     }, 3000);

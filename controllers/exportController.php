@@ -13,11 +13,10 @@ class ExportController {
     private $userId;
     
     public function __construct() {
-        // Connect to DB
+      
         require_once __DIR__ . '/../models/dbConnection.php';
         $this->conn = \getConnection();
         
-        // Verify login and get user ID
         if (isset($_COOKIE['jwt'])) {
             try {
                 $decoded = JWT::decode($_COOKIE['jwt'], new Key($_ENV['JWT_SECRET_KEY'], 'HS256'));
@@ -41,22 +40,22 @@ class ExportController {
         $userModel = new UserModel($this->conn);
         $stats = $userModel->getUserStats($this->userId);
         
-        // Get user data
+
         $decoded = JWT::decode($_COOKIE['jwt'], new Key($_ENV['JWT_SECRET_KEY'], 'HS256'));
         $email = $decoded->data->email;
         $userData = $userModel->getUserByEmail($email);
         
-        // Set headers for CSV download
+   
         header('Content-Type: text/csv');
         header('Content-Disposition: attachment; filename="shelf_control_statistics.csv"');
         
-        // Create CSV content
+     
         $output = fopen('php://output', 'w');
         
-        // Add headers
+    
         fputcsv($output, ['Statistic', 'Value']);
         
-        // Add data
+    
         fputcsv($output, ['Username', $userData['USERNAME']]);
         fputcsv($output, ['Books Read', $stats['books_read']]);
         fputcsv($output, ['Currently Reading', $stats['currently_reading']]);
@@ -72,16 +71,16 @@ class ExportController {
         $userModel = new UserModel($this->conn);
         $stats = $userModel->getUserStats($this->userId);
         
-        // Get user data
+       
         $decoded = JWT::decode($_COOKIE['jwt'], new Key($_ENV['JWT_SECRET_KEY'], 'HS256'));
         $email = $decoded->data->email;
         $userData = $userModel->getUserByEmail($email);
         
-        // Set headers for XML download
+      
         header('Content-Type: application/xml');
         header('Content-Disposition: attachment; filename="shelf_control_statistics.xml"');
         
-        // Create DocBook XML
+ 
         $xml = '<?xml version="1.0" encoding="UTF-8"?>
                 <!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
                 <article>

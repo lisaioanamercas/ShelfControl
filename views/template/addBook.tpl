@@ -1,3 +1,12 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Book</title>
+    <!-- Adaugă aici link-urile către CSS/icoane dacă este nevoie -->
+</head>
+<body>
+
 <!-- Add Book Modal -->
 <div class="add-book-modal" id="add-book-modal">
     <div class="modal-content">
@@ -84,7 +93,7 @@
 
                 <!-- Cover Preview -->
                 <div class="cover-preview" id="cover-preview" style="display: none;">
-                    <img id="cover-image" src="" alt="Book cover preview">
+                    <img id="cover-image" src="test" alt="Book cover preview">
                     <button type="button" class="remove-cover-btn" id="remove-cover-btn">
                         <i class="ri-delete-bin-line"></i> Remove
                     </button>
@@ -104,3 +113,6 @@
     <i class="ri-check-line"></i>
     <span>Book added successfully!</span>
 </div>
+
+</body>
+</html>
