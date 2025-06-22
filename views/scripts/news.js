@@ -5,7 +5,7 @@ const emptyState = document.getElementById('empty-state');
 const loader = document.getElementById('loader');
 const addNewsBtn = document.getElementById('add-news-btn');
 const modalOverlay = document.getElementById('modal-overlay');
-const modalClose = document.getElementById('modal-close');
+const modalClose = document.getElementById('news-modal-close');
 const newsForm = document.getElementById('news-form');
 
 

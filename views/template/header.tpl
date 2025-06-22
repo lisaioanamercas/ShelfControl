@@ -204,7 +204,7 @@
 
                             <!-- Cover Preview -->
                             <div class="cover-preview" id="cover-preview" style="display: none;">
-                                <img id="cover-image" src="" alt="Book cover preview">
+                                <img id="cover-image" src="test" alt="Book cover preview">
                                 <button type="button" class="remove-cover-btn" id="remove-cover-btn">
                                     <i class="ri-delete-bin-line"></i> Remove
                                 </button>

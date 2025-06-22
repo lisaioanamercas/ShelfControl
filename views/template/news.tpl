@@ -1,10 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>News Feed</title>
-</head>
-<body>
 <section class="news-feed section" id="review">
     <div class="container">
         <!-- Header -->
@@ -35,10 +28,9 @@
 
 <!-- Add News Modal -->
 <div class="modal-overlay" id="modal-overlay">
-    <div class="modal">
-        <div class="modal__header">
+    <div class="modal">        <div class="modal__header">
             <h3 class="modal__title">Add News</h3>
-            <button type="button" class="modal__close" id="modal-close">
+            <button type="button" class="modal__close" id="news-modal-close">
                 <i class="ri-close-line"></i>
             </button>
         </div>
@@ -81,5 +73,4 @@
         </form>
     </div>
 </div>
-</body>
-</html>
+

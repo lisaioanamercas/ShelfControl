@@ -26,9 +26,7 @@
 
         <div id="message" class="message" style="display: <?= !empty($message) ? 'block' : 'none'; ?>;">
                 <?= $message ?? '' ?>
-            </div>
-
-        <form class="register-form" id="registerForm" method="POST" action="">
+            </div>        <form class="register-form" id="registerForm" method="POST">
             <div class="form-group">
                 <input type="email" name="email" id="email" class="form-input" placeholder="Email" required>
                 <i class="fas fa-envelope form-icon"></i>
@@ -47,11 +45,9 @@
             <div class="form-group">
                 <input type="password" name="confirm_password" id="confirm_password" class="form-input" placeholder="Confirm Password" required>
                 <i class="fas fa-lock form-icon"></i>
-            </div>
-
-            
+            </div>            
             <div class="form-group">
-                <input type="city" name="city" id="city" class="form-input" placeholder="City" required>
+                <input type="text" name="city" id="city" class="form-input" placeholder="City" required>
                 <i class="fas fa-city form-icon"></i>
             </div>
 

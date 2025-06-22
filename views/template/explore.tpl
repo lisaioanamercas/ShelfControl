@@ -1,10 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Explore</title>
-</head>
-<body>
+
 <!-- =================== LIBRARY HEADER ================================= -->
 <section class="library-header section" id="library">
     <div class="library-header__container container"> 
@@ -28,9 +22,8 @@
 
 <!-- =================== BOOK LIBRARY ================================= -->
 <section class="book-library section">
+    <h2 class="book-library__title" style="display: none;">Book Collection</h2>
     <div class="book-library__container container grid" id="books-container">
         <!-- Cărțile vor fi generate aici -->
     </div>
 </section>
-</body>
-</html>
