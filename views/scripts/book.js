@@ -58,12 +58,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 libraryList.innerHTML = '<li>Nu s-au găsit biblioteci.</li>';
             } else {
                 console.log("Biblioteci găsite:", libraries);
-                libraries.forEach(lib => {
-                    const li = document.createElement('li');
+                libraries.forEach(lib => {                    const li = document.createElement('li');
                     li.innerHTML = `
                         <div class="library-card">
-                            <h4>${lib.name}</h4>
-                            <p>${lib.address}</p>
+                            <h4>${escapeHtml(lib.name)}</h4>
+                            <p>${escapeHtml(lib.address)}</p>
                         </div>
                     `;
                     libraryList.appendChild(li);
@@ -219,6 +218,25 @@ function renderStars(stars) {
     return html;
 }
 
+// Function to escape HTML and prevent XSS attacks
+function escapeHtml(text) {
+    if (!text) return '';
+    const map = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#039;'
+    };
+    return text.toString().replace(/[&<>"']/g, function(m) { return map[m]; });
+}
+
+// Function to sanitize and validate input
+function sanitizeInput(input, maxLength = 1000) {
+    if (!input) return '';
+    const sanitized = escapeHtml(input.trim());
+    return sanitized.length > maxLength ? sanitized.substring(0, maxLength) : sanitized;
+}
           
 function renderReviews(reviews, userReviews) {
     const reviewsList = document.getElementById('reviewsList');
@@ -231,16 +249,16 @@ function renderReviews(reviews, userReviews) {
                 <div class="review-header">
                     <div class="reviewer-info">
                         <div class="reviewer-name-rating">
-                            <span class="reviewer-name">${userReview.USERNAME}</span>
+                            <span class="reviewer-name">${escapeHtml(userReview.USERNAME)}</span>
                             <span class="review-rating">${renderStars(parseInt(userReview.STARS))}</span>
                         </div>
                     </div>
-                    <button class="delete-review-btn" data-review-id="${userReview.REVIEW_ID}"> 
+                    <button class="delete-review-btn" data-review-id="${escapeHtml(userReview.REVIEW_ID)}"> 
                      <i class="ri-delete-bin-line">
                      </i></button>
                 </div>
                 <div class="review-content">
-                     ${userReview.TEXT ? userReview.TEXT : ' '}
+                     ${sanitizeInput(userReview.TEXT)}
                 </div>
             </div>
         `).join('');
@@ -254,13 +272,13 @@ function renderReviews(reviews, userReviews) {
                 <div class="review-header">
                     <div class="reviewer-info">
                         <div class="reviewer-name-rating">
-                            <span class="reviewer-name">${review.USERNAME || 'Anonim'}</span>
+                            <span class="reviewer-name">${escapeHtml(review.USERNAME || 'Anonim')}</span>
                             <span class="review-rating">${renderStars(parseInt(review.STARS))}</span>
                         </div>
                     </div>
                 </div>
                 <div class="review-content">
-                     ${review.TEXT ? review.TEXT : ' '}
+                     ${sanitizeInput(review.TEXT)}
                 </div>
             </div>
         `).join('');
@@ -392,13 +410,12 @@ function showGroupSelectionPopup(groups, bookId) {
                 <button class="modal-close">&times;</button>
             </div>
             <div class="modal-body">
-                <p>Select a group to start reading this book with:</p>
-                <div class="group-select-list">
+                <p>Select a group to start reading this book with:</p>                <div class="group-select-list">
                     ${groups.map(group => `
-                        <div class="group-select-item" data-group-id="${group.GROUP_ID}">
+                        <div class="group-select-item" data-group-id="${escapeHtml(group.GROUP_ID)}">
                             <div class="group-select-info">
-                                <span class="group-select-name">${group.GROUP_NAME}</span>
-                                <span class="group-select-meta">${group.MEMBER_COUNT} members</span>
+                                <span class="group-select-name">${escapeHtml(group.GROUP_NAME)}</span>
+                                <span class="group-select-meta">${parseInt(group.MEMBER_COUNT)} members</span>
                             </div>
                             <button class="select-group-btn">Select</button>
                         </div>
@@ -596,16 +613,15 @@ function showGroupSelectionPopup(groups, bookId) {
 
    
        
-        books.forEach(book => {
-            const title = book.volumeInfo.title || 'Unknown Title';
+        books.forEach(book => {            const title = book.volumeInfo.title || 'Unknown Title';
             const thumbnail = book.volumeInfo.imageLinks.thumbnail;
         
 
             const card = document.createElement('div');
             card.className = 'similar-book';
             card.innerHTML = `
-            <a href="/ShelfControl/book-details?id=${book.id}" target="_blank">
-                <img src="${thumbnail}" alt="${title}" class="similar-book__img">
+            <a href="/ShelfControl/book-details?id=${escapeHtml(book.id)}" target="_blank">
+                <img src="${escapeHtml(thumbnail)}" alt="${escapeHtml(title)}" class="similar-book__img">
             </a>
         `;
             suggestionsGrid.appendChild(card);

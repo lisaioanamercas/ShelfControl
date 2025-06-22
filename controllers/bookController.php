@@ -375,38 +375,53 @@ class BookController{
         require_once __DIR__ . '/../models/dbConnection.php';
         $userModel = new \App\Models\UserModel($conn);
         $userId = $userModel->getUserIdByEmail($email);
+        
+        // Sanitize and validate input
         $bookId = $_POST['book_id'] ?? null;
-        $reviewText = $_POST['review_text'] ?? '';
-        $stars = $_POST['rating'] ?? 0;
-        $bookModel = new BookModel($conn);
-        $bookIdreplace = $bookModel->findGoogleId($bookId);
+        $reviewText = isset($_POST['review_text']) ? trim($_POST['review_text']) : '';
+        $stars = isset($_POST['rating']) ? intval($_POST['rating']) : 0;
+        
+        // Input validation
         if (!$bookId) {
             http_response_code(400);
-            echo json_encode(['error' => 'Missing book ID or review text']);
+            echo json_encode(['success' => false, 'message' => 'Missing book ID']);
             exit;
         }
-        if(!is_numeric($bookId)&& !$bookIdreplace) {
-            $bookId=$this->saveBookApi($bookModel, $bookId, $userId);
+        
+        if ($stars < 1 || $stars > 5) {
+            http_response_code(400);
+            echo json_encode(['success' => false, 'message' => 'Invalid rating. Must be between 1 and 5.']);
+            exit;
         }
-        else if ($bookIdreplace) {
+        
+        if (strlen($reviewText) > 2000) {
+            http_response_code(400);
+            echo json_encode(['success' => false, 'message' => 'Review text too long. Maximum 2000 characters.']);
+            exit;
+        }
+        
+        // Additional sanitization for HTML content
+        $reviewText = htmlspecialchars($reviewText, ENT_QUOTES, 'UTF-8');
+        
+        $bookModel = new BookModel($conn);
+        $bookIdreplace = $bookModel->findGoogleId($bookId);
+        if (!is_numeric($bookId) && !$bookIdreplace) {
+            $bookId = $this->saveBookApi($bookModel, $bookId, $userId);
+        } else if ($bookIdreplace) {
             $bookId = $bookIdreplace;
         }
-        $result = $bookModel->addReview($userId, $bookId, $stars,$reviewText);
-        $username= $userModel->getUsernameById($userId);
+        
+        $result = $bookModel->addReview($userId, $bookId, $stars, $reviewText);
+        $username = $userModel->getUsernameById($userId);
+        
         if (!$result) {
             http_response_code(500);
-            echo json_encode(['error' => 'Failed to add review']);
+            echo json_encode(['success' => false, 'message' => 'Failed to add review']);
             exit;
         }
-        $newsModel = new \App\Models\NewsModel($conn);
-        $newsTitle = "User <strong>$username</strong> added a new review for the book <strong>{$bookModel->getBookTitleById($bookId)}</strong>.";
-        $link = "/ShelfControl/book-details?id={$bookId}";
-        $newsModel->addNews('review', $newsTitle, $reviewText, $link);
-        if ($result) {
-            echo json_encode(['success' => true, 'message' => 'Review added successfully']);
-        } else {
-            http_response_code(500);
-            echo json_encode(['error' => 'Failed to add review']);
-        }
+
+        http_response_code(200);
+        echo json_encode(['success' => true, 'message' => 'Review added successfully']);
+        exit;
     }
 }

@@ -21,17 +21,27 @@ class LoginController
         $this->view = new BaseView();
         $this->jwt = new BaseController();
 
-    }
-
-    public function loginPost()
+    }    public function loginPost()
     {
         require __DIR__ . '/../models/dbConnection.php';
 
-        $email = $_POST['email'] ?? '';
+        // Sanitize and validate input
+        $email = isset($_POST['email']) ? trim($_POST['email']) : '';
         $password = $_POST['password'] ?? '';
 
+        // Input validation
         if (empty($email) || empty($password)) {
             $this->error = 'All fields are required.';
+        }
+        
+        // Email validation
+        if (!empty($email) && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $this->error = 'Invalid email format.';
+        }
+        
+        // Password length validation
+        if (!empty($password) && strlen($password) > 255) {
+            $this->error = 'Password too long.';
         }
 
         if (empty($this->error)) {
