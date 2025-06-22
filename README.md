@@ -35,10 +35,11 @@ Documentul se aliniază cu șablonul IEEE SRS și cu bune practici moderne. :con
 - **Dezvoltatori** – implementare și mentenanță  
 - **Cititori/colecționari** – utilizarea aplicației  
 - **Testeri QA** – validarea funcțiilor  
-- **Autori de documentație** – crearea ghidurilor de utilizare :contentReference[oaicite:3]{index=3}
+- **Autori de documentație** – crearea ghidurilor de utilizare
 
 ### 1.4 Scopul aplicației  
 Shelf Control este o aplicație web pentru organizarea intuitivă a colecțiilor de cărți, oferind căutare, statistici, integrare API și funcții sociale. :contentReference[oaicite:4]{index=4}
+![obiectives](https://github.com/user-attachments/assets/5c0fa858-dfb6-42a2-a2ef-54b83f5fac65)
 
 ---
 
