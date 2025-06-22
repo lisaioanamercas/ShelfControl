@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ShelfControl - Your Personal Library Manager</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.5.0/remixicon.css" rel="stylesheet">
-    <link rel="stylesheet" href="/ShelfControl/views/css/base.css">
-    <link rel="stylesheet" href="/ShelfControl/views/css/landing.css">
+    <link rel="stylesheet" href="ShelfControl/views/css/base.css">
+    <link rel="stylesheet" href="ShelfControl/views/css/landing.css">
 
 </head>
 <body class="landing-page">

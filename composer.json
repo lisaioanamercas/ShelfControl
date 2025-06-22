@@ -2,10 +2,11 @@
     "require": {
         "firebase/php-jwt": "^6.4",
         "vlucas/phpdotenv": "^5.6"
-    },
-    "autoload": {
+    },    "autoload": {
         "psr-4": {
-            "App\\": "c:/xampp/htdocs/ShelfControl/"
+            "App\\Controllers\\": "controllers/",
+            "App\\Models\\": "models/",
+            "App\\Views\\": "views/"
         }
     }
 }
