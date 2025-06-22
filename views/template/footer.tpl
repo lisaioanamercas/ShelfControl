@@ -15,7 +15,7 @@
                 <div class="footer__group">
                     <h3 class="footer__title">Quick Links</h3>
                     <ul class="footer__links">
-                        <li><a href="/ShelfControl" class="footer__link">Home</a></li>
+                        <li><a href="/ShelfControl/home" class="footer__link">Home</a></li>
                         <li><a href="/ShelfControl/library" class="footer__link">Library</a></li>
                         <li><a href="/ShelfControl/toread" class="footer__link">To Read</a></li>
                         <li><a href="/ShelfControl/explore" class="footer__link">Explore</a></li>
@@ -25,8 +25,6 @@
                 <div class="footer__group">
                     <h3 class="footer__title">Account</h3>
                     <ul class="footer__links">
-                        <li><a href="/ShelfControl/profile" class="footer__link">Profile</a></li>
-                        <li><a href="/ShelfControl/settings" class="footer__link">Settings</a></li>
                         <li><a href="/ShelfControl/logout" class="footer__link">Logout</a></li>
                     </ul>
                 </div>
@@ -34,10 +32,7 @@
                 <div class="footer__group">
                     <h3 class="footer__title">Support</h3>
                     <ul class="footer__links">
-                        <li><a href="/ShelfControl/help" class="footer__link">Help Center</a></li>
-                        <li><a href="/ShelfControl/contact" class="footer__link">Contact Us</a></li>
-                        <li><a href="/ShelfControl/about" class="footer__link">About</a></li>
-                    </ul>
+                        <li><a href="https://dar1acraciun.github.io/documentatie/" class="footer__link">About</a></li>                    </ul>
                 </div>
             </div>
 
@@ -46,10 +41,7 @@
                     © <?php echo date('Y'); ?> ShelfControl. All rights reserved.
                 </p>
                 <div class="footer__social">
-                    <a href="#" class="footer__social-link"><i class="ri-facebook-fill"></i></a>
-                    <a href="#" class="footer__social-link"><i class="ri-twitter-fill"></i></a>
-                    <a href="#" class="footer__social-link"><i class="ri-instagram-fill"></i></a>
-                    <a href="#" class="footer__social-link"><i class="ri-github-fill"></i></a>
+                    <a href="https://github.com/lisaioanamercas/ShelfControl" class="footer__social-link"><i class="ri-github-fill"></i></a>
                 </div>
             </div>
         </div>

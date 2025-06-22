@@ -179,7 +179,7 @@ class BookController{
                 '/ShelfControl/views/css/bookPage/dark-theme-book.css',
                 '/ShelfControl/views/css/bookPage/reviews.css',
                 '/ShelfControl/views/css/bookPage/librarySugestions.css',
-                '/ShelfControl/views/css/bookPage/admin.css'
+                '/ShelfControl/views/css/admin/admin.css'
 
             ],
             'additionalScripts' => [
