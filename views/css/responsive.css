@@ -102,13 +102,8 @@
         display: inline-block;
         margin-left: 0.25rem;
     }
-    
-    .book-grid {
+      .book-grid {
         grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    }
-    
-    .book-item__img {
-        height: 220px;
     }
     
     :root {

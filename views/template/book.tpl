@@ -26,7 +26,7 @@
                         <i class="ri-bookmark-line"></i> <span>owned</span>
                     </button>
                     <button class="book-action__btn buy-btn" id="buyBtn">
-                        <i class="ri-shopping-cart-line"></i> <span>buy</span>
+                        <i class="ri-git-repository-line"></i> <span>library</span>
                     </button>
                 </div>
             </div>
