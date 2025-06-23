@@ -37,25 +37,30 @@ class ExportController {
     }
     
     public function exportStatsCSV() {
+        // 1. Colecteaza statisticile utilizatorului
         $userModel = new UserModel($this->conn);
         $stats = $userModel->getUserStats($this->userId);
         
+        // 2. Ia informatiile utilizatorului (username, etc)
 
         $decoded = JWT::decode($_COOKIE['jwt'], new Key($_ENV['JWT_SECRET_KEY'], 'HS256'));
         $email = $decoded->data->email;
         $userData = $userModel->getUserByEmail($email);
         
-   
+       // 3. Seteaza header-ele pentru download CSV
+
         header('Content-Type: text/csv');
         header('Content-Disposition: attachment; filename="shelf_control_statistics.csv"');
         
-     
+        // 4. Creeaza fisierul CSV direct in output
+
         $output = fopen('php://output', 'w');
         
-    
+        // 5. Adauga header-ul tabelului
+
         fputcsv($output, ['Statistic', 'Value']);
         
-    
+        // 6. Adauga datele statistice rand cu rand
         fputcsv($output, ['Username', $userData['USERNAME']]);
         fputcsv($output, ['Books Read', $stats['books_read']]);
         fputcsv($output, ['Currently Reading', $stats['currently_reading']]);
@@ -64,10 +69,11 @@ class ExportController {
         fputcsv($output, ['Generated On', date('Y-m-d H:i:s')]);
         
         fclose($output);
-        exit;
+        exit; // Opreste executia pentru a nu corupe fisierul
     }
     
     public function exportStatsDocBook() {
+        // 1. Colecteaza aceleasi date ca pentru CSV
         $userModel = new UserModel($this->conn);
         $stats = $userModel->getUserStats($this->userId);
         
@@ -76,11 +82,13 @@ class ExportController {
         $email = $decoded->data->email;
         $userData = $userModel->getUserByEmail($email);
         
-      
+        // 2. Seteaza header-ele pentru download XML
+
         header('Content-Type: application/xml');
         header('Content-Disposition: attachment; filename="shelf_control_statistics.xml"');
         
- 
+        // 3. Creeaza XML-ul DocBook manual ca string
+
         $xml = '<?xml version="1.0" encoding="UTF-8"?>
                 <!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
                 <article>
@@ -121,7 +129,7 @@ class ExportController {
                 </section>
                 </article>';
         
-        echo $xml;
-        exit;
+        echo $xml;  // Outputeaza XML-ul direct
+        exit; // Opreste executia pentru a nu corupe fisierul
     }
 }
